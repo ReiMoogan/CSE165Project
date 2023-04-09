@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QSurfaceFormat>
 
-#include "window.h"
+#include <window.h>
 
 int main(int argc, char *argv[])
 {

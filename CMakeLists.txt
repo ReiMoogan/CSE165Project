@@ -22,10 +22,13 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(CSE165Project glwidget.cpp glwidget.h main.cpp window.cpp window.h textures.qrc)
+set(HEADERS include/glwidget.h include/window.h)
+set(SOURCES src/glwidget.cpp src/main.cpp src/window.cpp)
+add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES} assets/textures.qrc)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include/)
 
 # Set Qt features here
-target_link_libraries(CSE165Project
+target_link_libraries(${CMAKE_PROJECT_NAME}
         Qt::Core
         Qt::Gui
         Qt::OpenGL
@@ -35,12 +38,12 @@ target_link_libraries(CSE165Project
 
 # Set resources here
 set(textures_resource_files
-        "images/side1.png"
-        "images/side2.png"
-        "images/side3.png"
-        "images/side4.png"
-        "images/side5.png"
-        "images/side6.png"
+        "assets/images/side1.png"
+        "assets/images/side2.png"
+        "assets/images/side3.png"
+        "assets/images/side4.png"
+        "assets/images/side5.png"
+        "assets/images/side6.png"
         )
 
 qt6_add_resources(textures "textures"
