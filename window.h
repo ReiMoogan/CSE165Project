@@ -12,9 +12,6 @@ class Window : public QWidget
 public:
     Window();
 
-private slots:
-    void renderFrame();
-
 private:
     GLWidget *currentGlWidget;
 };

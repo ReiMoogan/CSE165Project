@@ -32,6 +32,10 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 
+    void keyPressEvent(QKeyEvent *event) override;
+
+    void keyReleaseEvent(QKeyEvent *event) override;
+
 private:
     void makeObject();
 
@@ -40,7 +44,7 @@ private:
     int xRot = 0;
     int yRot = 0;
     int zRot = 0;
-    QOpenGLTexture *textures[6] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+    QOpenGLTexture* texture;
     QOpenGLShaderProgram *program = nullptr;
     QOpenGLBuffer vbo;
 };

@@ -1,0 +1,9 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <!-- Textures -->
+    <file>textures/side1.png</file>
+    <!-- Shaders -->
+    <file>shaders/image.vert</file>
+    <file>shaders/image.frag</file>
+</qresource>
+</RCC>

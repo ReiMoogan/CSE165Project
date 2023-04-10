@@ -7,8 +7,7 @@ GLWidget::~GLWidget()
 {
     makeCurrent();
     vbo.destroy();
-    for (auto & texture : textures)
-        delete texture;
+    delete texture;
     delete program;
     doneCurrent();
 }
@@ -20,7 +19,7 @@ QSize GLWidget::minimumSizeHint() const
 
 QSize GLWidget::sizeHint() const
 {
-    return {500, 500};
+    return {1280, 720};
 }
 
 void GLWidget::rotateBy(int xAngle, int yAngle, int zAngle)
@@ -49,39 +48,15 @@ void GLWidget::initializeGL()
 #define PROGRAM_VERTEX_ATTRIBUTE 0
 #define PROGRAM_TEXCOORD_ATTRIBUTE 1
 
-    auto *vshader = new QOpenGLShader(QOpenGLShader::Vertex, this);
-    const char *vsrc =
-        R"eimu(
-            attribute highp vec4 vertex;
-            attribute mediump vec4 texCoord;
-            varying mediump vec4 texc;
-            uniform mediump mat4 matrix;
-            void main(void)
-            {
-                gl_Position = matrix * vertex;
-                texc = texCoord;
-            }
-        )eimu";
-    vshader->compileSourceCode(vsrc);
-
-    auto *fshader = new QOpenGLShader(QOpenGLShader::Fragment, this);
-    const char *fsrc =
-        R"eimu(
-            uniform sampler2D texture;
-            varying mediump vec4 texc;
-            void main(void)
-            {
-                gl_FragColor = texture2D(texture, texc.st);
-            }
-        )eimu";
-    fshader->compileSourceCode(fsrc);
-
     program = new QOpenGLShaderProgram;
-    program->addShader(vshader);
-    program->addShader(fshader);
+    program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/image.vert");
+    qDebug() << "Compiling image vertex shader" << program->log();
+    program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/image.frag");
+    qDebug() << "Compiling image fragment shader" << program->log();
     program->bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
     program->bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
     program->link();
+    qDebug() << "Linking image shader" << program->log();
 
     program->bind();
     program->setUniformValue("texture", 0);
@@ -93,7 +68,8 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     QMatrix4x4 m;
-    m.ortho(-0.5f, +0.5f, +0.5f, -0.5f, 4.0f, 15.0f);
+    m.scale(1.0f / (float) GLWidget::width(), 1.0f / (float) GLWidget::height());
+    m.ortho(-1.0f, +1.0f, +1.0f, -1.0f, -1000.0f, 1000.0f);
     m.translate(0.0f, 0.0f, -10.0f);
     m.rotate((float) xRot / 16.0f, 1.0f, 0.0f, 0.0f);
     m.rotate((float) yRot / 16.0f, 0.0f, 1.0f, 0.0f);
@@ -105,10 +81,8 @@ void GLWidget::paintGL()
     program->setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 3, 5 * sizeof(GLfloat));
     program->setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 3 * sizeof(GLfloat), 2, 5 * sizeof(GLfloat));
 
-    for (int i = 0; i < 6; ++i) {
-        textures[i]->bind();
-        glDrawArrays(GL_TRIANGLE_FAN, i * 4, 4);
-    }
+    texture->bind();
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 void GLWidget::resizeGL(int width, int height)
 {
@@ -139,31 +113,49 @@ void GLWidget::mouseReleaseEvent(QMouseEvent * /* event */)
     emit onClick();
 }
 
+void GLWidget::keyPressEvent(QKeyEvent *event) {
+    switch (event->key()) {
+        case Qt::Key_W:
+        case Qt::Key_Up:
+            // move forward
+            break;
+        case Qt::Key_S:
+        case Qt::Key_Down:
+            // move backward
+            break;
+        case Qt::Key_A:
+        case Qt::Key_Left:
+            // move left
+            break;
+        case Qt::Key_D:
+        case Qt::Key_Right:
+            // move right
+            break;
+    }
+}
+
+void GLWidget::keyReleaseEvent(QKeyEvent *event) {
+    // lol idk
+}
+
 void GLWidget::makeObject()
 {
-    static const float coords[6][4][3] = {
-        { { +1, -1, -1 }, { -1, -1, -1 }, { -1, +1, -1 }, { +1, +1, -1 } },
-        { { +1, +1, -1 }, { -1, +1, -1 }, { -1, +1, +1 }, { +1, +1, +1 } },
-        { { +1, -1, +1 }, { +1, -1, -1 }, { +1, +1, -1 }, { +1, +1, +1 } },
-        { { -1, -1, -1 }, { -1, -1, +1 }, { -1, +1, +1 }, { -1, +1, -1 } },
-        { { +1, -1, +1 }, { -1, -1, +1 }, { -1, -1, -1 }, { +1, -1, -1 } },
-        { { -1, -1, +1 }, { +1, -1, +1 }, { +1, +1, +1 }, { -1, +1, +1 } }
+    static const float coord[4][3] = {
+        // bottom right, bottom left, top left, top right (CCW order)
+        { +1, -1, 0 }, { -1, -1, 0 }, { -1, +1, 0 }, { +1, +1, 0 }
     };
 
-    for (int j = 0; j < 6; ++j)
-        textures[j] = new QOpenGLTexture(QImage(QString(":/images/side%1.png").arg(j + 1)).mirrored());
+    texture = new QOpenGLTexture(QImage(QString(":/textures/side1.png")).mirrored());
 
     QList<GLfloat> vertData;
-    for (const auto& coord : coords) {
-        for (int j = 0; j < 4; ++j) {
-            // vertex position
-            vertData.append(0.2f * coord[j][0]);
-            vertData.append(0.2f * coord[j][1]);
-            vertData.append(0.2f * coord[j][2]);
-            // texture coordinate
-            vertData.append(j == 0 || j == 3);
-            vertData.append(j == 0 || j == 1);
-        }
+    for (int j = 0; j < 4; ++j) {
+        // vertex position
+        vertData.append(100.0f * coord[j][0]);
+        vertData.append(100.0f * coord[j][1]);
+        vertData.append(100.0f * coord[j][2]);
+        // texture coordinate
+        vertData.append(j == 0 || j == 3);
+        vertData.append(j == 0 || j == 1);
     }
 
     vbo.create();

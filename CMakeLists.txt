@@ -20,9 +20,13 @@ find_package(Qt6 COMPONENTS
         OpenGL
         OpenGLWidgets
         Widgets
+        Multimedia
         REQUIRED)
 
-add_executable(CSE165Project glwidget.cpp glwidget.h main.cpp window.cpp window.h textures.qrc)
+set(SOURCES main.cpp window.cpp window.h glwidget.cpp glwidget.h)
+qt6_add_resources(SOURCES resources.qrc)
+
+add_executable(CSE165Project ${SOURCES})
 
 # Set Qt features here
 target_link_libraries(CSE165Project
@@ -31,21 +35,7 @@ target_link_libraries(CSE165Project
         Qt::OpenGL
         Qt::OpenGLWidgets
         Qt::Widgets
-        )
-
-# Set resources here
-set(textures_resource_files
-        "images/side1.png"
-        "images/side2.png"
-        "images/side3.png"
-        "images/side4.png"
-        "images/side5.png"
-        "images/side6.png"
-        )
-
-qt6_add_resources(textures "textures"
-        FILES
-        ${textures_resource_files}
+        Qt::Multimedia
         )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
@@ -70,7 +60,7 @@ if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
     endif ()
     # Set Qt features here
-    foreach (QT_LIB Core Gui OpenGL OpenGLWidgets Widgets)
+    foreach (QT_LIB Core Gui OpenGL OpenGLWidgets Widgets Multimedia)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy
                 "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
