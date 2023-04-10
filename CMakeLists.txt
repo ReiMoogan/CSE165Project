@@ -23,7 +23,7 @@ find_package(Qt6 COMPONENTS
         Multimedia
         REQUIRED)
 
-set(SOURCES main.cpp window.cpp window.h glwidget.cpp glwidget.h)
+set(SOURCES main.cpp Window.cpp Window.h GLWidget.cpp GLWidget.h entities/Entity.cpp entities/Entity.h)
 qt6_add_resources(SOURCES resources.qrc)
 
 add_executable(CSE165Project ${SOURCES})

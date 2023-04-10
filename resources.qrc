@@ -2,6 +2,7 @@
 <qresource>
     <!-- Textures -->
     <file>textures/side1.png</file>
+    <file>textures/derp_standing.png</file>
     <!-- Shaders -->
     <file>shaders/image.vert</file>
     <file>shaders/image.frag</file>

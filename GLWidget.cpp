@@ -1,4 +1,4 @@
-#include "glwidget.h"
+#include "GLWidget.h"
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QMouseEvent>
@@ -68,9 +68,10 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     QMatrix4x4 m;
-    m.scale(1.0f / (float) GLWidget::width(), 1.0f / (float) GLWidget::height());
-    m.ortho(-1.0f, +1.0f, +1.0f, -1.0f, -1000.0f, 1000.0f);
-    m.translate(0.0f, 0.0f, -10.0f);
+    //m.scale(1.0f / (float) GLWidget::width(), 1.0f / (float) GLWidget::height());
+    //m.ortho(-1.0f, +1.0f, +1.0f, -1.0f, -1000.0f, 1000.0f);
+    m.ortho(0, (float) GLWidget::width(), (float) GLWidget::height(), 0, -1000.0f, 1000.0f);
+    //m.translate(0.0f, 0.0f, -10.0f);
     m.rotate((float) xRot / 16.0f, 1.0f, 0.0f, 0.0f);
     m.rotate((float) yRot / 16.0f, 0.0f, 1.0f, 0.0f);
     m.rotate((float) zRot / 16.0f, 0.0f, 0.0f, 1.0f);
@@ -142,17 +143,16 @@ void GLWidget::makeObject()
 {
     static const float coord[4][3] = {
         // bottom right, bottom left, top left, top right (CCW order)
-        { +1, -1, 0 }, { -1, -1, 0 }, { -1, +1, 0 }, { +1, +1, 0 }
+    { 1, 0, 0 }, { 0, 0, 0 }, { 0, 1, 0 }, { 1, 1, 0 }
     };
 
     texture = new QOpenGLTexture(QImage(QString(":/textures/side1.png")).mirrored());
-
     QList<GLfloat> vertData;
     for (int j = 0; j < 4; ++j) {
         // vertex position
-        vertData.append(100.0f * coord[j][0]);
-        vertData.append(100.0f * coord[j][1]);
-        vertData.append(100.0f * coord[j][2]);
+        vertData.append((float) texture->width() * coord[j][0] / 2.0f);
+        vertData.append((float) texture->height() * coord[j][1] / 2.0f);
+        vertData.append(coord[j][2]);
         // texture coordinate
         vertData.append(j == 0 || j == 3);
         vertData.append(j == 0 || j == 1);
