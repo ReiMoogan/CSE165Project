@@ -13,7 +13,7 @@ QT_FORWARD_DECLARE_CLASS(Entity)
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
-    Q_OBJECT
+Q_OBJECT
 
 public:
     using QOpenGLWidget::QOpenGLWidget;

@@ -7,7 +7,7 @@ class GLWidget;
 
 class Window : public QWidget
 {
-    Q_OBJECT
+Q_OBJECT
 
 public:
     Window();
