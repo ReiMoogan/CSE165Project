@@ -8,10 +8,12 @@ QOpenGLShaderProgram* ImageEntity::program = nullptr;
 
 ImageEntity::ImageEntity(const QString &imagePath) {
     texture = new QOpenGLTexture(QImage(QString(imagePath)).mirrored());
+    vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
 }
 
 ImageEntity::~ImageEntity() {
-    vbo.destroy();
+    vbo->destroy();
+    delete vbo;
     delete texture;
 }
 
@@ -54,9 +56,9 @@ void ImageEntity::init(GLWidget &widget) {
         vertData.append(j == 0 || j == 1);
     }
 
-    vbo.create();
-    vbo.bind();
-    vbo.allocate(vertData.constData(), (int) (vertData.count() * sizeof(GLfloat)));
+    vbo->create();
+    vbo->bind();
+    vbo->allocate(vertData.constData(), (int) (vertData.count() * sizeof(GLfloat)));
 }
 
 void ImageEntity::draw(GLWidget &widget) {
@@ -69,6 +71,9 @@ void ImageEntity::draw(GLWidget &widget) {
     m.rotate((float) yRot / 16.0f, 0.0f, 1.0f, 0.0f);
     m.rotate((float) zRot / 16.0f, 0.0f, 0.0f, 1.0f);
 
+    program->bind();
+    vbo->bind();
+    texture->bind();
 
     program->setUniformValue("matrix", m);
     program->enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
@@ -76,8 +81,6 @@ void ImageEntity::draw(GLWidget &widget) {
     program->setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 3, 5 * sizeof(GLfloat));
     program->setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 3 * sizeof(GLfloat), 2, 5 * sizeof(GLfloat));
 
-    texture->bind();
-    vbo.bind();
     widget.glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 

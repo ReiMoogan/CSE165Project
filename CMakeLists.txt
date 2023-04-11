@@ -10,12 +10,16 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 # My Windows Install
-set(CMAKE_PREFIX_PATH "C:\\Qt\\6.5.0\\msvc2019_64")
-find_package (Qt6 PATHS "C:\\Qt\\6.5.0\\msvc2019_64" NO_DEFAULT_PATH)
+if ($ENV{USERNAME} STREQUAL "willi")
+    set(CMAKE_PREFIX_PATH "C:\\Qt\\6.5.0\\msvc2019_64")
+    find_package (Qt6 PATHS "C:\\Qt\\6.5.0\\msvc2019_64" NO_DEFAULT_PATH)
+endif()
 
 # My MacOS Install
-set(CMAKE_PREFIX_PATH "/Users/doggysazhi/Qt/6.5.0/macos")
-find_package (Qt6 PATHS "/Users/doggysazhi/Qt/6.5.0/macos" NO_DEFAULT_PATH)
+if ($ENV{USERNAME} STREQUAL "doggysazhi")
+    set(CMAKE_PREFIX_PATH "/Users/doggysazhi/Qt/6.5.0/macos")
+    find_package (Qt6 PATHS "/Users/doggysazhi/Qt/6.5.0/macos" NO_DEFAULT_PATH)
+endif()
 
 # Defaulted
 find_package(Qt6 COMPONENTS

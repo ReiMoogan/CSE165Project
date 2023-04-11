@@ -25,7 +25,7 @@ public:
     [[nodiscard]] QSize sizeHint() const override;
     void setClearColor(const QColor &color);
     void addEntity(Entity* entity);
-    bool isKeyPressed(int key) const;
+    [[nodiscard]] bool isKeyPressed(int key) const;
 
     friend class ImageEntity; // Allow us to call GL functions outside
 

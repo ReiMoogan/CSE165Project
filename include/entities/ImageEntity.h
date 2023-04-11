@@ -8,7 +8,7 @@ private:
     static bool programInitialized;
     static QOpenGLShaderProgram *program;
     QOpenGLTexture* texture;
-    QOpenGLBuffer vbo;
+    QOpenGLBuffer* vbo;
 protected:
     float xRot = 0;
     float yRot = 0;
@@ -29,7 +29,7 @@ private:
 public:
     explicit ImageEntity(const QString& imagePath);
     ~ImageEntity() override;
-    void initProgram(GLWidget& widget);
+    static void initProgram(GLWidget& widget);
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;

@@ -1,5 +1,4 @@
 #include "entities/Derek.h"
-#include <iostream>
 
 Derek::Derek() : ImageEntity(":/textures/derp_standing.png") {
 
