@@ -27,5 +27,5 @@ void Derek::draw(GLWidget &widget) {
 }
 
 bool Derek::isFinished(GLWidget &widget) {
-    return ImageEntity::isFinished(widget);
+    return widget.isKeyPressed(Qt::Key_P);
 }

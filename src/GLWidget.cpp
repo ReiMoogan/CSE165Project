@@ -38,8 +38,8 @@ void GLWidget::initializeGL()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    addEntity(new ImageEntity(":/textures/side1.png"));
     addEntity(new Derek());
+    addEntity(new ImageEntity(":/textures/side1.png"));
 }
 
 void GLWidget::paintGL()
@@ -66,7 +66,7 @@ void GLWidget::paintGL()
     auto timeDiff = diff.count();
     if (timeDiff >= 1) {
         fps = (float) frames / timeDiff;
-        std::cout << "FPS: " << fps << '\n';
+        qDebug() << "FPS:" << fps;
         lastFrameTime = now;
         frames = 0;
     }

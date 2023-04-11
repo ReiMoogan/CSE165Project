@@ -28,7 +28,7 @@ private:
 
 public:
     explicit ImageEntity(const QString& imagePath);
-    ~ImageEntity();
+    ~ImageEntity() override;
     void initProgram(GLWidget& widget);
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
