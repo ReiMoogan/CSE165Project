@@ -4,6 +4,7 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
+#include <set>
 
 #include "entities/Entity.h"
 
@@ -23,6 +24,7 @@ public:
     [[nodiscard]] QSize sizeHint() const override;
     void setClearColor(const QColor &color);
     void addEntity(Entity* entity);
+    bool isKeyPressed(int key) const;
 
     friend class ImageEntity; // Allow us to call GL functions outside
 
@@ -36,6 +38,7 @@ protected:
 private:
     QColor clearColor = Qt::black;
     std::map<float, std::vector<Entity*>> entities; // ordered by z
+    std::set<int> pressedKeys;
 };
 
 #endif

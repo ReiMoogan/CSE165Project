@@ -5,6 +5,11 @@
 
 class ImageEntity : public Entity {
 private:
+    static bool programInitialized;
+    static QOpenGLShaderProgram *program;
+    QOpenGLTexture* texture;
+    QOpenGLBuffer vbo;
+protected:
     float xRot = 0;
     float yRot = 0;
     float zRot = 0;
@@ -13,12 +18,7 @@ private:
     float z = 0;
     float xScale = 1;
     float yScale = 1;
-    static bool programInitialized;
-    static QOpenGLShaderProgram *program;
-    QOpenGLTexture* texture;
-    QOpenGLBuffer vbo;
     // no z scale
-protected:
     void setTranslation(float x, float y, float z);
     void setRotation(float xRot, float yRot, float zRot);
     void setScale(float xScale, float yScale);

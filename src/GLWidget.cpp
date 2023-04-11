@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 
 #include "entities/ImageEntity.h"
+#include "entities/Derek.h"
 
 GLWidget::~GLWidget()
 {
@@ -35,6 +36,7 @@ void GLWidget::initializeGL()
     glEnable(GL_CULL_FACE);
 
     addEntity(new ImageEntity(":/textures/side1.png"));
+    addEntity(new Derek());
 }
 
 void GLWidget::paintGL()
@@ -63,31 +65,18 @@ void GLWidget::resizeGL(int width, int height)
 }
 
 void GLWidget::keyPressEvent(QKeyEvent *event) {
-    switch (event->key()) {
-        case Qt::Key_W:
-        case Qt::Key_Up:
-            // move forward
-            break;
-        case Qt::Key_S:
-        case Qt::Key_Down:
-            // move backward
-            break;
-        case Qt::Key_A:
-        case Qt::Key_Left:
-            // move left
-            break;
-        case Qt::Key_D:
-        case Qt::Key_Right:
-            // move right
-            break;
-    }
+    pressedKeys.insert(event->key());
 }
 
 void GLWidget::keyReleaseEvent(QKeyEvent *event) {
-    // lol idk
+    pressedKeys.erase(event->key());
 }
 
 void GLWidget::addEntity(Entity *entity) {
     entity->init(*this);
     entities[entity->getZ()].push_back(entity);
+}
+
+bool GLWidget::isKeyPressed(int key) const {
+    return pressedKeys.contains(key);
 }

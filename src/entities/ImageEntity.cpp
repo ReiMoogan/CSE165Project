@@ -62,11 +62,11 @@ void ImageEntity::init(GLWidget &widget) {
 void ImageEntity::draw(GLWidget &widget) {
     QMatrix4x4 m;
     m.ortho(0, (float) widget.width(), (float) widget.height(), 0, -1000.0f, 1000.0f);
+    m.translate(x, y, z);
+    m.scale(xScale, yScale, 1.0f);
     m.rotate((float) xRot / 16.0f, 1.0f, 0.0f, 0.0f);
     m.rotate((float) yRot / 16.0f, 0.0f, 1.0f, 0.0f);
     m.rotate((float) zRot / 16.0f, 0.0f, 0.0f, 1.0f);
-    m.scale(xScale, yScale, 1.0f);
-    m.translate(x, y, z);
 
     program->setUniformValue("matrix", m);
     program->enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
