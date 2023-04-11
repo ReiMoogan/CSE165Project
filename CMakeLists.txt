@@ -23,13 +23,15 @@ find_package(Qt6 COMPONENTS
         Multimedia
         REQUIRED)
 
-set(SOURCES main.cpp Window.cpp Window.h GLWidget.cpp GLWidget.h entities/Entity.cpp entities/Entity.h)
-qt6_add_resources(SOURCES resources.qrc)
-
-add_executable(CSE165Project ${SOURCES})
+set(HEADERS include/Window.h include/GLWidget.h include/entities/Entity.h include/entities/Derek.h include/entities/ImageEntity.h)
+set(SOURCES src/main.cpp src/Window.cpp src/GLWidget.cpp src/entities/Derek.cpp src/entities/ImageEntity.cpp)
+qt6_add_resources(SOURCES assets/resources.qrc)
+add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})
+# idk what this is here for
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include/)
 
 # Set Qt features here
-target_link_libraries(CSE165Project
+target_link_libraries(${CMAKE_PROJECT_NAME}
         Qt::Core
         Qt::Gui
         Qt::OpenGL

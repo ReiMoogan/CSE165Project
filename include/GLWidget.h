@@ -5,8 +5,11 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
 
+#include "entities/Entity.h"
+
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 QT_FORWARD_DECLARE_CLASS(QOpenGLTexture)
+QT_FORWARD_DECLARE_CLASS(Entity)
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -18,35 +21,21 @@ public:
 
     [[nodiscard]] QSize minimumSizeHint() const override;
     [[nodiscard]] QSize sizeHint() const override;
-    void rotateBy(int xAngle, int yAngle, int zAngle);
     void setClearColor(const QColor &color);
+    void addEntity(Entity* entity);
 
-signals:
-    void onClick();
+    friend class ImageEntity; // Allow us to call GL functions outside
 
 protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int width, int height) override;
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-
     void keyPressEvent(QKeyEvent *event) override;
-
     void keyReleaseEvent(QKeyEvent *event) override;
 
 private:
-    void makeObject();
-
     QColor clearColor = Qt::black;
-    QPoint lastPos;
-    int xRot = 0;
-    int yRot = 0;
-    int zRot = 0;
-    QOpenGLTexture* texture;
-    QOpenGLShaderProgram *program = nullptr;
-    QOpenGLBuffer vbo;
+    std::map<float, std::vector<Entity*>> entities; // ordered by z
 };
 
 #endif
