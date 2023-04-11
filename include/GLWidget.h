@@ -5,6 +5,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
 #include <set>
+#include <chrono>
 
 #include "entities/Entity.h"
 
@@ -41,7 +42,7 @@ private:
     std::set<int> pressedKeys;
     int frames = 0;
     float fps = 0;
-    clock_t lastFrameTime;
+    std::chrono::time_point<std::chrono::steady_clock> lastFrameTime;
 };
 
 #endif

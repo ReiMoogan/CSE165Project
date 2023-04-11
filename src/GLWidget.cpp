@@ -31,7 +31,7 @@ void GLWidget::setClearColor(const QColor &color)
 
 void GLWidget::initializeGL()
 {
-    lastFrameTime = clock();
+    lastFrameTime = std::chrono::steady_clock::now();
 
     initializeOpenGLFunctions();
 
@@ -61,11 +61,11 @@ void GLWidget::paintGL()
     }
 
     ++frames;
-    clock_t now = clock();
-    auto diff = (float) (now - lastFrameTime) / (float) CLOCKS_PER_SEC;
-    if (diff >= 1) {
-        fps = (float) frames / (diff);
-        std::cout << "TimeDiff: " << diff << '\n';
+    auto now = std::chrono::steady_clock::now();
+    std::chrono::duration<float> diff = std::chrono::duration_cast<std::chrono::seconds>(now - lastFrameTime);
+    auto timeDiff = diff.count();
+    if (timeDiff >= 1) {
+        fps = (float) frames / timeDiff;
         std::cout << "FPS: " << fps << '\n';
         lastFrameTime = now;
         frames = 0;
