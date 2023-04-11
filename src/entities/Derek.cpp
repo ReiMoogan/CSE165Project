@@ -22,7 +22,6 @@ void Derek::draw(GLWidget &widget) {
         zRot -= 10;
     if (widget.isKeyPressed(Qt::Key_E))
         zRot += 10;
-    std::cout << x << ", " << y << ", " << zRot << std::endl;
 
     ImageEntity::draw(widget);
 }

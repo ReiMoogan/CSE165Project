@@ -13,6 +13,10 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_PREFIX_PATH "C:\\Qt\\6.5.0\\msvc2019_64")
 find_package (Qt6 PATHS "C:\\Qt\\6.5.0\\msvc2019_64" NO_DEFAULT_PATH)
 
+# My MacOS Install
+set(CMAKE_PREFIX_PATH "/Users/doggysazhi/Qt/6.5.0/macos")
+find_package (Qt6 PATHS "/Users/doggysazhi/Qt/6.5.0/macos" NO_DEFAULT_PATH)
+
 # Defaulted
 find_package(Qt6 COMPONENTS
         Core

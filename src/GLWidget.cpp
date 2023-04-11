@@ -2,6 +2,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QMouseEvent>
+#include <iostream>
 
 #include "entities/ImageEntity.h"
 #include "entities/Derek.h"
@@ -30,6 +31,8 @@ void GLWidget::setClearColor(const QColor &color)
 
 void GLWidget::initializeGL()
 {
+    lastFrameTime = clock();
+
     initializeOpenGLFunctions();
 
     glEnable(GL_DEPTH_TEST);
@@ -55,6 +58,17 @@ void GLWidget::paintGL()
                 ++iter;
             }
         }
+    }
+
+    ++frames;
+    clock_t now = clock();
+    auto diff = (float) (now - lastFrameTime) / (float) CLOCKS_PER_SEC;
+    if (diff >= 1) {
+        fps = (float) frames / (diff);
+        std::cout << "TimeDiff: " << diff << '\n';
+        std::cout << "FPS: " << fps << '\n';
+        lastFrameTime = now;
+        frames = 0;
     }
 }
 

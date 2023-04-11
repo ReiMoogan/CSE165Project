@@ -39,6 +39,9 @@ private:
     QColor clearColor = Qt::black;
     std::map<float, std::vector<Entity*>> entities; // ordered by z
     std::set<int> pressedKeys;
+    int frames = 0;
+    float fps = 0;
+    clock_t lastFrameTime;
 };
 
 #endif
