@@ -11,6 +11,8 @@ Window::Window()
     // GL Setup
     createGlWidget();
 
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowMinimizeButtonHint);
     setWindowTitle(tr("CSE-165 Final Project"));
 }
 

@@ -54,13 +54,13 @@ void GLWidget::paintGL()
     glClearColor(clearColor.redF(), clearColor.greenF(), clearColor.blueF(), clearColor.alphaF());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (auto& [_, entities] : entities) {
-        for (auto iter = entities.begin(); iter != entities.end(); /* no increment*/) {
+    for (auto& [_, zEntities] : entities) {
+        for (auto iter = zEntities.begin(); iter != zEntities.end(); /* no increment*/) {
             (*iter)->draw(*this);
 
             if ((*iter)->isFinished(*this)) {
                 delete *iter;
-                iter = entities.erase(iter);
+                iter = zEntities.erase(iter);
             } else {
                 ++iter;
             }
@@ -73,7 +73,6 @@ void GLWidget::paintGL()
     auto timeDiff = diff.count();
     if (timeDiff >= 1) {
         fps = (float) frames / timeDiff;
-        qDebug() << "FPS:" << fps;
         lastFrameTime = now;
         frames = 0;
     }

@@ -9,6 +9,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+if(NOT ENV{USERNAME})
+    set(ENV{USERNAME} $ENV{USER})
+endif()
+
 # My Windows Install
 if ($ENV{USERNAME} STREQUAL "willi")
     set(CMAKE_PREFIX_PATH "C:\\Qt\\6.5.0\\msvc2019_64")
@@ -21,6 +25,8 @@ endif()
 if ($ENV{USERNAME} STREQUAL "doggysazhi")
     set(CMAKE_PREFIX_PATH "/Users/doggysazhi/Qt/6.5.0/macos")
     find_package (Qt6 PATHS "/Users/doggysazhi/Qt/6.5.0/macos" NO_DEFAULT_PATH)
+    set(FREETYPE_LIBRARY "/opt/homebrew/Cellar/freetype/2.13.0_1/lib/libfreetype.dylib")
+    include_directories("/opt/homebrew/Cellar/freetype/2.13.0_1/include/freetype2")
 endif()
 
 # Defaulted

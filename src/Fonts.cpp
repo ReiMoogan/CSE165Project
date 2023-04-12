@@ -48,8 +48,9 @@ void Fonts::loadFont(GLWidget& widget, const std::string &font, unsigned int siz
 
         Character character = {
                 texture,
-                QVector2D((float) face->glyph->bitmap.width, (float) face->glyph->bitmap.rows),
-                QVector2D((float) face->glyph->bitmap_left, (float) face->glyph->bitmap_top),
+                // praying that these values don't go over 0x7FFFFF
+                QSize((int) face->glyph->bitmap.width, (int) face->glyph->bitmap.rows),
+                QSize((int) face->glyph->bitmap_left, (int) face->glyph->bitmap_top),
                 (unsigned int) face->glyph->advance.x
         };
 

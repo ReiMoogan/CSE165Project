@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <ft2build.h>
 #include <QOpenGLTexture>
-#include <QVector2D>
+#include <QSize>
 #include FT_FREETYPE_H
 
 #include "GLWidget.h"
@@ -13,8 +13,8 @@
 
 struct Character {
     QOpenGLTexture* texture;
-    QVector2D size; // Size of glyph
-    QVector2D bearing; // Offset from baseline to left/top of glyph
+    QSize size; // Size of glyph
+    QSize bearing; // Offset from baseline to left/top of glyph
     unsigned int advance; // Horizontal offset to advance to next glyph
 };
 
