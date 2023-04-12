@@ -8,6 +8,7 @@ QOpenGLShaderProgram* ImageEntity::program = nullptr;
 
 ImageEntity::ImageEntity(const QString &imagePath) {
     texture = new QOpenGLTexture(QImage(QString(imagePath)).mirrored());
+    texture->setFormat(QOpenGLTexture::RGBA8_UNorm);
     vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
 }
 
