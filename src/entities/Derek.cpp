@@ -6,6 +6,7 @@ Derek::Derek() : ImageEntity(":/textures/derp_standing.png") {
 
 void Derek::init(GLWidget &widget) {
     ImageEntity::init(widget);
+    setScale(0.3, 0.3);
 }
 
 void Derek::draw(GLWidget &widget) {
@@ -21,6 +22,10 @@ void Derek::draw(GLWidget &widget) {
         zRot -= 10;
     if (widget.isKeyPressed(Qt::Key_E))
         zRot += 10;
+    if (widget.isKeyPressed(Qt::Key_Z))
+        yRot -= 10;
+    if (widget.isKeyPressed(Qt::Key_C))
+        yRot += 10;
 
     ImageEntity::draw(widget);
 }

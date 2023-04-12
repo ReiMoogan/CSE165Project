@@ -3,6 +3,11 @@
 
 #include "Entity.h"
 
+enum DrawMode {
+    CORNER,
+    CENTER
+};
+
 class ImageEntity : public Entity {
 private:
     static bool programInitialized;
@@ -18,10 +23,12 @@ protected:
     float z = 0;
     float xScale = 1;
     float yScale = 1;
+    DrawMode mode = CENTER;
     // no z scale
     void setTranslation(float x, float y, float z);
     void setRotation(float xRot, float yRot, float zRot);
     void setScale(float xScale, float yScale);
+    void setDrawMode(DrawMode mode); // lol basically a setter method
 
 private:
     float getZ() override;
@@ -29,7 +36,7 @@ private:
 public:
     explicit ImageEntity(const QString& imagePath);
     ~ImageEntity() override;
-    static void initProgram(GLWidget& widget);
+    static void initProgram([[maybe_unused]] GLWidget& widget);
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;

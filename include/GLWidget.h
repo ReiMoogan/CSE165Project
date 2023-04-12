@@ -35,6 +35,7 @@ protected:
     void resizeGL(int width, int height) override;
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 private:
     QColor clearColor = Qt::black;

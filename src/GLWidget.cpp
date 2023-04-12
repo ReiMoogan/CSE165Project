@@ -94,3 +94,7 @@ void GLWidget::addEntity(Entity *entity) {
 bool GLWidget::isKeyPressed(int key) const {
     return pressedKeys.contains(key);
 }
+
+void GLWidget::focusOutEvent(QFocusEvent *event) {
+    pressedKeys.clear();
+}

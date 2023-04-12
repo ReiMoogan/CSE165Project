@@ -17,8 +17,10 @@ ImageEntity::~ImageEntity() {
     delete texture;
 }
 
-
-void ImageEntity::initProgram(GLWidget &widget) {
+// stupid IDE thinks that program is null
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NullDereference"
+void ImageEntity::initProgram([[maybe_unused]] GLWidget &widget) {
     program = new QOpenGLShaderProgram;
     program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/image.vert");
     qDebug() << "Compiling image vertex shader" << program->log();
@@ -33,7 +35,10 @@ void ImageEntity::initProgram(GLWidget &widget) {
 
     program->bind();
     program->setUniformValue("texture", 0);
+
+    programInitialized = true;
 }
+#pragma clang diagnostic pop
 
 void ImageEntity::init(GLWidget &widget) {
     if (!programInitialized) {
@@ -61,15 +66,23 @@ void ImageEntity::init(GLWidget &widget) {
     vbo->allocate(vertData.constData(), (int) (vertData.count() * sizeof(GLfloat)));
 }
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NullDereference"
 void ImageEntity::draw(GLWidget &widget) {
     QMatrix4x4 m;
-    m.ortho(0, (float) widget.width(), (float) widget.height(), 0, -1000.0f, 1000.0f);
-    m.translate(x, y, z);
-    m.scale(xScale, yScale, 1.0f);
 
+    m.ortho(0, (float) widget.width(), (float) widget.height(), 0, -1000.0f, 1000.0f);
+    if (mode == CORNER) {
+        m.translate(x, y, z);
+    } else { // CENTER
+        m.translate(x - (float) texture->width() / 4.0f, y - (float) texture->height() / 4.0f, z);
+    }
+    m.scale(xScale, yScale, 1.0f);
+    if (mode == CENTER) { m.translate((float) texture->width() / 4.0f, (float) texture->height() / 4.0f, 0); }
     m.rotate((float) xRot / 16.0f, 1.0f, 0.0f, 0.0f);
     m.rotate((float) yRot / 16.0f, 0.0f, 1.0f, 0.0f);
     m.rotate((float) zRot / 16.0f, 0.0f, 0.0f, 1.0f);
+    if (mode == CENTER) { m.translate(-(float) texture->width() / 4.0f, -(float) texture->height() / 4.0f, 0); }
 
     program->bind();
     vbo->bind();
@@ -83,11 +96,14 @@ void ImageEntity::draw(GLWidget &widget) {
 
     widget.glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
+#pragma clang diagnostic pop
 
 bool ImageEntity::isFinished(GLWidget &widget) {
     return false;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wshadow"
 void ImageEntity::setTranslation(float x, float y, float z) {
     this->x = x;
     this->y = y;
@@ -104,6 +120,11 @@ void ImageEntity::setScale(float xScale, float yScale) {
     this->xScale = xScale;
     this->yScale = yScale;
 }
+
+void ImageEntity::setDrawMode(DrawMode mode) {
+    this->mode = mode;
+}
+#pragma clang diagnostic pop
 
 float ImageEntity::getZ() {
     return z;
