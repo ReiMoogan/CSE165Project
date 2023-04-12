@@ -7,6 +7,10 @@
 #include "entities/ImageEntity.h"
 #include "entities/Derek.h"
 
+std::function<void(QMatrix4x4& matrix, GLWidget& widget)> GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget) {
+    // do nothing
+};
+
 GLWidget::~GLWidget()
 {
     makeCurrent();
@@ -42,6 +46,7 @@ void GLWidget::initializeGL()
 
     addEntity(new Derek());
     addEntity(new ImageEntity(":/textures/side1.png"));
+    addEntity(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0));
 }
 
 void GLWidget::paintGL()

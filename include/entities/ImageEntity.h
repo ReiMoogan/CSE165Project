@@ -35,6 +35,7 @@ private:
 
 public:
     explicit ImageEntity(const QString& imagePath);
+    ImageEntity(const QString& imagePath, float x, float y, float z);
     ~ImageEntity() override;
     static void initProgram([[maybe_unused]] GLWidget& widget);
     void init(GLWidget& widget) override;

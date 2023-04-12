@@ -16,7 +16,6 @@ QT_FORWARD_DECLARE_CLASS(Entity)
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
 Q_OBJECT
-
 public:
     using QOpenGLWidget::QOpenGLWidget;
     ~GLWidget() override;
@@ -27,6 +26,7 @@ public:
     void addEntity(Entity* entity);
     [[nodiscard]] bool isKeyPressed(int key) const;
 
+    static std::function<void(QMatrix4x4& matrix, GLWidget& widget)> perspective;
     friend class ImageEntity; // Allow us to call GL functions outside
 
 protected:

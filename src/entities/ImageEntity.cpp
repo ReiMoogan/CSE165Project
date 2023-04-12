@@ -8,8 +8,13 @@ QOpenGLShaderProgram* ImageEntity::program = nullptr;
 
 ImageEntity::ImageEntity(const QString &imagePath) {
     texture = new QOpenGLTexture(QImage(QString(imagePath)).mirrored());
-    texture->setFormat(QOpenGLTexture::RGBA8_UNorm);
     vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+}
+
+ImageEntity::ImageEntity(const QString &imagePath, float x, float y, float z) : ImageEntity(imagePath) {
+    this->x = x;
+    this->y = y;
+    this->z = z;
 }
 
 ImageEntity::~ImageEntity() {
@@ -73,16 +78,18 @@ void ImageEntity::draw(GLWidget &widget) {
     QMatrix4x4 m;
 
     m.ortho(0, (float) widget.width(), (float) widget.height(), 0, -1000.0f, 1000.0f);
+    if (GLWidget::perspective)
+        GLWidget::perspective(m, widget);
     if (mode == CORNER) {
         m.translate(x, y, z);
     } else { // CENTER
         m.translate(x - (float) texture->width() / 4.0f, y - (float) texture->height() / 4.0f, z);
     }
-    m.scale(xScale, yScale, 1.0f);
     if (mode == CENTER) { m.translate((float) texture->width() / 4.0f, (float) texture->height() / 4.0f, 0); }
-    m.rotate((float) xRot / 16.0f, 1.0f, 0.0f, 0.0f);
-    m.rotate((float) yRot / 16.0f, 0.0f, 1.0f, 0.0f);
-    m.rotate((float) zRot / 16.0f, 0.0f, 0.0f, 1.0f);
+    m.scale(xScale, yScale, 1.0f);
+    m.rotate((float) xRot, 1.0f, 0.0f, 0.0f);
+    m.rotate((float) yRot, 0.0f, 1.0f, 0.0f);
+    m.rotate((float) zRot, 0.0f, 0.0f, 1.0f);
     if (mode == CENTER) { m.translate(-(float) texture->width() / 4.0f, -(float) texture->height() / 4.0f, 0); }
 
     program->bind();

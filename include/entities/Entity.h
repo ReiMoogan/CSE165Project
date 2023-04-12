@@ -2,6 +2,7 @@
 #define CSE165PROJECT_ENTITY_H
 
 #include <QString>
+#include <QMatrix4x4>
 #include "GLWidget.h"
 
 QT_FORWARD_DECLARE_CLASS(GLWidget)
