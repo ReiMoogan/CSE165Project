@@ -13,6 +13,8 @@ set(CMAKE_AUTOUIC ON)
 if ($ENV{USERNAME} STREQUAL "willi")
     set(CMAKE_PREFIX_PATH "C:\\Qt\\6.5.0\\msvc2019_64")
     find_package (Qt6 PATHS "C:\\Qt\\6.5.0\\msvc2019_64" NO_DEFAULT_PATH)
+    set(FREETYPE_LIBRARY "C:/Users/willi/Documents/Programming Projects/freetype-bin/rdll/win64/freetype.lib")
+    include_directories("../freetype-bin/include")
 endif()
 
 # My MacOS Install
@@ -31,12 +33,17 @@ find_package(Qt6 COMPONENTS
         Multimedia
         REQUIRED)
 
-set(HEADERS include/Window.h include/GLWidget.h include/entities/Entity.h include/entities/Derek.h include/entities/ImageEntity.h)
-set(SOURCES src/main.cpp src/Window.cpp src/GLWidget.cpp src/entities/Derek.cpp src/entities/ImageEntity.cpp)
+set(HEADERS include/Window.h include/GLWidget.h include/entities/Entity.h include/entities/Derek.h include/entities/ImageEntity.h include/Fonts.h)
+set(SOURCES src/main.cpp src/Window.cpp src/GLWidget.cpp src/entities/Derek.cpp src/entities/ImageEntity.cpp src/Fonts.cpp)
 qt6_add_resources(SOURCES assets/resources.qrc)
 add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})
 # idk what this is here for
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include/)
+
+#if ($ENV{USERNAME} STREQUAL "willi")
+#    target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ../freetype-bin/include)
+#    target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ../freetype-bin/rdll/win64/freetype.lib)
+#endif()
 
 # Set Qt features here
 target_link_libraries(${CMAKE_PROJECT_NAME}
@@ -46,6 +53,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         Qt::OpenGLWidgets
         Qt::Widgets
         Qt::Multimedia
+        ${FREETYPE_LIBRARY}
         )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)

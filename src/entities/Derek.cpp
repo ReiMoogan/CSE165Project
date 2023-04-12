@@ -1,3 +1,4 @@
+#include <QFile>
 #include "entities/Derek.h"
 
 Derek::Derek() : ImageEntity(":/textures/derp_standing.png") {

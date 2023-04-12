@@ -1,11 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <QWidget>
+#include <QMainWindow>
 
 class GLWidget;
 
-class Window : public QWidget
+class Window : public QMainWindow
 {
 Q_OBJECT
 
@@ -13,7 +13,13 @@ public:
     Window();
 
 private:
-    GLWidget *currentGlWidget;
+    GLWidget *glWidget;
+    QTimer* gameTimer;
+    QMenu* fpsDisplay;
+
+    void createMenuBar();
+    void createGlWidget();
+    void setFps(int fps);
 };
 
 #endif

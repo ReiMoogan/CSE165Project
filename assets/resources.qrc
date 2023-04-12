@@ -6,5 +6,7 @@
     <!-- Shaders -->
     <file>shaders/image.vert</file>
     <file>shaders/image.frag</file>
+    <!-- Fonts -->
+    <file>fonts/Inconsolata.ttf</file>
 </qresource>
 </RCC>

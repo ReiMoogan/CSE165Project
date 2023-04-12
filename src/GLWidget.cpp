@@ -105,3 +105,7 @@ bool GLWidget::isKeyPressed(int key) const {
 void GLWidget::focusOutEvent(QFocusEvent *event) {
     pressedKeys.clear();
 }
+
+float GLWidget::getFps() const {
+    return fps;
+}
