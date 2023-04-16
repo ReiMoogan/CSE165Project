@@ -1,7 +1,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 
-#include "entities/ImageEntity.h"
+#include "commands/entities/ImageEntity.h"
 
 bool ImageEntity::programInitialized = false;
 QOpenGLShaderProgram* ImageEntity::program = nullptr;
@@ -29,15 +29,18 @@ ImageEntity::~ImageEntity() {
 void ImageEntity::initProgram([[maybe_unused]] GLWidget &widget) {
     program = new QOpenGLShaderProgram;
     program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/image.vert");
-    qDebug() << "Compiling image vertex shader" << program->log();
+    auto log = program->log();
+    qDebug().noquote() << "Compiling image vertex shader..." << (log.isEmpty() ? "OK" : log);
     program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/image.frag");
-    qDebug() << "Compiling image fragment shader" << program->log();
+    log = program->log();
+    qDebug().noquote() << "Compiling image fragment shader..." << (log.isEmpty() ? "OK" : log);
 #define PROGRAM_VERTEX_ATTRIBUTE 0
 #define PROGRAM_TEXCOORD_ATTRIBUTE 1
     program->bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
     program->bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
     program->link();
-    qDebug() << "Linking image shader" << program->log();
+    log = program->log();
+    qDebug().noquote() << "Linking image shader..." << (log.isEmpty() ? "OK" : log);
 
     program->bind();
     program->setUniformValue("texture", 0);
@@ -108,32 +111,4 @@ void ImageEntity::draw(GLWidget &widget) {
 
 bool ImageEntity::isFinished(GLWidget &widget) {
     return false;
-}
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wshadow"
-void ImageEntity::setTranslation(float x, float y, float z) {
-    this->x = x;
-    this->y = y;
-    this->z = z;
-}
-
-void ImageEntity::setRotation(float xRot, float yRot, float zRot) {
-    this->xRot = xRot;
-    this->yRot = yRot;
-    this->zRot = zRot;
-}
-
-void ImageEntity::setScale(float xScale, float yScale) {
-    this->xScale = xScale;
-    this->yScale = yScale;
-}
-
-void ImageEntity::setDrawMode(DrawMode mode) {
-    this->mode = mode;
-}
-#pragma clang diagnostic pop
-
-float ImageEntity::getZ() {
-    return z;
 }

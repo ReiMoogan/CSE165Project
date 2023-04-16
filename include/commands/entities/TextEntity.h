@@ -1,0 +1,10 @@
+#ifndef CSE165PROJECT_TEXTENTITY_H
+#define CSE165PROJECT_TEXTENTITY_H
+
+
+class TextEntity {
+
+};
+
+
+#endif //CSE165PROJECT_TEXTENTITY_H

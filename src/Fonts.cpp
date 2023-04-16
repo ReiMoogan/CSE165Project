@@ -10,6 +10,10 @@ Fonts::Fonts() {
     }
 }
 
+Fonts::~Fonts() {
+    FT_Done_FreeType(ft);
+}
+
 void Fonts::loadFont(GLWidget& widget, const std::string &font, unsigned int size) {
     QFile file(font.c_str());
 
@@ -30,9 +34,6 @@ void Fonts::loadFont(GLWidget& widget, const std::string &font, unsigned int siz
 
     FT_Set_Pixel_Sizes(face, 0, size);
 
-    widget.makeCurrent();
-    widget.glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction to avoid segfaults
-
     // read first 128 characters, then load them into QOpenGLTextures.
     for (unsigned char c = 0; c < 128; ++c) {
         if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
@@ -40,11 +41,17 @@ void Fonts::loadFont(GLWidget& widget, const std::string &font, unsigned int siz
             continue;
         }
 
+        widget.makeCurrent(); // Ensure we have GL context before calling OpenGL functions
+        widget.glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction to avoid segfaults
         auto* texture = new QOpenGLTexture(QOpenGLTexture::Target2D);
+        texture->setFormat(QOpenGLTexture::R8_UNorm);
+        texture->setSize((int) face->glyph->bitmap.width, (int) face->glyph->bitmap.rows);
+        texture->allocateStorage();
         texture->setData(QOpenGLTexture::Red, QOpenGLTexture::UInt8, face->glyph->bitmap.buffer);
-        texture->setMinificationFilter(QOpenGLTexture::Nearest);
-        texture->setMagnificationFilter(QOpenGLTexture::Nearest);
+        texture->setMinificationFilter(QOpenGLTexture::Linear);
+        texture->setMagnificationFilter(QOpenGLTexture::Linear);
         texture->setWrapMode(QOpenGLTexture::ClampToEdge);
+        // widget.doneCurrent();
 
         Character character = {
                 texture,
@@ -58,5 +65,4 @@ void Fonts::loadFont(GLWidget& widget, const std::string &font, unsigned int siz
     }
 
     FT_Done_Face(face);
-    widget.doneCurrent();
 }

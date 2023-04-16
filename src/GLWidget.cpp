@@ -4,8 +4,8 @@
 #include <QMouseEvent>
 #include <iostream>
 
-#include "entities/ImageEntity.h"
-#include "entities/Derek.h"
+#include "commands/entities/ImageEntity.h"
+#include "commands/entities/Derek.h"
 
 std::function<void(QMatrix4x4& matrix, GLWidget& widget)> GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget) {
     // do nothing
@@ -39,14 +39,15 @@ void GLWidget::initializeGL()
 
     initializeOpenGLFunctions();
 
+    qDebug() << "GL Version" << (const char*) glGetString(GL_VERSION);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    addEntity(new Derek());
-    addEntity(new ImageEntity(":/textures/side1.png"));
-    addEntity(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0));
+    addCommand(new Derek());
+    addCommand(new ImageEntity(":/textures/side1.png"));
+    addCommand(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0));
 }
 
 void GLWidget::paintGL()
@@ -54,7 +55,7 @@ void GLWidget::paintGL()
     glClearColor(clearColor.redF(), clearColor.greenF(), clearColor.blueF(), clearColor.alphaF());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (auto& [_, zEntities] : entities) {
+    for (auto& [_, zEntities] : commands) {
         for (auto iter = zEntities.begin(); iter != zEntities.end(); /* no increment*/) {
             (*iter)->draw(*this);
 
@@ -92,9 +93,9 @@ void GLWidget::keyReleaseEvent(QKeyEvent *event) {
     pressedKeys.erase(event->key());
 }
 
-void GLWidget::addEntity(Entity *entity) {
+void GLWidget::addCommand(Command* entity) {
     entity->init(*this);
-    entities[entity->getZ()].push_back(entity);
+    commands[entity->getPriority()].push_back(entity);
 }
 
 bool GLWidget::isKeyPressed(int key) const {

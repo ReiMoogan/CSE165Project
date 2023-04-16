@@ -7,11 +7,11 @@
 #include <set>
 #include <chrono>
 
-#include "entities/Entity.h"
+#include "commands/Command.h"
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 QT_FORWARD_DECLARE_CLASS(QOpenGLTexture)
-QT_FORWARD_DECLARE_CLASS(Entity)
+QT_FORWARD_DECLARE_CLASS(Command)
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -23,7 +23,7 @@ public:
     [[nodiscard]] QSize minimumSizeHint() const override;
     [[nodiscard]] QSize sizeHint() const override;
     void setClearColor(const QColor &color);
-    void addEntity(Entity* entity);
+    void addCommand(Command *entity);
     [[nodiscard]] bool isKeyPressed(int key) const;
     [[nodiscard]] float getFps() const;
 
@@ -41,7 +41,7 @@ protected:
 
 private:
     QColor clearColor = Qt::black;
-    std::map<float, std::vector<Entity*>> entities; // ordered by z
+    std::map<float, std::vector<Command*>> commands; // ordered by z
     std::set<int> pressedKeys;
     int frames = 0;
     float fps = 0;

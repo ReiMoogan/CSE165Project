@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-if(NOT ENV{USERNAME})
+if(NOT DEFINED ENV{USERNAME})
     set(ENV{USERNAME} $ENV{USER})
 endif()
 
@@ -39,17 +39,12 @@ find_package(Qt6 COMPONENTS
         Multimedia
         REQUIRED)
 
-set(HEADERS include/Window.h include/GLWidget.h include/entities/Entity.h include/entities/Derek.h include/entities/ImageEntity.h include/Fonts.h)
-set(SOURCES src/main.cpp src/Window.cpp src/GLWidget.cpp src/entities/Derek.cpp src/entities/ImageEntity.cpp src/Fonts.cpp)
+set(HEADERS include/Window.h include/GLWidget.h include/commands/Command.h include/commands/entities/Entity.h include/commands/entities/Derek.h include/commands/entities/ImageEntity.h include/Fonts.h include/commands/entities/TextEntity.h)
+set(SOURCES src/main.cpp src/Window.cpp src/GLWidget.cpp src/commands/entities/Derek.cpp src/commands/entities/ImageEntity.cpp src/Fonts.cpp src/commands/entities/TextEntity.cpp)
 qt6_add_resources(SOURCES assets/resources.qrc)
 add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})
 # idk what this is here for
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include/)
-
-#if ($ENV{USERNAME} STREQUAL "willi")
-#    target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ../freetype-bin/include)
-#    target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ../freetype-bin/rdll/win64/freetype.lib)
-#endif()
 
 # Set Qt features here
 target_link_libraries(${CMAKE_PROJECT_NAME}

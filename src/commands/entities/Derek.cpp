@@ -1,5 +1,7 @@
 #include <QFile>
-#include "entities/Derek.h"
+#include <QMatrix4x4>
+#include "commands/entities/Derek.h"
+#include "Fonts.h"
 
 Derek::Derek() : ImageEntity(":/textures/derp_standing.png") {
 
@@ -8,6 +10,7 @@ Derek::Derek() : ImageEntity(":/textures/derp_standing.png") {
 void Derek::init(GLWidget &widget) {
     ImageEntity::init(widget);
     setScale(0.3, 0.3);
+    Fonts::getInstance().loadFont(widget, ":/fonts/Inconsolata.ttf", 48);
 }
 
 void Derek::draw(GLWidget &widget) {
