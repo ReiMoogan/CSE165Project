@@ -11,31 +11,19 @@ void Derek::init(GLWidget &widget) {
 }
 
 void Derek::draw(GLWidget &widget) {
-    if (widget.isKeyPressed(Qt::Key_W))
-        y -= 10;
-    if (widget.isKeyPressed(Qt::Key_S))
-        y += 10;
+    if (widget.isKeyPressed(Qt::Key_W)) {
+        y -= 10*sin(zRot*M_PI/180 + M_PI/2);
+        x -= 10*cos(zRot*M_PI/180 + M_PI/2);
+    }
+    if (widget.isKeyPressed(Qt::Key_S)) {
+        y -= -10*sin(zRot*M_PI/180 + M_PI/2);
+        x -= -10*cos(zRot*M_PI/180 + M_PI/2);
+    }
     if (widget.isKeyPressed(Qt::Key_A))
-        x -= 10;
+        zRot -= 5;
     if (widget.isKeyPressed(Qt::Key_D))
-        x += 10;
-    if (widget.isKeyPressed(Qt::Key_Q))
-        zRot -= 10;
-    if (widget.isKeyPressed(Qt::Key_E))
-        zRot += 10;
-    if (widget.isKeyPressed(Qt::Key_Z))
-        yRot -= 2;
-    if (widget.isKeyPressed(Qt::Key_C))
-        yRot += 2;
-    if (widget.isKeyPressed(Qt::Key_Equal)) { // + key
-        xScale += 0.01;
-        yScale += 0.01;
-    }
-    if (widget.isKeyPressed(Qt::Key_Minus)) {
-        xScale -= 0.01;
-        yScale -= 0.01;
-    }
-
+        zRot += 5;
+    
     GLWidget::perspective = [this](QMatrix4x4& matrix, GLWidget& widget) {
         matrix.translate((float) widget.width() / 2.0f - x, (float) widget.height() / 2.0f - y, 0);
     };
