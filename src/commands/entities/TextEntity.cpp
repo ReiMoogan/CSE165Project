@@ -61,6 +61,8 @@ void TextEntity::init(GLWidget &widget) {
     vbo->allocate(sizeof(float) * 6 * 4);
 }
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NullDereference"
 void TextEntity::draw(GLWidget &widget) {
     QMatrix4x4 m;
 
@@ -115,6 +117,7 @@ void TextEntity::draw(GLWidget &widget) {
         tempX += (float) (glyph.advance >> 6) * xScale;
     }
 }
+#pragma clang diagnostic pop
 
 bool TextEntity::isFinished(GLWidget &widget) {
     return false;
