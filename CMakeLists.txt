@@ -36,15 +36,16 @@ find_package(Qt6 COMPONENTS
         OpenGL
         OpenGLWidgets
         Widgets
-        Multimedia
         REQUIRED)
+find_package(Freetype REQUIRED)
 
 set(HEADERS include/Window.h include/GLWidget.h include/entities/Entity.h include/entities/Derek.h include/entities/ImageEntity.h include/Fonts.h)
 set(SOURCES src/main.cpp src/Window.cpp src/GLWidget.cpp src/entities/Derek.cpp src/entities/ImageEntity.cpp src/Fonts.cpp)
 qt6_add_resources(SOURCES assets/resources.qrc)
 add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})
 # idk what this is here for
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include/)
+target_link_libraries(${CMAKE_PROJECT_NAME} ${FREETYPE_LIBRARIES})
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include/ ${FREETYPE_INCLUDE_DIRS})
 
 #if ($ENV{USERNAME} STREQUAL "willi")
 #    target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ../freetype-bin/include)
@@ -58,7 +59,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         Qt::OpenGL
         Qt::OpenGLWidgets
         Qt::Widgets
-        Qt::Multimedia
         ${FREETYPE_LIBRARY}
         )
 
@@ -84,7 +84,7 @@ if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
     endif ()
     # Set Qt features here
-    foreach (QT_LIB Core Gui OpenGL OpenGLWidgets Widgets Multimedia)
+    foreach (QT_LIB Core Gui OpenGL OpenGLWidgets Widgets)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy
                 "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
