@@ -58,7 +58,7 @@ void Fonts::loadFont(GLWidget& widget, const std::string &font, unsigned int siz
                 // praying that these values don't go over 0x7FFFFF
                 QSize((int) face->glyph->bitmap.width, (int) face->glyph->bitmap.rows),
                 QSize((int) face->glyph->bitmap_left, (int) face->glyph->bitmap_top),
-                (unsigned int) face->glyph->advance.x
+                face->glyph->advance.x
         };
 
         characters[font][size][c] = character;

@@ -91,7 +91,7 @@ void TextEntity::draw(GLWidget &widget) {
         auto glyph = Fonts::getInstance().characters[font][size][*c];
 
         float xpos = tempX + (float) glyph.bearing.width() * xScale;
-        float ypos = (float) (glyph.size.height() - glyph.bearing.height()) * yScale;
+        float ypos = - (float) (glyph.size.height() - glyph.bearing.height()) * yScale;
 
         float w = (float) glyph.size.width() * xScale;
         float h = (float) glyph.size.height() * yScale;

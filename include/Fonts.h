@@ -15,7 +15,7 @@ struct Character {
     QOpenGLTexture* texture;
     QSize size; // Size of glyph
     QSize bearing; // Offset from baseline to left/top of glyph
-    unsigned int advance; // Horizontal offset to advance to next glyph
+    long advance; // Horizontal offset to advance to next glyph
 };
 
 class Fonts {
