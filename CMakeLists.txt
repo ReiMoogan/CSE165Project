@@ -19,6 +19,7 @@ if ($ENV{USERNAME} STREQUAL "willi")
     find_package (Qt6 PATHS "C:\\Qt\\6.5.0\\msvc2019_64" NO_DEFAULT_PATH)
     set(FREETYPE_LIBRARY "C:/Users/willi/Documents/Programming Projects/freetype-bin/rdll/win64/freetype.lib")
     include_directories("../freetype-bin/include")
+    set(CMAKE_DISABLE_FIND_PACKAGE_Freetype ON)
 endif()
 
 # My MacOS Install
@@ -27,6 +28,7 @@ if ($ENV{USERNAME} STREQUAL "doggysazhi")
     find_package (Qt6 PATHS "/Users/doggysazhi/Qt/6.5.0/macos" NO_DEFAULT_PATH)
     set(FREETYPE_LIBRARY "/opt/homebrew/Cellar/freetype/2.13.0_1/lib/libfreetype.dylib")
     include_directories("/opt/homebrew/Cellar/freetype/2.13.0_1/include/freetype2")
+    set(CMAKE_DISABLE_FIND_PACKAGE_Freetype ON)
 endif()
 
 # Defaulted
@@ -36,8 +38,9 @@ find_package(Qt6 COMPONENTS
         OpenGL
         OpenGLWidgets
         Widgets
+        Multimedia
         REQUIRED)
-find_package(Freetype REQUIRED)
+find_package(Freetype) # unfortunately i can't make it required since my windows build of freetype doesn't have cmake files
 
 set(HEADERS include/Window.h include/GLWidget.h include/commands/Command.h include/commands/entities/Entity.h include/commands/entities/Derek.h include/commands/entities/ImageEntity.h include/Fonts.h include/commands/entities/TextEntity.h)
 set(SOURCES src/main.cpp src/Window.cpp src/GLWidget.cpp src/commands/entities/Derek.cpp src/commands/entities/ImageEntity.cpp src/Fonts.cpp src/commands/entities/TextEntity.cpp)
@@ -54,6 +57,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         Qt::OpenGL
         Qt::OpenGLWidgets
         Qt::Widgets
+        Qt::Multimedia
         ${FREETYPE_LIBRARY}
         )
 
@@ -79,7 +83,7 @@ if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
     endif ()
     # Set Qt features here
-    foreach (QT_LIB Core Gui OpenGL OpenGLWidgets Widgets)
+    foreach (QT_LIB Core Gui OpenGL OpenGLWidgets Widgets Multimedia)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy
                 "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
