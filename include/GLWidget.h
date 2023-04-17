@@ -29,6 +29,7 @@ public:
 
     static std::function<void(QMatrix4x4& matrix, GLWidget& widget)> perspective;
     friend class ImageEntity; // Allow us to call GL functions outside
+    friend class TextEntity;
     friend class Fonts;
 
 protected:

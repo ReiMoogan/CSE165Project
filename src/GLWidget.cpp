@@ -6,6 +6,7 @@
 
 #include "commands/entities/ImageEntity.h"
 #include "commands/entities/Derek.h"
+#include "commands/entities/TextEntity.h"
 
 std::function<void(QMatrix4x4& matrix, GLWidget& widget)> GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget) {
     // do nothing
@@ -48,6 +49,7 @@ void GLWidget::initializeGL()
     addCommand(new Derek());
     addCommand(new ImageEntity(":/textures/side1.png"));
     addCommand(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0));
+    addCommand(new TextEntity(":/fonts/Inconsolata.ttf", "mukyu~", 48, 50, 50, 0));
 }
 
 void GLWidget::paintGL()

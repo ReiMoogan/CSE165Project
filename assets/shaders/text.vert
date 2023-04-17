@@ -1,6 +1,6 @@
 #version 330 core
 
-attribute highp vec4 vertex; // <x, y> position, <s, t> texture coordinate
+in vec4 vertex; // <x, y> position, <s, t> texture coordinate
 out vec2 texc;
 uniform mediump mat4 matrix;
 
