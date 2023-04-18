@@ -3,6 +3,8 @@
     <!-- Textures -->
     <file>textures/side1.png</file>
     <file>textures/derp_standing.png</file>
+    <file>textures/map1.png</file>
+    <file>textures/map1.bmp</file>
     <!-- Shaders -->
     <file>shaders/image.vert</file>
     <file>shaders/image.frag</file>
