@@ -8,10 +8,12 @@
 #include <chrono>
 
 #include "commands/Command.h"
+#include "commands/entities/Entity.h"
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 QT_FORWARD_DECLARE_CLASS(QOpenGLTexture)
 QT_FORWARD_DECLARE_CLASS(Command)
+QT_FORWARD_DECLARE_CLASS(Entity)
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -26,8 +28,10 @@ public:
     void addCommand(Command *entity);
     [[nodiscard]] bool isKeyPressed(int key) const;
     [[nodiscard]] float getFps() const;
+    [[nodiscard]] float getTimeDelta() const;
 
-    static std::function<void(QMatrix4x4& matrix, GLWidget& widget)> perspective;
+    static std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> perspective;
+    static std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> postPerspective;
     friend class ImageEntity; // Allow us to call GL functions outside
     friend class TextEntity;
     friend class Fonts;
@@ -45,7 +49,10 @@ private:
     std::map<float, std::vector<Command*>> commands; // ordered by z
     std::set<int> pressedKeys;
     int frames = 0;
+    float fpsTime = 0;
     float fps = 0;
+
+    float timeDelta;
     std::chrono::time_point<std::chrono::steady_clock> lastFrameTime;
 };
 

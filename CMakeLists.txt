@@ -42,8 +42,8 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 find_package(Freetype) # unfortunately i can't make it required since my windows build of freetype doesn't have cmake files
 
-set(HEADERS include/Window.h include/GLWidget.h include/commands/Command.h include/commands/entities/Entity.h include/commands/entities/Derek.h include/commands/entities/ImageEntity.h include/Fonts.h include/commands/entities/TextEntity.h)
-set(SOURCES src/main.cpp src/Window.cpp src/GLWidget.cpp src/commands/entities/Derek.cpp src/commands/entities/ImageEntity.cpp src/Fonts.cpp src/commands/entities/TextEntity.cpp)
+file(GLOB_RECURSE HEADERS include/*.h)
+file(GLOB_RECURSE SOURCES src/*.cpp)
 qt6_add_resources(SOURCES assets/resources.qrc)
 add_executable(${CMAKE_PROJECT_NAME} ${HEADERS} ${SOURCES})
 # idk what this is here for

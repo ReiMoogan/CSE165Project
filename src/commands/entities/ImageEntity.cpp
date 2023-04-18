@@ -11,10 +11,11 @@ ImageEntity::ImageEntity(const QString &imagePath) {
     vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
 }
 
-ImageEntity::ImageEntity(const QString &imagePath, float x, float y, float z) : ImageEntity(imagePath) {
+ImageEntity::ImageEntity(const QString &imagePath, float x, float y, float z, bool followPerspective) : ImageEntity(imagePath) {
     this->x = x;
     this->y = y;
     this->z = z;
+    this->followPerspective = followPerspective;
 }
 
 ImageEntity::~ImageEntity() {
@@ -81,8 +82,8 @@ void ImageEntity::draw(GLWidget &widget) {
     QMatrix4x4 m;
 
     m.ortho(0, (float) widget.width(), (float) widget.height(), 0, -1000.0f, 1000.0f);
-    if (GLWidget::perspective)
-        GLWidget::perspective(m, widget);
+    if (followPerspective && GLWidget::perspective)
+        GLWidget::perspective(m, widget, *this);
     if (mode == CORNER) {
         m.translate(x, y, z);
     } else { // CENTER
@@ -93,6 +94,8 @@ void ImageEntity::draw(GLWidget &widget) {
     m.rotate((float) xRot, 1.0f, 0.0f, 0.0f);
     m.rotate((float) yRot, 0.0f, 1.0f, 0.0f);
     m.rotate((float) zRot, 0.0f, 0.0f, 1.0f);
+    if (followPerspective && GLWidget::postPerspective)
+        GLWidget::postPerspective(m, widget, *this);
     if (mode == CENTER) { m.translate(-(float) texture->width() / 4.0f, -(float) texture->height() / 4.0f, 0); }
 
     program->bind();

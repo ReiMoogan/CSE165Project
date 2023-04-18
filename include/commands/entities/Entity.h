@@ -43,10 +43,25 @@ protected:
         // lol basically a setter method
         this->mode = mode;
     }
-#pragma clang diagnostic pop
-    float getPriority() override {
+
+public:
+    [[nodiscard]] float getX() const {
+        return x;
+    }
+
+    [[nodiscard]] float getY() const {
+        return y;
+    }
+
+    [[nodiscard]] float getZ() const {
         return z;
     }
+
+    [[nodiscard]] float getPriority() override {
+        return z;
+    }
+#pragma clang diagnostic pop
+
 };
 
 #endif //CSE165PROJECT_ENTITY_H

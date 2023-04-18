@@ -5,10 +5,14 @@
 #include <iostream>
 
 #include "commands/entities/ImageEntity.h"
-#include "commands/entities/Derek.h"
+#include "commands/entities/UserVehicle.h"
 #include "commands/entities/TextEntity.h"
 
-std::function<void(QMatrix4x4& matrix, GLWidget& widget)> GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget) {
+std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
+    // do nothing
+};
+
+std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
     // do nothing
 };
 
@@ -46,9 +50,9 @@ void GLWidget::initializeGL()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    addCommand(new Derek());
-    addCommand(new ImageEntity(":/textures/side1.png"));
-    addCommand(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0));
+    addCommand(new UserVehicle());
+    addCommand(new ImageEntity(":/textures/side1.png", 0, 0, 0, true));
+    addCommand(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0, true));
     addCommand(new TextEntity(":/fonts/Inconsolata.ttf", "mukyu~", 48, 50, 50, 0));
 }
 
@@ -57,7 +61,9 @@ void GLWidget::paintGL()
     glClearColor(clearColor.redF(), clearColor.greenF(), clearColor.blueF(), clearColor.alphaF());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (auto& [_, zEntities] : commands) {
+    // draw from back to front
+    for (auto mukyu = commands.rbegin(); mukyu != commands.rend(); ++mukyu) {
+        auto& zEntities = mukyu->second;
         for (auto iter = zEntities.begin(); iter != zEntities.end(); /* no increment*/) {
             (*iter)->draw(*this);
 
@@ -72,11 +78,14 @@ void GLWidget::paintGL()
 
     ++frames;
     auto now = std::chrono::steady_clock::now();
-    std::chrono::duration<float> diff = std::chrono::duration_cast<std::chrono::seconds>(now - lastFrameTime);
-    auto timeDiff = diff.count();
-    if (timeDiff >= 1) {
-        fps = (float) frames / timeDiff;
-        lastFrameTime = now;
+    std::chrono::duration<float> diff = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastFrameTime);
+    timeDelta = diff.count(); // compute time diff between frames in seconds
+    lastFrameTime = now;
+    fpsTime += timeDelta; // fps timer only resets every second
+
+    if (fpsTime >= 1) {
+        fps = (float) frames / fpsTime;
+        fpsTime = 0;
         frames = 0;
     }
 }
@@ -110,4 +119,8 @@ void GLWidget::focusOutEvent(QFocusEvent *event) {
 
 float GLWidget::getFps() const {
     return fps;
+}
+
+float GLWidget::getTimeDelta() const {
+    return timeDelta;
 }

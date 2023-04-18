@@ -67,8 +67,7 @@ void TextEntity::draw(GLWidget &widget) {
     QMatrix4x4 m;
 
     m.ortho(0, (float) widget.width(), 0, (float) widget.height(), -1000.0f, 1000.0f);
-//    if (GLWidget::perspective)
-//        GLWidget::perspective(m, widget);
+
     // TODO figure out center mode
     m.translate(x, y, z);
 //    if (mode == CORNER) {
@@ -77,10 +76,10 @@ void TextEntity::draw(GLWidget &widget) {
 //        m.translate(x - (float) texture->width() / 4.0f, y - (float) texture->height() / 4.0f, z);
 //    }
 //    if (mode == CENTER) { m.translate((float) texture->width() / 4.0f, (float) texture->height() / 4.0f, 0); }
-//    m.scale(xScale, yScale, 1.0f);
-//    m.rotate((float) xRot, 1.0f, 0.0f, 0.0f);
-//    m.rotate((float) yRot, 0.0f, 1.0f, 0.0f);
-//    m.rotate((float) zRot, 0.0f, 0.0f, 1.0f);
+    m.scale(xScale, yScale, 1.0f);
+    m.rotate((float) xRot, 1.0f, 0.0f, 0.0f);
+    m.rotate((float) yRot, 0.0f, 1.0f, 0.0f);
+    m.rotate((float) zRot, 0.0f, 0.0f, 1.0f);
 //    if (mode == CENTER) { m.translate(-(float) texture->width() / 4.0f, -(float) texture->height() / 4.0f, 0); }
 
     program->bind();
