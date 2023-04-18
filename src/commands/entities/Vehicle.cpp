@@ -7,6 +7,11 @@ Vehicle::Vehicle() : ImageEntity(":/textures/derp_standing.png") {
 void Vehicle::init(GLWidget &widget) {
     setScale(0.1, 0.1);
     ImageEntity::init(widget);
+
+    effect.setSource(QUrl("qrc:/sfx/engine.wav"));
+    effect.setLoopCount(QSoundEffect::Infinite);
+    effect.setVolume(0.1f);
+    effect.play();
 }
 
 void Vehicle::draw(GLWidget &widget) {
@@ -32,6 +37,9 @@ void Vehicle::draw(GLWidget &widget) {
         case STRAIGHT:
             break;
     }
+
+    float speed = std::abs(velocity);
+    effect.setVolume(std::max(0.1f, std::min(0.9f, speed / 300.0f)));
 
     velocity = std::min(std::max(velocity, maxVelocity[0]), maxVelocity[1]);
     float angle = zRot - 90; // image is upright, so subtract 90 degrees (since system origin is top left)

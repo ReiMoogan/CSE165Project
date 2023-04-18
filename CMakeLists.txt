@@ -39,6 +39,7 @@ find_package(Qt6 COMPONENTS
         OpenGLWidgets
         Widgets
         Multimedia
+        Network # required for QSoundEffect???
         REQUIRED)
 find_package(Freetype) # unfortunately i can't make it required since my windows build of freetype doesn't have cmake files
 
@@ -58,6 +59,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         Qt::OpenGLWidgets
         Qt::Widgets
         Qt::Multimedia
+        Qt::Network
         ${FREETYPE_LIBRARY}
         )
 
@@ -83,7 +85,7 @@ if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
     endif ()
     # Set Qt features here
-    foreach (QT_LIB Core Gui OpenGL OpenGLWidgets Widgets Multimedia)
+    foreach (QT_LIB Core Gui OpenGL OpenGLWidgets Widgets Multimedia Network)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy
                 "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"

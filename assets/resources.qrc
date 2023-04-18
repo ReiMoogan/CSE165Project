@@ -10,5 +10,7 @@
     <file>shaders/text.frag</file>
     <!-- Fonts -->
     <file>fonts/Inconsolata.ttf</file>
+    <!-- Sounds -->
+    <file>sfx/engine.wav</file>
 </qresource>
 </RCC>

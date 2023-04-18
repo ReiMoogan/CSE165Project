@@ -1,6 +1,7 @@
 #ifndef CSE165PROJECT_VEHICLE_H
 #define CSE165PROJECT_VEHICLE_H
 
+#include <QSoundEffect>
 #include "ImageEntity.h"
 
 enum Acceleration {
@@ -25,7 +26,7 @@ protected:
     // "tuples" of min and max values for velocity and acceleration
     float maxVelocity[2] = { -100, 500 };
     // set acceleration directly (assignment), velocity computed wrt timeDelta
-    float maxAcceleration[2] = { -50, 250 };
+    float maxAcceleration[2] = { -250, 250 };
     // turn speed left and right
     float turnSpeed = 100;
 
@@ -37,6 +38,10 @@ protected:
     Turn turn = STRAIGHT;
     void setAccelerator(Acceleration mode);
     void setTurn(Turn turn);
+
+    // sfx
+private:
+    QSoundEffect effect;
 };
 
 
