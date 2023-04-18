@@ -2,11 +2,11 @@
 #include "commands/entities/UserVehicle.h"
 
 void UserVehicle::init(GLWidget &widget) {
-    GLWidget::perspective = [this](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
+    GLWidget::postPerspective = [this](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
         matrix.translate((float) widget.width() / 2.0f - this->x, (float) widget.height() / 2.0f - this->y, 0);
     };
 
-    GLWidget::postPerspective = [this](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
+    GLWidget::perspective = [this](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
         matrix.translate(-(other.getX() - this->x), -(other.getY() - this->y), 0);
         matrix.rotate(-this->zRot, 0, 0, 1);
         matrix.translate((other.getX() - this->x), (other.getY() - this->y), 0);

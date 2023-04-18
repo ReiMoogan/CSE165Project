@@ -8,11 +8,11 @@
 #include "commands/entities/UserVehicle.h"
 #include "commands/entities/TextEntity.h"
 
-std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
+std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
     // do nothing
 };
 
-std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
+std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
     // do nothing
 };
 

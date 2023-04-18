@@ -30,8 +30,8 @@ public:
     [[nodiscard]] float getFps() const;
     [[nodiscard]] float getTimeDelta() const;
 
-    static std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> perspective;
     static std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> postPerspective;
+    static std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> perspective;
     friend class ImageEntity; // Allow us to call GL functions outside
     friend class TextEntity;
     friend class Fonts;

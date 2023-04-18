@@ -12,7 +12,7 @@ void Vehicle::init(GLWidget &widget) {
 void Vehicle::draw(GLWidget &widget) {
     switch (mode) {
         case DECELERATE:
-            velocity -= maxAcceleration[0] * widget.getTimeDelta();
+            velocity += maxAcceleration[0] * widget.getTimeDelta();
             break;
         case ACCELERATE:
             velocity += maxAcceleration[1] * widget.getTimeDelta();
@@ -22,8 +22,20 @@ void Vehicle::draw(GLWidget &widget) {
             break;
     }
 
+    switch (turn) {
+        case LEFT:
+            zRot -= turnSpeed * widget.getTimeDelta();
+            break;
+        case RIGHT:
+            zRot += turnSpeed * widget.getTimeDelta();
+            break;
+        case STRAIGHT:
+            break;
+    }
+
     velocity = std::min(std::max(velocity, maxVelocity[0]), maxVelocity[1]);
-    float angle = zRot + 90; // image is upright, so add 90 degrees
+    float angle = zRot - 90; // image is upright, so subtract 90 degrees (since system origin is top left)
+    // oh yeah did you know QMatrix4x4 USES DEGREES INSTEAD OF RADIANS AHHHHHHHHHHHHHHHHHHHHHHHHH
     x += velocity * cos(angle * (float) M_PI / 180.0f) * widget.getTimeDelta();
     y += velocity * sin(angle * (float) M_PI / 180.0f) * widget.getTimeDelta();
 

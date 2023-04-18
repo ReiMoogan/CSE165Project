@@ -81,9 +81,15 @@ void ImageEntity::init(GLWidget &widget) {
 void ImageEntity::draw(GLWidget &widget) {
     QMatrix4x4 m;
 
+    // I am so sorry if you're reading this but
+    // - this transformation matrix goes from right to left (i.e., extra operations are implied to be RHS)
+    // - we do rotations first (since those need to be at the origin)
+    // - then we do the fancy translations
+    // extra stuff if we decide to set origin wrt center, versus top left corner
+
     m.ortho(0, (float) widget.width(), (float) widget.height(), 0, -1000.0f, 1000.0f);
-    if (followPerspective && GLWidget::perspective)
-        GLWidget::perspective(m, widget, *this);
+    if (followPerspective && GLWidget::postPerspective)
+        GLWidget::postPerspective(m, widget, *this);
     if (mode == CORNER) {
         m.translate(x, y, z);
     } else { // CENTER
@@ -94,8 +100,8 @@ void ImageEntity::draw(GLWidget &widget) {
     m.rotate((float) xRot, 1.0f, 0.0f, 0.0f);
     m.rotate((float) yRot, 0.0f, 1.0f, 0.0f);
     m.rotate((float) zRot, 0.0f, 0.0f, 1.0f);
-    if (followPerspective && GLWidget::postPerspective)
-        GLWidget::postPerspective(m, widget, *this);
+    if (followPerspective && GLWidget::perspective)
+        GLWidget::perspective(m, widget, *this);
     if (mode == CENTER) { m.translate(-(float) texture->width() / 4.0f, -(float) texture->height() / 4.0f, 0); }
 
     program->bind();
