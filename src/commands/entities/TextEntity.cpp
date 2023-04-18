@@ -8,6 +8,7 @@ bool TextEntity::programInitialized = false;
 QOpenGLShaderProgram* TextEntity::program = nullptr;
 
 TextEntity::TextEntity(const std::string& font, const std::string& text, int size) {
+    vao = new QOpenGLVertexArrayObject();
     vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     this->font = font;
     this->text = text;
@@ -24,6 +25,8 @@ TextEntity::TextEntity(const std::string& font, const std::string &text, int siz
 TextEntity::~TextEntity() {
     vbo->destroy();
     delete vbo;
+    vao->destroy();
+    delete vao;
 }
 
 #pragma clang diagnostic push
@@ -55,6 +58,9 @@ void TextEntity::init(GLWidget &widget) {
     }
 
     Fonts::getInstance().loadFont(widget, font, size);
+    vao->create();
+    vao->bind();
+
     vbo->create();
     vbo->bind();
     vbo->setUsagePattern(QOpenGLBuffer::DynamicDraw);
@@ -108,6 +114,7 @@ void TextEntity::draw(GLWidget &widget) {
         };
 
         glyph.texture->bind();
+        vao->bind();
         vbo->bind();
         vbo->write(0, vertices, sizeof(vertices));
         program->enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);

@@ -1,6 +1,7 @@
 #ifndef CSE165PROJECT_TEXTENTITY_H
 #define CSE165PROJECT_TEXTENTITY_H
 
+#include <QOpenGLVertexArrayObject>
 #include <QColor>
 #include "Entity.h"
 
@@ -9,6 +10,7 @@ private:
     static bool programInitialized;
     static QOpenGLShaderProgram *program;
     QOpenGLBuffer* vbo;
+    QOpenGLVertexArrayObject* vao;
     std::string font;
     std::string text;
     int size;

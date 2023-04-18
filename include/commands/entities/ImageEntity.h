@@ -1,6 +1,7 @@
 #ifndef CSE165PROJECT_IMAGEENTITY_H
 #define CSE165PROJECT_IMAGEENTITY_H
 
+#include <QOpenGLVertexArrayObject>
 #include "Entity.h"
 
 class ImageEntity : public Entity {
@@ -9,6 +10,7 @@ private:
     static QOpenGLShaderProgram *program;
     QOpenGLTexture* texture;
     QOpenGLBuffer* vbo;
+    QOpenGLVertexArrayObject* vao;
 
 protected:
     bool followPerspective = false;

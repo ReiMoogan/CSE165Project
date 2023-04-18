@@ -3,6 +3,7 @@
 #include <QOpenGLTexture>
 #include <QMouseEvent>
 #include <iostream>
+#include <QOpenGLDebugLogger>
 
 #include "commands/entities/ImageEntity.h"
 #include "commands/entities/UserVehicle.h"
@@ -45,6 +46,14 @@ void GLWidget::initializeGL()
     initializeOpenGLFunctions();
 
     qDebug() << "GL Version" << (const char*) glGetString(GL_VERSION);
+    auto *logger = new QOpenGLDebugLogger(this);
+    logger->initialize();
+    connect(logger, &QOpenGLDebugLogger::messageLogged, this, [](const QOpenGLDebugMessage &msg) {
+        qDebug() << msg;
+    });
+    logger->startLogging();
+    qDebug() << "Logging enabled:" << context()->hasExtension(QByteArrayLiteral("GL_KHR_debug"));
+
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);

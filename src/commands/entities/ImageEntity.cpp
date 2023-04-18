@@ -8,6 +8,7 @@ QOpenGLShaderProgram* ImageEntity::program = nullptr;
 
 ImageEntity::ImageEntity(const QString &imagePath) {
     texture = new QOpenGLTexture(QImage(QString(imagePath)).mirrored());
+    vao = new QOpenGLVertexArrayObject();
     vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
 }
 
@@ -21,6 +22,8 @@ ImageEntity::ImageEntity(const QString &imagePath, float x, float y, float z, bo
 ImageEntity::~ImageEntity() {
     vbo->destroy();
     delete vbo;
+    vao->destroy();
+    delete vao;
     delete texture;
 }
 
@@ -71,6 +74,9 @@ void ImageEntity::init(GLWidget &widget) {
         vertData.append(j == 0 || j == 1);
     }
 
+    vao->create();
+    vao->bind();
+
     vbo->create();
     vbo->bind();
     vbo->allocate(vertData.constData(), (int) (vertData.count() * sizeof(GLfloat)));
@@ -105,6 +111,7 @@ void ImageEntity::draw(GLWidget &widget) {
     if (mode == CENTER) { m.translate(-(float) texture->width() / 4.0f, -(float) texture->height() / 4.0f, 0); }
 
     program->bind();
+    vao->bind();
     vbo->bind();
     texture->bind();
 
