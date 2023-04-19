@@ -35,20 +35,33 @@ void Map::draw(GLWidget &widget) {
     for (int i = 0; i < vehicles.size(); ++i) {
         for (int j = i + 1; j < vehicles.size(); ++j) {
             if (vehiclesCollided(vehicles[i], vehicles[j])) {
-                // i guess we can do some partially elastic collision math but i'm lazy
-                qDebug("vehicles collided");
+                // mmmm physics (coefficient of restitution)
+                const float cr = 0.5;
+                float commonNumerator = vehicles[i]->mass * vehicles[i]->velocity + vehicles[j]->mass * vehicles[j]->velocity;
+                float commonDenominator = vehicles[i]->mass + vehicles[j]->mass;
+
+                // oops didn't account for direction buuut i'm lazy
+                // should be split for both x and y components but whatever
+                float va = (commonNumerator + vehicles[j]->mass * cr * (vehicles[j]->velocity - vehicles[i]->velocity)) / commonDenominator;
+                float vb = (commonNumerator + vehicles[i]->mass * cr * (vehicles[i]->velocity - vehicles[j]->velocity)) / commonDenominator;
+
+                vehicles[i]->velocity = va;
+                vehicles[j]->velocity = vb;
             }
         }
 
         // check if the vehicle is out of bounds
         float xScaled = vehicles[i]->getX() / scale;
         float yScaled = vehicles[i]->getY() / scale;
-        if (vehicles[i]->getX() < 0 || vehicles[i]->getY() < 0 || xScaled > (float) mapRoute.width() || yScaled > (float) mapRoute.height()) {
-            qDebug("vehicle out of bounds (like fr)");
-        } else if (mapRoute.pixelColor((int) xScaled, (int) yScaled) == Qt::white) {
-            qDebug("vehicle out of bounds");
+        if (!isDrivable(QPoint((int) xScaled, (int) yScaled))) {
+            tpToClosestDrivablePixel(i, xScaled, yScaled);
         }
     }
+}
+
+void Map::tpToClosestDrivablePixel(int i, float xScaled, float yScaled) {
+    auto point = getClosestDrivablePixel(QPoint((int) xScaled, (int) yScaled));
+    vehicles[i]->setTranslation((float) point.x() * scale, (float) point.y() * scale, 0);
 }
 
 bool Map::isFinished(GLWidget &widget) {
@@ -64,4 +77,30 @@ bool Map::vehiclesCollided(Vehicle* a, Vehicle* b) {
     if (a->getY() - a->getHeight() / 2 > b->getY() + b->getHeight() / 2) return false;
     
     return true;
+}
+
+QPoint Map::getClosestDrivablePixel(const QPoint& point) {
+    // taxicab distance lol
+    int distance = 0;
+    while (true) {
+        // top and bottom row
+        for (int x = point.x() - distance; x <= point.x() + distance; ++x) {
+            if (isDrivable(QPoint(x, point.y() - distance))) return {x, point.y() - distance};
+            if (isDrivable(QPoint(x, point.y() + distance))) return {x, point.y() + distance};
+        }
+        // left and right columns
+        for (int y = point.y() - distance; y <= point.y() + distance; ++y) {
+            if (isDrivable(QPoint(point.x() - distance, y))) return {point.x() - distance, y};
+            if (isDrivable(QPoint(point.x() + distance, y))) return {point.x() + distance, y};
+        }
+
+        ++distance;
+    }
+}
+
+bool Map::isDrivable(const QPoint& point) {
+    return
+        point.x() >= 0 && point.y() >= 0 &&
+        point.x() < mapRoute.width() && point.y() < mapRoute.height() &&
+        mapRoute.pixelColor(point.x(), point.y()) == Qt::black;
 }

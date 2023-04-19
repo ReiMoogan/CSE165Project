@@ -30,7 +30,9 @@ protected:
     float maxAcceleration[2] = { -250, 250 };
     // turn speed left and right
     float turnSpeed = 200;
-
+    // mass (for collision calculations), remember to also change acceleration/velocity
+    // units? good question
+    float mass = 20;
     // computed in draw(), do not directly set (unless you know what you're doing)
     float velocity = 0;
 

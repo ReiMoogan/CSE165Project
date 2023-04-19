@@ -19,6 +19,10 @@ private:
     std::vector<Vehicle*> vehicles;
 
     static bool vehiclesCollided(Vehicle* a, Vehicle* b);
+    bool isDrivable(const QPoint& point);
+    QPoint getClosestDrivablePixel(const QPoint& point);
+
+    void tpToClosestDrivablePixel(int i, float xScaled, float yScaled);
 };
 
 #endif //CSE165PROJECT_MAP_H
