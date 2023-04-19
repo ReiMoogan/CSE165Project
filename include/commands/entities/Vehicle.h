@@ -22,15 +22,16 @@ public:
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;
+    friend class Map;
 protected:
     // "tuples" of min and max values for velocity and acceleration
     float maxVelocity[2] = { -100, 500 };
     // set acceleration directly (assignment), velocity computed wrt timeDelta
     float maxAcceleration[2] = { -250, 250 };
     // turn speed left and right
-    float turnSpeed = 100;
+    float turnSpeed = 200;
 
-    // computed in draw(), do not directly set
+    // computed in draw(), do not directly set (unless you know what you're doing)
     float velocity = 0;
 
     // configurable acceleration and turn based on user input or AI

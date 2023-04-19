@@ -6,7 +6,7 @@
 #include <QOpenGLDebugLogger>
 
 #include "commands/entities/ImageEntity.h"
-#include "commands/entities/UserVehicle.h"
+#include "commands/entities/Map.h"
 #include "commands/entities/TextEntity.h"
 
 std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
@@ -52,17 +52,18 @@ void GLWidget::initializeGL()
         qDebug() << msg;
     });
     logger->startLogging();
-    qDebug() << "Logging enabled:" << context()->hasExtension(QByteArrayLiteral("GL_KHR_debug"));
+    qDebug() << "OpenGL Logging enabled:" << context()->hasExtension(QByteArrayLiteral("GL_KHR_debug"));
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glCullFace(GL_BACK);
 
-    addCommand(new UserVehicle());
+    addCommand(new Map("map1", 3.0f));
     addCommand(new ImageEntity(":/textures/side1.png", 0, 0, 0, true));
     addCommand(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0, true));
-    addCommand(new TextEntity(":/fonts/Inconsolata.ttf", "mukyu~", 48, 50, 50, 0));
+    addCommand(new TextEntity(":/fonts/Inconsolata.ttf", "mukyu~", 48, 50, 50, 422)); // render on top so blendw
 }
 
 void GLWidget::paintGL()

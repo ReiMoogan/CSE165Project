@@ -41,6 +41,10 @@ void Fonts::loadFont(GLWidget& widget, const std::string &font, unsigned int siz
             continue;
         }
 
+        if (face->glyph->bitmap.width == 0 || face->glyph->bitmap.rows == 0) {
+            continue;
+        }
+
         widget.makeCurrent(); // Ensure we have GL context before calling OpenGL functions
         widget.glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction to avoid segfaults
         auto* texture = new QOpenGLTexture(QOpenGLTexture::Target2D);
@@ -48,6 +52,7 @@ void Fonts::loadFont(GLWidget& widget, const std::string &font, unsigned int siz
         texture->setSize((int) face->glyph->bitmap.width, (int) face->glyph->bitmap.rows);
         texture->allocateStorage();
         texture->setData(QOpenGLTexture::Red, QOpenGLTexture::UInt8, face->glyph->bitmap.buffer);
+        texture->setWrapMode(QOpenGLTexture::ClampToEdge);
         texture->setMinificationFilter(QOpenGLTexture::Linear);
         texture->setMagnificationFilter(QOpenGLTexture::Linear);
         texture->setWrapMode(QOpenGLTexture::ClampToEdge);

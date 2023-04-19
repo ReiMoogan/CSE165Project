@@ -45,7 +45,7 @@ protected:
     void focusOutEvent(QFocusEvent *event) override;
 
 private:
-    QColor clearColor = Qt::black;
+    QColor clearColor = Qt::white;
     std::map<float, std::vector<Command*>> commands; // ordered by z
     std::set<int> pressedKeys;
     int frames = 0;

@@ -7,7 +7,9 @@ bool ImageEntity::programInitialized = false;
 QOpenGLShaderProgram* ImageEntity::program = nullptr;
 
 ImageEntity::ImageEntity(const QString &imagePath) {
-    texture = new QOpenGLTexture(QImage(QString(imagePath)).mirrored());
+    texture = new QOpenGLTexture(QOpenGLTexture::Target2D);
+    texture->setFormat(QOpenGLTexture::RGBA8_UNorm);
+    texture->setData(QImage(QString(imagePath)).mirrored());
     vao = new QOpenGLVertexArrayObject();
     vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
 }
