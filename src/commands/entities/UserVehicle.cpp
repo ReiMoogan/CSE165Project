@@ -7,9 +7,9 @@ void UserVehicle::init(GLWidget &widget) {
     };
 
     GLWidget::perspective = [this](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
-        //matrix.translate(-(other.getX() - this->x), -(other.getY() - this->y), 0);
+        matrix.translate(-(other.getX() - this->x), -(other.getY() - this->y), 0);
         matrix.rotate(-this->zRot, 0, 0, 1);
-        //matrix.translate((other.getX() - this->x), (other.getY() - this->y), 0);
+        matrix.translate((other.getX() - this->x), (other.getY() - this->y), 0);
     };
 
     this->followPerspective = true;

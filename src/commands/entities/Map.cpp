@@ -8,7 +8,7 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     z = -420; // Make sure the map is always behind the vehicles
     followPerspective = true;
 
-    for (int i = 0; i < 7; ++i) {
+    for (int i = 0; i < 1; ++i) {
         vehicles.push_back(new Vehicle());
     }
 
