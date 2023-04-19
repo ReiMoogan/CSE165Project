@@ -68,8 +68,8 @@ void ImageEntity::init(GLWidget &widget) {
     QList<GLfloat> vertData;
     for (int j = 0; j < 4; ++j) {
         // vertex position
-        vertData.append((float) texture->width() * coord[j][0] / 2.0f);
-        vertData.append((float) texture->height() * coord[j][1] / 2.0f);
+        vertData.append((float) texture->width() * coord[j][0]);
+        vertData.append((float) texture->height() * coord[j][1]);
         vertData.append(coord[j][2]);
         // texture coordinate
         vertData.append(j == 0 || j == 3);
@@ -101,16 +101,16 @@ void ImageEntity::draw(GLWidget &widget) {
     if (mode == CORNER) {
         m.translate(x, y, z);
     } else { // CENTER
-        m.translate(x - (float) texture->width() / 4.0f, y - (float) texture->height() / 4.0f, z);
+        m.translate(x - (float) texture->width() / 2.0f, y - (float) texture->height() / 2.0f, z);
     }
-    if (mode == CENTER) { m.translate((float) texture->width() / 4.0f, (float) texture->height() / 4.0f, 0); }
+    if (mode == CENTER) { m.translate((float) texture->width() / 2.0f, (float) texture->height() / 2.0f, 0); }
     m.rotate((float) xRot, 1.0f, 0.0f, 0.0f);
     m.rotate((float) yRot, 0.0f, 1.0f, 0.0f);
     m.rotate((float) zRot, 0.0f, 0.0f, 1.0f);
     if (followPerspective && GLWidget::perspective)
         GLWidget::perspective(m, widget, *this);
     m.scale(xScale, yScale, 1.0f);
-    if (mode == CENTER) { m.translate(-(float) texture->width() / 4.0f, -(float) texture->height() / 4.0f, 0); }
+    if (mode == CENTER) { m.translate(-(float) texture->width() / 2.0f, -(float) texture->height() / 2.0f, 0); }
 
     program->bind();
     vao->bind();
@@ -129,4 +129,12 @@ void ImageEntity::draw(GLWidget &widget) {
 
 bool ImageEntity::isFinished(GLWidget &widget) {
     return false;
+}
+
+float ImageEntity::getWidth() const {
+    return texture->width() * xScale;
+}
+
+float ImageEntity::getHeight() const {
+    return texture->height() * yScale;
 }

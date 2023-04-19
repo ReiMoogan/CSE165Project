@@ -5,7 +5,7 @@ Vehicle::Vehicle() : ImageEntity(":/textures/derp_standing.png") {
 }
 
 void Vehicle::init(GLWidget &widget) {
-    setScale(0.1, 0.1);
+    setScale(0.05, 0.05);
     ImageEntity::init(widget);
 
     effect.setSource(QUrl("qrc:/sfx/engine.wav"));

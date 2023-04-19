@@ -60,7 +60,7 @@ void GLWidget::initializeGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glCullFace(GL_BACK);
 
-    addCommand(new Map("map1", 3.0f));
+    addCommand(new Map("map1", 1.5f));
     addCommand(new ImageEntity(":/textures/side1.png", 0, 0, 0, true));
     addCommand(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0, true));
     addCommand(new TextEntity(":/fonts/Inconsolata.ttf", "mukyu~", 48, 50, 50, 422)); // render on top so blendw

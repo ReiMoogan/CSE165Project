@@ -17,6 +17,8 @@ private:
     QImage mapRoute;
     float scale;
     std::vector<Vehicle*> vehicles;
+
+    static bool vehiclesCollided(Vehicle* a, Vehicle* b);
 };
 
 #endif //CSE165PROJECT_MAP_H

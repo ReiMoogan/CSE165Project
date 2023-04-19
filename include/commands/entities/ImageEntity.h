@@ -14,6 +14,9 @@ private:
 
 protected:
     bool followPerspective = false;
+    // width and height of the image, after scaling
+    [[nodiscard]] float getWidth() const;
+    [[nodiscard]] float getHeight() const;
 
 public:
     explicit ImageEntity(const QString& imagePath);
