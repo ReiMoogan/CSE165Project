@@ -36,17 +36,13 @@ void Map::draw(GLWidget &widget) {
         for (int j = i + 1; j < vehicles.size(); ++j) {
             if (vehiclesCollided(vehicles[i], vehicles[j])) {
                 // mmmm physics (coefficient of restitution)
-                const float cr = 0.5;
-                float commonNumerator = vehicles[i]->mass * vehicles[i]->velocity + vehicles[j]->mass * vehicles[j]->velocity;
-                float commonDenominator = vehicles[i]->mass + vehicles[j]->mass;
-
-                // oops didn't account for direction buuut i'm lazy
-                // should be split for both x and y components but whatever
-                float va = (commonNumerator + vehicles[j]->mass * cr * (vehicles[j]->velocity - vehicles[i]->velocity)) / commonDenominator;
-                float vb = (commonNumerator + vehicles[i]->mass * cr * (vehicles[i]->velocity - vehicles[j]->velocity)) / commonDenominator;
-
-                vehicles[i]->velocity = va;
-                vehicles[j]->velocity = vb;
+                const float cr = 0.8;
+                auto xDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.x(), vehicles[j]->mass, vehicles[j]->velocity.x(), cr);
+                auto yDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.y(), vehicles[j]->mass, vehicles[j]->velocity.y(), cr);
+                vehicles[i]->velocity.setX(xDir.first);
+                vehicles[i]->velocity.setY(yDir.first);
+                vehicles[j]->velocity.setX(xDir.second);
+                vehicles[j]->velocity.setY(yDir.second);
             }
         }
 
@@ -57,6 +53,16 @@ void Map::draw(GLWidget &widget) {
             tpToClosestDrivablePixel(i, xScaled, yScaled);
         }
     }
+}
+
+std::pair<float, float> Map::mayhapsElasticCollision(float m1, float v1, float m2, float v2, const float cr) {
+    float commonNumerator = m1 * v1 + m2 * v2;
+    float commonDenominator = m1 + m2;
+    
+    float va = (commonNumerator + m2 * cr * (v2 - v1)) / commonDenominator;
+    float vb = (commonNumerator + m1 * cr * (v1 - v2)) / commonDenominator;
+
+    return { va, vb };
 }
 
 void Map::tpToClosestDrivablePixel(int i, float xScaled, float yScaled) {

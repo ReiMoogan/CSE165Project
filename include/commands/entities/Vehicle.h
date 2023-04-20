@@ -2,6 +2,7 @@
 #define CSE165PROJECT_VEHICLE_H
 
 #include <QSoundEffect>
+#include <QVector2D>
 #include "ImageEntity.h"
 
 enum Acceleration {
@@ -27,14 +28,14 @@ protected:
     // "tuples" of min and max values for velocity and acceleration
     float maxVelocity[2] = { -100, 500 };
     // set acceleration directly (assignment), velocity computed wrt timeDelta
-    float maxAcceleration[2] = { -250, 250 };
+    float maxAcceleration[2] = { -3000, 3000 };
     // turn speed left and right
     float turnSpeed = 200;
     // mass (for collision calculations), remember to also change acceleration/velocity
     // units? good question
     float mass = 20;
     // computed in draw(), do not directly set (unless you know what you're doing)
-    float velocity = 0;
+    QVector2D velocity{};
 
     // configurable acceleration and turn based on user input or AI
     Acceleration mode = NONE;

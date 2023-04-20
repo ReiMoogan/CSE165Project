@@ -21,8 +21,8 @@ private:
     static bool vehiclesCollided(Vehicle* a, Vehicle* b);
     bool isDrivable(const QPoint& point);
     QPoint getClosestDrivablePixel(const QPoint& point);
-
     void tpToClosestDrivablePixel(int i, float xScaled, float yScaled);
+    [[nodiscard]] static std::pair<float, float> mayhapsElasticCollision(float m1, float v1, float m2, float v2, const float cr);
 };
 
 #endif //CSE165PROJECT_MAP_H
