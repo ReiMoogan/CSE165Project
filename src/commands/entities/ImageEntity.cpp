@@ -1,5 +1,6 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
+#include <QImageReader>
 
 #include "commands/entities/ImageEntity.h"
 
@@ -7,9 +8,26 @@ bool ImageEntity::programInitialized = false;
 QOpenGLShaderProgram* ImageEntity::program = nullptr;
 
 ImageEntity::ImageEntity(const QString &imagePath) {
-    texture = new QOpenGLTexture(QOpenGLTexture::Target2D);
-    texture->setFormat(QOpenGLTexture::RGBA8_UNorm);
-    texture->setData(QImage(QString(imagePath)).mirrored());
+    QImageReader image(imagePath);
+
+    if (!image.canRead()) {
+        qDebug() << "Failed loading image" << imagePath;
+        return;
+    }
+
+    if (image.supportsAnimation()) {
+        frames = image.imageCount();
+        delay = (float) image.nextImageDelay() / 1000.0f;
+    }
+    textures = new QOpenGLTexture*[frames];
+
+    for (int i = 0; i < frames; i++) {
+        QImage img = image.read();
+        textures[i] = new QOpenGLTexture(img.mirrored());
+        textures[i]->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+        textures[i]->setMagnificationFilter(QOpenGLTexture::Linear);
+    }
+
     vao = new QOpenGLVertexArrayObject();
     vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
 }
@@ -26,7 +44,10 @@ ImageEntity::~ImageEntity() {
     delete vbo;
     vao->destroy();
     delete vao;
-    delete texture;
+
+    for (int i = 0; i < frames; i++)
+        delete textures[i];
+    delete textures;
 }
 
 // stupid IDE thinks that program is null
@@ -68,8 +89,9 @@ void ImageEntity::init(GLWidget &widget) {
     QList<GLfloat> vertData;
     for (int j = 0; j < 4; ++j) {
         // vertex position
-        vertData.append((float) texture->width() * coord[j][0]);
-        vertData.append((float) texture->height() * coord[j][1]);
+        // assume all textures are the same size
+        vertData.append((float) textures[0]->width() * coord[j][0]);
+        vertData.append((float) textures[0]->height() * coord[j][1]);
         vertData.append(coord[j][2]);
         // texture coordinate
         vertData.append(j == 0 || j == 3);
@@ -87,6 +109,15 @@ void ImageEntity::init(GLWidget &widget) {
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "NullDereference"
 void ImageEntity::draw(GLWidget &widget) {
+    // handle gif textures
+    timeSinceLastAnimatedFrame += widget.getTimeDelta();
+    int frameAdvance = (int) (timeSinceLastAnimatedFrame / delay);
+    if (frameAdvance > 0) {
+        timeSinceLastAnimatedFrame -= (float) frameAdvance * delay;
+        frame = (frame + frameAdvance) % frames;
+    }
+    QOpenGLTexture* texture = textures[frame];
+
     QMatrix4x4 m;
 
     // I am so sorry if you're reading this but
@@ -132,9 +163,9 @@ bool ImageEntity::isFinished(GLWidget &widget) {
 }
 
 float ImageEntity::getWidth() const {
-    return texture->width() * xScale;
+    return (float) textures[0]->width() * xScale;
 }
 
 float ImageEntity::getHeight() const {
-    return texture->height() * yScale;
+    return (float) textures[0]->height() * yScale;
 }

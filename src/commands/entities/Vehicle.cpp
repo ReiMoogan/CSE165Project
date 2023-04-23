@@ -1,12 +1,12 @@
 #include "commands/entities/Vehicle.h"
 
-Vehicle::Vehicle() : ImageEntity(":/textures/derp_standing.png") {
+Vehicle::Vehicle() : ImageEntity(":/textures/derp_menacing.gif") {
 
 }
 
 void Vehicle::init(GLWidget &widget) {
     velocity = QVector2D(0, 0);
-    setScale(0.05, 0.05);
+    setScale(0.2, 0.2);
     ImageEntity::init(widget);
 
     effect.setSource(QUrl("qrc:/sfx/engine.wav"));

@@ -8,9 +8,13 @@ class ImageEntity : public Entity {
 private:
     static bool programInitialized;
     static QOpenGLShaderProgram *program;
-    QOpenGLTexture* texture;
+    QOpenGLTexture** textures;
     QOpenGLBuffer* vbo;
     QOpenGLVertexArrayObject* vao;
+    int frames = 1;
+    float delay = 1000;
+    float timeSinceLastAnimatedFrame = 0;
+    int frame = 0;
 
 protected:
     bool followPerspective = false;
