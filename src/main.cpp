@@ -10,7 +10,11 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QSurfaceFormat format;
+    format.setVersion(3, 3);
     format.setDepthBufferSize(24);
+    format.setSamples(4);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setOption(QSurfaceFormat::DebugContext);
     QSurfaceFormat::setDefaultFormat(format);
 
     Window window;

@@ -1,25 +1,31 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 
-#include "entities/ImageEntity.h"
+#include "commands/entities/ImageEntity.h"
 
 bool ImageEntity::programInitialized = false;
 QOpenGLShaderProgram* ImageEntity::program = nullptr;
 
 ImageEntity::ImageEntity(const QString &imagePath) {
-    texture = new QOpenGLTexture(QImage(QString(imagePath)).mirrored());
+    texture = new QOpenGLTexture(QOpenGLTexture::Target2D);
+    texture->setFormat(QOpenGLTexture::RGBA8_UNorm);
+    texture->setData(QImage(QString(imagePath)).mirrored());
+    vao = new QOpenGLVertexArrayObject();
     vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
 }
 
-ImageEntity::ImageEntity(const QString &imagePath, float x, float y, float z) : ImageEntity(imagePath) {
+ImageEntity::ImageEntity(const QString &imagePath, float x, float y, float z, bool followPerspective) : ImageEntity(imagePath) {
     this->x = x;
     this->y = y;
     this->z = z;
+    this->followPerspective = followPerspective;
 }
 
 ImageEntity::~ImageEntity() {
     vbo->destroy();
     delete vbo;
+    vao->destroy();
+    delete vao;
     delete texture;
 }
 
@@ -29,15 +35,18 @@ ImageEntity::~ImageEntity() {
 void ImageEntity::initProgram([[maybe_unused]] GLWidget &widget) {
     program = new QOpenGLShaderProgram;
     program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/image.vert");
-    qDebug() << "Compiling image vertex shader" << program->log();
+    auto log = program->log();
+    qDebug().noquote() << "Compiling image vertex shader..." << (log.isEmpty() ? "OK" : log);
     program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/image.frag");
-    qDebug() << "Compiling image fragment shader" << program->log();
+    log = program->log();
+    qDebug().noquote() << "Compiling image fragment shader..." << (log.isEmpty() ? "OK" : log);
 #define PROGRAM_VERTEX_ATTRIBUTE 0
 #define PROGRAM_TEXCOORD_ATTRIBUTE 1
     program->bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
     program->bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
     program->link();
-    qDebug() << "Linking image shader" << program->log();
+    log = program->log();
+    qDebug().noquote() << "Linking image shader..." << (log.isEmpty() ? "OK" : log);
 
     program->bind();
     program->setUniformValue("texture", 0);
@@ -59,13 +68,16 @@ void ImageEntity::init(GLWidget &widget) {
     QList<GLfloat> vertData;
     for (int j = 0; j < 4; ++j) {
         // vertex position
-        vertData.append((float) texture->width() * coord[j][0] / 2.0f);
-        vertData.append((float) texture->height() * coord[j][1] / 2.0f);
+        vertData.append((float) texture->width() * coord[j][0]);
+        vertData.append((float) texture->height() * coord[j][1]);
         vertData.append(coord[j][2]);
         // texture coordinate
         vertData.append(j == 0 || j == 3);
         vertData.append(j == 0 || j == 1);
     }
+
+    vao->create();
+    vao->bind();
 
     vbo->create();
     vbo->bind();
@@ -77,22 +89,31 @@ void ImageEntity::init(GLWidget &widget) {
 void ImageEntity::draw(GLWidget &widget) {
     QMatrix4x4 m;
 
+    // I am so sorry if you're reading this but
+    // - this transformation matrix goes from right to left (i.e., extra operations are implied to be RHS)
+    // - we do rotations first (since those need to be at the origin)
+    // - then we do the fancy translations
+    // extra stuff if we decide to set origin wrt center, versus top left corner
+
     m.ortho(0, (float) widget.width(), (float) widget.height(), 0, -1000.0f, 1000.0f);
-    if (GLWidget::perspective)
-        GLWidget::perspective(m, widget);
+    if (followPerspective && GLWidget::postPerspective)
+        GLWidget::postPerspective(m, widget, *this);
     if (mode == CORNER) {
         m.translate(x, y, z);
     } else { // CENTER
-        m.translate(x - (float) texture->width() / 4.0f, y - (float) texture->height() / 4.0f, z);
+        m.translate(x - (float) texture->width() / 2.0f, y - (float) texture->height() / 2.0f, z);
     }
-    if (mode == CENTER) { m.translate((float) texture->width() / 4.0f, (float) texture->height() / 4.0f, 0); }
-    m.scale(xScale, yScale, 1.0f);
+    if (mode == CENTER) { m.translate((float) texture->width() / 2.0f, (float) texture->height() / 2.0f, 0); }
     m.rotate((float) xRot, 1.0f, 0.0f, 0.0f);
     m.rotate((float) yRot, 0.0f, 1.0f, 0.0f);
     m.rotate((float) zRot, 0.0f, 0.0f, 1.0f);
-    if (mode == CENTER) { m.translate(-(float) texture->width() / 4.0f, -(float) texture->height() / 4.0f, 0); }
+    if (followPerspective && GLWidget::perspective)
+        GLWidget::perspective(m, widget, *this);
+    m.scale(xScale, yScale, 1.0f);
+    if (mode == CENTER) { m.translate(-(float) texture->width() / 2.0f, -(float) texture->height() / 2.0f, 0); }
 
     program->bind();
+    vao->bind();
     vbo->bind();
     texture->bind();
 
@@ -110,30 +131,10 @@ bool ImageEntity::isFinished(GLWidget &widget) {
     return false;
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wshadow"
-void ImageEntity::setTranslation(float x, float y, float z) {
-    this->x = x;
-    this->y = y;
-    this->z = z;
+float ImageEntity::getWidth() const {
+    return texture->width() * xScale;
 }
 
-void ImageEntity::setRotation(float xRot, float yRot, float zRot) {
-    this->xRot = xRot;
-    this->yRot = yRot;
-    this->zRot = zRot;
-}
-
-void ImageEntity::setScale(float xScale, float yScale) {
-    this->xScale = xScale;
-    this->yScale = yScale;
-}
-
-void ImageEntity::setDrawMode(DrawMode mode) {
-    this->mode = mode;
-}
-#pragma clang diagnostic pop
-
-float ImageEntity::getZ() {
-    return z;
+float ImageEntity::getHeight() const {
+    return texture->height() * yScale;
 }

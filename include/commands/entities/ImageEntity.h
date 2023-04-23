@@ -1,12 +1,8 @@
 #ifndef CSE165PROJECT_IMAGEENTITY_H
 #define CSE165PROJECT_IMAGEENTITY_H
 
+#include <QOpenGLVertexArrayObject>
 #include "Entity.h"
-
-enum DrawMode {
-    CORNER,
-    CENTER
-};
 
 class ImageEntity : public Entity {
 private:
@@ -14,28 +10,17 @@ private:
     static QOpenGLShaderProgram *program;
     QOpenGLTexture* texture;
     QOpenGLBuffer* vbo;
-protected:
-    float xRot = 0;
-    float yRot = 0;
-    float zRot = 0;
-    float x = 0;
-    float y = 0;
-    float z = 0;
-    float xScale = 1;
-    float yScale = 1;
-    DrawMode mode = CENTER;
-    // no z scale
-    void setTranslation(float x, float y, float z);
-    void setRotation(float xRot, float yRot, float zRot);
-    void setScale(float xScale, float yScale);
-    void setDrawMode(DrawMode mode); // lol basically a setter method
+    QOpenGLVertexArrayObject* vao;
 
-private:
-    float getZ() override;
+protected:
+    bool followPerspective = false;
+    // width and height of the image, after scaling
+    [[nodiscard]] float getWidth() const;
+    [[nodiscard]] float getHeight() const;
 
 public:
     explicit ImageEntity(const QString& imagePath);
-    ImageEntity(const QString& imagePath, float x, float y, float z);
+    ImageEntity(const QString& imagePath, float x, float y, float z, bool followPerspective = false);
     ~ImageEntity() override;
     static void initProgram([[maybe_unused]] GLWidget& widget);
     void init(GLWidget& widget) override;
