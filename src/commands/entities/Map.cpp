@@ -21,6 +21,8 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     auto cpu = std::make_shared<CPUVehicle>();
     cpu->setTranslation(687, 180.62, 0);
     vehicles.push_back(cpu);
+
+    auto startLine = std::make_shared<StartLine>();
 }
 
 void Map::init(GLWidget &widget) {
@@ -32,6 +34,8 @@ void Map::init(GLWidget &widget) {
         vehicle->followPerspective = true;
         widget.addCommand(vehicle);
     }
+
+    widget.addCommand(this->startLine);
 }
 
 void Map::draw(GLWidget &widget) {
@@ -60,9 +64,6 @@ void Map::draw(GLWidget &widget) {
             tpToClosestDrivablePixel(i, xScaled, yScaled);
         }
     }
-
-    // draw HUD
-
 }
 
 std::pair<float, float> Map::mayhapsElasticCollision(float m1, float v1, float m2, float v2) {

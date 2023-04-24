@@ -21,7 +21,7 @@ private:
     QImage mapRoute;
     float scale;
     std::vector<std::shared_ptr<Vehicle>> vehicles;
-    StartLine* startLine;
+    std::shared_ptr<StartLine> startLine;
     std::shared_ptr<UserVehicle> player;
 
     static bool vehiclesCollided(const std::shared_ptr<Vehicle>& a, const std::shared_ptr<Vehicle>& b);
