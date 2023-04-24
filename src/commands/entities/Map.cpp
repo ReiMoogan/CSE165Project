@@ -21,6 +21,9 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     CPUVehicle *cpu = new CPUVehicle();
     cpu->setTranslation(687, 180.62, 0);
     vehicles.push_back(cpu);
+
+    startLine = new StartLine();
+    startLine->setTranslation(687, 180.62, 0);
 }
 
 void Map::init(GLWidget &widget) {
@@ -32,6 +35,8 @@ void Map::init(GLWidget &widget) {
         vehicle->followPerspective = true;
         widget.addCommand(vehicle);
     }
+
+    widget.addCommand(startLine);
 }
 
 void Map::draw(GLWidget &widget) {
