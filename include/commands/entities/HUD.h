@@ -8,14 +8,14 @@
 
 class HUD : public Entity {
 public:
-    explicit HUD(const std::shared_ptr<Map>& map);
+    explicit HUD(std::shared_ptr<Map> map);
 
     void toggleDebug();
 private:
-    const std::shared_ptr<Map>& map;
+    std::shared_ptr<Map> map;
     bool isDebug = false;
 
-    TextEntity *positionText;
+    std::shared_ptr<TextEntity> positionText;
 
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;

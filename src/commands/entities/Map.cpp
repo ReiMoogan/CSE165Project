@@ -28,7 +28,7 @@ void Map::init(GLWidget &widget) {
     setDrawMode(CORNER);
     ImageEntity::init(widget);
 
-    for (auto vehicle : vehicles) {
+    for (const auto& vehicle : vehicles) {
         vehicle->followPerspective = true;
         widget.addCommand(vehicle);
     }
@@ -85,7 +85,7 @@ bool Map::isFinished(GLWidget &widget) {
     return false;
 }
 
-bool Map::vehiclesCollided(std::shared_ptr<Vehicle> a, std::shared_ptr<Vehicle> b) {
+bool Map::vehiclesCollided(const std::shared_ptr<Vehicle>& a, const std::shared_ptr<Vehicle>& b) {
     // this feels like CSE-024 again
 
     if (a->getX() + a->getWidth() / 2 < b->getX() - b->getWidth() / 2) return false;

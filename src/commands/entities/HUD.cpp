@@ -1,15 +1,17 @@
+#include <utility>
+
 #include "commands/entities/HUD.h"
 
 using std::to_string;
 
-HUD::HUD(const std::shared_ptr<Map>& _map) : map(_map) {
-//    this->positionText = new TextEntity(":/fonts/Inconsolata.ttf", "mukyu~", 48, 100, 100, 422);
+HUD::HUD(std::shared_ptr<Map> _map) : map(std::move(_map)) {
+    this->positionText = std::make_shared<TextEntity>(":/fonts/Inconsolata.ttf", "", 48, 100, 100, 422);
 }
 
 void HUD::draw(GLWidget& widget) {
-//    this->positionText->setText
-//        ("Position: " + to_string(this->map->player->getX()) + ", " + to_string(this->map->player->getY()));
-//    this->positionText->draw(widget);
+    this->positionText->setText
+        ("Position: " + to_string(this->map->player->getX()) + ", " + to_string(this->map->player->getY()));
+    this->positionText->draw(widget);
 }
 
 void HUD::toggleDebug() {
@@ -20,7 +22,7 @@ bool HUD::isFinished(GLWidget& widget) {
     return false;
 }
 
-void HUD::init(GLWidget& widget) { 
-//    this->positionText->setTranslation(50, (float) widget.height() - 100, 422);
-//    this->positionText->init(widget);
+void HUD::init(GLWidget& widget) {
+    this->positionText->setTranslation(50, (float) widget.height() - 100, 422);
+    widget.addCommand(this->positionText);
 }

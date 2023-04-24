@@ -24,7 +24,7 @@ private:
     StartLine* startLine;
     std::shared_ptr<UserVehicle> player;
 
-    static bool vehiclesCollided(std::shared_ptr<Vehicle> a, std::shared_ptr<Vehicle> b);
+    static bool vehiclesCollided(const std::shared_ptr<Vehicle>& a, const std::shared_ptr<Vehicle>& b);
     bool isDrivable(const QPoint& point);
     QPoint getClosestDrivablePixel(const QPoint& point);
     void tpToClosestDrivablePixel(int i, float xScaled, float yScaled);
