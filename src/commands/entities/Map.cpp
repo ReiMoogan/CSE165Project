@@ -1,4 +1,5 @@
 #include "commands/entities/Map.h"
+#include "Fonts.h"
 
 // Use the actual name like "map1" not ":/textures/map1.png"
 // We will load both the png and bmp
@@ -14,7 +15,12 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
         vehicles.push_back(vehicle);
     }
 
-    vehicles.push_back(new UserVehicle());
+    this->player = new UserVehicle();
+    vehicles.push_back(this->player);
+
+    CPUVehicle *cpu = new CPUVehicle();
+    cpu->setTranslation(687, 180.62, 0);
+    vehicles.push_back(cpu);
 }
 
 void Map::init(GLWidget &widget) {
@@ -55,6 +61,9 @@ void Map::draw(GLWidget &widget) {
             tpToClosestDrivablePixel(i, xScaled, yScaled);
         }
     }
+
+    // draw HUD
+
 }
 
 std::pair<float, float> Map::mayhapsElasticCollision(float m1, float v1, float m2, float v2) {
