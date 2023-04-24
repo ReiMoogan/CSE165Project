@@ -41,9 +41,9 @@ void Fonts::loadFont(GLWidget& widget, const std::string &font, unsigned int siz
             continue;
         }
 
-        if (face->glyph->bitmap.width == 0 || face->glyph->bitmap.rows == 0) {
-            continue;
-        }
+        // if (face->glyph->bitmap.width == 0 || face->glyph->bitmap.rows == 0) {
+        //     continue;
+        // }
 
         widget.makeCurrent(); // Ensure we have GL context before calling OpenGL functions
         widget.glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction to avoid segfaults
