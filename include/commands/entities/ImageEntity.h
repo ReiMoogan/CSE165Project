@@ -18,9 +18,6 @@ private:
 
 protected:
     bool followPerspective = false;
-    // width and height of the image, after scaling
-    [[nodiscard]] float getWidth() const;
-    [[nodiscard]] float getHeight() const;
 
 public:
     explicit ImageEntity(const QString& imagePath);
@@ -30,6 +27,9 @@ public:
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;
+    // width and height of the image, after scaling
+    [[nodiscard]] float getWidth() const;
+    [[nodiscard]] float getHeight() const;
 };
 
 
