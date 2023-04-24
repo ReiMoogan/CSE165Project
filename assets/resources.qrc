@@ -3,6 +3,7 @@
     <!-- Textures -->
     <file>textures/side1.png</file>
     <file>textures/derp_standing.png</file>
+    <file>textures/derp_convertible.png</file>
     <file>textures/derp_menacing.gif</file>
     <file>textures/map1.png</file>
     <file>textures/map1.bmp</file>
