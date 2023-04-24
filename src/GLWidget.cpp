@@ -63,7 +63,7 @@ void GLWidget::initializeGL()
     addCommand(new Map("map1", 1.5f));
     addCommand(new ImageEntity(":/textures/side1.png", 0, 0, 0, true));
     addCommand(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0, true));
-    addCommand(new TextEntity(":/fonts/Inconsolata.ttf", "mukyu~", 48, 50, 50, 422)); // render on top so blendw
+    addCommand(new TextEntity(":/fonts/Inconsolata.ttf", "hello world", 48, 50, 50, 422)); // render on top so blend
 }
 
 void GLWidget::paintGL()

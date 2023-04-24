@@ -11,7 +11,7 @@ ImageEntity::ImageEntity(const QString &imagePath) {
     QImageReader image(imagePath);
 
     if (!image.canRead()) {
-        qDebug() << "Failed loading image" << imagePath;
+        qDebug() << "Failed loading image" << imagePath << QImageReader::supportedImageFormats();
         return;
     }
 

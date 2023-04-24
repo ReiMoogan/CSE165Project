@@ -48,5 +48,5 @@ void UserVehicle::draw(GLWidget &widget) {
 }
 
 bool UserVehicle::isFinished(GLWidget &widget) {
-    return widget.isKeyPressed(Qt::Key_P);
+    return false;
 }

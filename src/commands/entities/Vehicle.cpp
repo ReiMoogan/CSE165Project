@@ -1,6 +1,6 @@
 #include "commands/entities/Vehicle.h"
 
-Vehicle::Vehicle() : ImageEntity(":/textures/derp_menacing.gif") {
+Vehicle::Vehicle() : ImageEntity(":/textures/derp_standing.png") {
 
 }
 
