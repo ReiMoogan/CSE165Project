@@ -7,7 +7,6 @@
 
 #include "commands/entities/ImageEntity.h"
 #include "commands/entities/Map.h"
-#include "commands/entities/TextEntity.h"
 #include "commands/entities/HUD.h"
 
 std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
@@ -134,4 +133,24 @@ float GLWidget::getFps() const {
 
 float GLWidget::getTimeDelta() const {
     return timeDelta;
+}
+
+void GLWidget::mousePressEvent(QMouseEvent *event) {
+    mousePressed = true;
+}
+
+void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
+    mousePressed = false;
+}
+
+void GLWidget::mouseMoveEvent(QMouseEvent *event) {
+    mousePos = event->position();
+}
+
+QPointF GLWidget::getMousePos() const {
+    return mousePos;
+}
+
+bool GLWidget::isMousePressed() const {
+    return mousePressed;
 }

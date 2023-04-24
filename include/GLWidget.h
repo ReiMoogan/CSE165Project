@@ -26,6 +26,8 @@ public:
     [[nodiscard]] QSize sizeHint() const override;
     void setClearColor(const QColor &color);
     void addCommand(const std::shared_ptr<Command>& entity);
+    [[nodiscard]] QPointF getMousePos() const;
+    [[nodiscard]] bool isMousePressed() const;
     [[nodiscard]] bool isKeyPressed(int key) const;
     [[nodiscard]] float getFps() const;
     [[nodiscard]] float getTimeDelta() const;
@@ -43,11 +45,16 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 
 private:
     QColor clearColor = Qt::white;
     std::map<float, std::vector<std::shared_ptr<Command>>> commands; // ordered by z
     std::set<int> pressedKeys;
+    QPointF mousePos;
+    bool mousePressed = false;
     int frames = 0;
     float fpsTime = 0;
     float fps = 0;
