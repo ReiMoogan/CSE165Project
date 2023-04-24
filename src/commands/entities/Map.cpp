@@ -22,7 +22,8 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     cpu->setTranslation(687, 180.62, 0);
     vehicles.push_back(cpu);
 
-    auto startLine = std::make_shared<StartLine>();
+    startLine = std::make_shared<StartLine>();
+    startLine->setTranslation(687, 180.62, 0);
 }
 
 void Map::init(GLWidget &widget) {
