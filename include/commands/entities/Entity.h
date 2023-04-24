@@ -22,23 +22,6 @@ protected:
     // no z scale
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wshadow"
-    virtual void setTranslation(float x, float y, float z) {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
-
-    virtual void setRotation(float xRot, float yRot, float zRot) {
-        this->xRot = xRot;
-        this->yRot = yRot;
-        this->zRot = zRot;
-    }
-
-    virtual void setScale(float xScale, float yScale) {
-        this->xScale = xScale;
-        this->yScale = yScale;
-    }
-
     virtual void setDrawMode(DrawMode mode) {
         // lol basically a setter method
         this->mode = mode;
@@ -59,6 +42,23 @@ public:
 
     [[nodiscard]] float getPriority() override {
         return z;
+    }
+
+    virtual void setTranslation(float x, float y, float z) {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+    }
+
+    virtual void setRotation(float xRot, float yRot, float zRot) {
+        this->xRot = xRot;
+        this->yRot = yRot;
+        this->zRot = zRot;
+    }
+
+    virtual void setScale(float xScale, float yScale) {
+        this->xScale = xScale;
+        this->yScale = yScale;
     }
 #pragma clang diagnostic pop
 

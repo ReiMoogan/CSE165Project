@@ -21,5 +21,6 @@ bool HUD::isFinished(GLWidget& widget) {
 }
 
 void HUD::init(GLWidget& widget) { 
+    this->positionText->setTranslation(50, widget.height()-100, 422);
     this->positionText->init(widget);
 }
