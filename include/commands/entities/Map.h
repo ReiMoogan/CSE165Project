@@ -5,7 +5,9 @@
 #include <vector>
 #include "ImageEntity.h"
 #include "Vehicle.h"
+#include "CPUVehicle.h"
 #include "UserVehicle.h"
+#include "StartLine.h"
 
 class Map : public ImageEntity {
 public:
@@ -13,10 +15,14 @@ public:
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;
+
+    friend class HUD;
 private:
     QImage mapRoute;
     float scale;
     std::vector<Vehicle*> vehicles;
+    StartLine* startLine;
+    UserVehicle *player;
 
     static bool vehiclesCollided(Vehicle* a, Vehicle* b);
     bool isDrivable(const QPoint& point);

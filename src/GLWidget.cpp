@@ -8,6 +8,7 @@
 #include "commands/entities/ImageEntity.h"
 #include "commands/entities/Map.h"
 #include "commands/entities/TextEntity.h"
+#include "commands/entities/HUD.h"
 
 std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
     // do nothing
@@ -60,10 +61,12 @@ void GLWidget::initializeGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glCullFace(GL_BACK);
 
-    addCommand(new Map("map1", 1.5f));
+    Map *map = new Map("map1", 1.5f);
+    addCommand(map);
     addCommand(new ImageEntity(":/textures/side1.png", 0, 0, 0, true));
     addCommand(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0, true));
-    addCommand(new TextEntity(":/fonts/Inconsolata.ttf", "mukyu~", 48, 50, 50, 422)); // render on top so blendw
+    // addCommand(new TextEntity(":/fonts/Inconsolata.ttf", "mukyu~", 48, 50, 50, 422)); // render on top so blendw
+    addCommand(new HUD(map));
 }
 
 void GLWidget::paintGL()
