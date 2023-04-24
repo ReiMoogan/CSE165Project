@@ -10,15 +10,15 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     followPerspective = true;
 
     for (int i = 0; i < 1; ++i) {
-        auto vehicle = new Vehicle();
+        auto vehicle = std::make_shared<Vehicle>();
         vehicle->setTranslation(687, 207.62, 0);
         vehicles.push_back(vehicle);
     }
 
-    this->player = new UserVehicle();
+    this->player = std::make_shared<UserVehicle>();
     vehicles.push_back(this->player);
 
-    CPUVehicle *cpu = new CPUVehicle();
+    auto cpu = std::make_shared<CPUVehicle>();
     cpu->setTranslation(687, 180.62, 0);
     vehicles.push_back(cpu);
 }
@@ -42,7 +42,6 @@ void Map::draw(GLWidget &widget) {
         for (int j = i + 1; j < vehicles.size(); ++j) {
             if (vehiclesCollided(vehicles[i], vehicles[j])) {
                 // mmmm physics (coefficient of restitution)
-                const float cr = 0.8;
                 auto xDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.x(), vehicles[j]->mass,
                                                     vehicles[j]->velocity.x());
                 auto yDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.y(), vehicles[j]->mass,
@@ -86,7 +85,7 @@ bool Map::isFinished(GLWidget &widget) {
     return false;
 }
 
-bool Map::vehiclesCollided(Vehicle* a, Vehicle* b) {
+bool Map::vehiclesCollided(std::shared_ptr<Vehicle> a, std::shared_ptr<Vehicle> b) {
     // this feels like CSE-024 again
 
     if (a->getX() + a->getWidth() / 2 < b->getX() - b->getWidth() / 2) return false;

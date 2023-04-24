@@ -61,11 +61,11 @@ void GLWidget::initializeGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glCullFace(GL_BACK);
 
-    Map *map = new Map("map1", 1.5f);
+    auto map = std::make_shared<Map>("map1", 1.5f);
     addCommand(map);
-    addCommand(new ImageEntity(":/textures/side1.png", 0, 0, 0, true));
-    addCommand(new ImageEntity(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0, true));
-    addCommand(new HUD(map));
+    addCommand(std::make_shared<ImageEntity>(":/textures/side1.png", 0, 0, 0, true));
+    addCommand(std::make_shared<ImageEntity>(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0, true));
+    addCommand(std::make_shared<HUD>(map));
 }
 
 void GLWidget::paintGL()
@@ -80,7 +80,6 @@ void GLWidget::paintGL()
             (*iter)->draw(*this);
 
             if ((*iter)->isFinished(*this)) {
-                delete *iter;
                 iter = zEntities.erase(iter);
             } else {
                 ++iter;
@@ -116,7 +115,7 @@ void GLWidget::keyReleaseEvent(QKeyEvent *event) {
     pressedKeys.erase(event->key());
 }
 
-void GLWidget::addCommand(Command* entity) {
+void GLWidget::addCommand(const std::shared_ptr<Command>& entity) {
     entity->init(*this);
     commands[entity->getPriority()].push_back(entity);
 }

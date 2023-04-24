@@ -12,5 +12,5 @@ void CPUVehicle::draw(GLWidget &widget) {
 }
 
 bool CPUVehicle::isFinished(GLWidget &widget) {
-    return widget.isKeyPressed(Qt::Key_P);
+    return false;
 }

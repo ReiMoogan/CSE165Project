@@ -8,12 +8,12 @@
 
 class HUD : public Entity {
 public:
-    HUD(Map *map);
+    explicit HUD(const std::shared_ptr<Map>& map);
 
     void toggleDebug();
 private:
-    Map *map;
-    bool isDebug;
+    const std::shared_ptr<Map>& map;
+    bool isDebug = false;
 
     TextEntity *positionText;
 

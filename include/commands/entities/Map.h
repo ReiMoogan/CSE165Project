@@ -20,11 +20,11 @@ public:
 private:
     QImage mapRoute;
     float scale;
-    std::vector<Vehicle*> vehicles;
+    std::vector<std::shared_ptr<Vehicle>> vehicles;
     StartLine* startLine;
-    UserVehicle *player;
+    std::shared_ptr<UserVehicle> player;
 
-    static bool vehiclesCollided(Vehicle* a, Vehicle* b);
+    static bool vehiclesCollided(std::shared_ptr<Vehicle> a, std::shared_ptr<Vehicle> b);
     bool isDrivable(const QPoint& point);
     QPoint getClosestDrivablePixel(const QPoint& point);
     void tpToClosestDrivablePixel(int i, float xScaled, float yScaled);
