@@ -5,7 +5,7 @@
 #include <iostream>
 #include <QOpenGLDebugLogger>
 
-#include "commands/entities/ImageEntity.h"
+#include "commands/entities/ImageButton.h"
 #include "commands/entities/Map.h"
 #include "commands/entities/HUD.h"
 
@@ -60,10 +60,12 @@ void GLWidget::initializeGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glCullFace(GL_BACK);
 
+    setMouseTracking(true);
+
     auto map = std::make_shared<Map>("map1", 1.5f);
     addCommand(map);
-    addCommand(std::make_shared<ImageEntity>(":/textures/side1.png", 0, 0, 0, true));
-    addCommand(std::make_shared<ImageEntity>(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0, true));
+    addCommand(std::make_shared<ImageButton>(":/textures/side1.png", 0, 0, 0));
+    addCommand(std::make_shared<ImageButton>(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0));
     addCommand(std::make_shared<HUD>(map));
 }
 
@@ -125,6 +127,9 @@ bool GLWidget::isKeyPressed(int key) const {
 
 void GLWidget::focusOutEvent(QFocusEvent *event) {
     pressedKeys.clear();
+    mousePressed = false;
+    mousePos.setX(-69420); // prevent mouse from being processed when window is not focused
+    mousePos.setY(-1337);
 }
 
 float GLWidget::getFps() const {
