@@ -14,6 +14,7 @@ public:
     virtual float getPriority() {
         return 0;
     };
+    bool forceFinish = false;
 };
 
 #endif //CSE165PROJECT_COMMAND_H

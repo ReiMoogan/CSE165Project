@@ -2,6 +2,9 @@
 #define CSE165PROJECT_MAINMENU_H
 
 #include "GLWidget.h"
+#include "commands/entities/ImageEntity.h"
+#include "commands/entities/ImageButton.h"
+#include "commands/entities/TextEntity.h"
 
 class MainMenu : public Command {
 public:
@@ -9,6 +12,16 @@ public:
     void draw(GLWidget &widget) override;
     bool isFinished(GLWidget &widget) override;
     float getPriority() override;
+private:
+    bool startGame = false;
+    bool realizedStartGame = false;
+    bool endGame = false;
+    bool realizedEndGame = false;
+    std::shared_ptr<ImageEntity> title;
+    std::shared_ptr<ImageButton> startButton;
+    std::shared_ptr<ImageButton> exitButton;
+    std::shared_ptr<TextEntity> startText;
+    std::shared_ptr<TextEntity> exitText;
 };
 
 

@@ -5,9 +5,7 @@
 #include <iostream>
 #include <QOpenGLDebugLogger>
 
-#include "commands/entities/ImageButton.h"
-#include "commands/entities/Map.h"
-#include "commands/entities/HUD.h"
+#include "commands/MainMenu.h"
 
 std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
     // do nothing
@@ -64,11 +62,7 @@ void GLWidget::initializeGL()
 
     setMouseTracking(true);
 
-    auto map = std::make_shared<Map>("map1", 1.5f);
-    addCommand(map);
-    addCommand(std::make_shared<ImageButton>(":/textures/side1.png", 0, 0, 0));
-    addCommand(std::make_shared<ImageButton>(":/textures/side1.png", (float) GLWidget::width(), (float) GLWidget::height(), 0));
-    addCommand(std::make_shared<HUD>(map));
+    addCommand(std::make_shared<MainMenu>());
 }
 
 void GLWidget::paintGL()
@@ -82,7 +76,11 @@ void GLWidget::paintGL()
         for (auto iter = zEntities.begin(); iter != zEntities.end(); /* no increment*/) {
             (*iter)->draw(*this);
 
-            if ((*iter)->isFinished(*this)) {
+            std::shared_ptr<Command> temp = *iter;
+            bool isFinished = (temp)->isFinished(*this);
+            isFinished |= (*iter)->forceFinish;
+
+            if (isFinished) {
                 iter = zEntities.erase(iter);
             } else {
                 ++iter;
