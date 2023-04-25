@@ -40,29 +40,17 @@ ImageEntity::ImageEntity(const QString &imagePath, float x, float y, float z, bo
 }
 
 ImageEntity::~ImageEntity() {
-    if (vbo != nullptr){
-        vbo->destroy();
-        delete vbo;
-        vbo = nullptr;
+    vbo->destroy();
+    delete vbo;
+    vao->destroy();
+    delete vao;
+
+    for (int i = 0; i < frames; i++) {
+        textures[i]->destroy();
+        delete textures[i];
     }
 
-    if (vao != nullptr){
-        vao->destroy();
-        delete vao;
-        vao = nullptr;
-    }
-
-    if (textures != nullptr) {
-        for (int i = 0; i < frames; i++) {
-            if (textures[i] != nullptr) {
-                delete textures[i];
-                textures[i] = nullptr;
-            }
-        }
-
-        delete textures;
-        textures = nullptr;
-    }
+    delete textures;
 }
 
 // stupid IDE thinks that program is null
