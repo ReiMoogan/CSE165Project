@@ -12,10 +12,11 @@ public:
     void draw(GLWidget &widget) override;
     bool isFinished(GLWidget &widget) override;
     float getPriority() override;
+    void showMenuScreen();
 private:
     bool startGame = false;
     bool realizedStartGame = false;
-    bool endGame = false;
+    bool endGame = true;
     bool realizedEndGame = false;
     std::shared_ptr<ImageEntity> title;
     std::shared_ptr<ImageButton> startButton;

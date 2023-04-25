@@ -25,12 +25,6 @@ void MainMenu::init(GLWidget &widget) {
     exitButton->onClick = []() {
         QApplication::quit();
     };
-
-    // widget.addCommand(title);
-    widget.addCommand(startButton);
-    widget.addCommand(exitButton);
-    widget.addCommand(startText);
-    widget.addCommand(exitText);
 }
 
 void MainMenu::draw(GLWidget &widget) {
@@ -39,6 +33,20 @@ void MainMenu::draw(GLWidget &widget) {
         widget.addCommand(map);
         widget.addCommand(std::make_shared<HUD>(map));
         realizedStartGame = true;
+        endGame = false;
+        realizedEndGame = false;
+    }
+
+    if (endGame && !realizedEndGame) {
+        // widget.addCommand(title);
+        widget.addCommand(startButton);
+        widget.addCommand(exitButton);
+        widget.addCommand(startText);
+        widget.addCommand(exitText);
+
+        startGame = false;
+        realizedStartGame = false;
+        realizedEndGame = true;
     }
 }
 
@@ -49,4 +57,8 @@ bool MainMenu::isFinished(GLWidget &widget) {
 float MainMenu::getPriority() {
     // we want this to be the first thing called (check isFinished())
     return 694201337.0f; // nice
+}
+
+void MainMenu::showMenuScreen() {
+    endGame = true;
 }
