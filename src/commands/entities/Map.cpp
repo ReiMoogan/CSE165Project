@@ -21,6 +21,9 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     auto cpu = std::make_shared<CPUVehicle>();
     cpu->setTranslation(687, 180.62, 0);
     vehicles.push_back(cpu);
+
+    startLine = std::make_shared<StartLine>();
+    startLine->setTranslation(687, 180.62, 0);
 }
 
 void Map::init(GLWidget &widget) {
@@ -32,6 +35,8 @@ void Map::init(GLWidget &widget) {
         vehicle->followPerspective = true;
         widget.addCommand(vehicle);
     }
+
+    widget.addCommand(this->startLine);
 }
 
 void Map::draw(GLWidget &widget) {
@@ -40,7 +45,7 @@ void Map::draw(GLWidget &widget) {
     // do collision calculation
     for (int i = 0; i < vehicles.size(); ++i) {
         for (int j = i + 1; j < vehicles.size(); ++j) {
-            if (vehiclesCollided(vehicles[i], vehicles[j])) {
+            if (entityCollided(vehicles[i], vehicles[j])) {
                 // mmmm physics (coefficient of restitution)
                 auto xDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.x(), vehicles[j]->mass,
                                                     vehicles[j]->velocity.x());
@@ -60,8 +65,6 @@ void Map::draw(GLWidget &widget) {
             tpToClosestDrivablePixel(i, xScaled, yScaled);
         }
     }
-
-    // draw HUD
 
 }
 
@@ -85,7 +88,7 @@ bool Map::isFinished(GLWidget &widget) {
     return false;
 }
 
-bool Map::vehiclesCollided(const std::shared_ptr<Vehicle>& a, const std::shared_ptr<Vehicle>& b) {
+bool Map::entityCollided(const std::shared_ptr<ImageEntity>& a, const std::shared_ptr<ImageEntity>& b) {
     // this feels like CSE-024 again
 
     if (a->getX() + a->getWidth() / 2 < b->getX() - b->getWidth() / 2) return false;
