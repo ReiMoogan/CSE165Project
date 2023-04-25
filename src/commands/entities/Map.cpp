@@ -23,6 +23,9 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     vehicles.push_back(cpu);
 
     startLine = std::make_shared<StartLine>();
+    startLine->followPerspective = true;
+    startLine->setDrawMode(CENTER);
+    startLine->zRot = 90;
     startLine->setTranslation(687, 180.62, 0);
 }
 
@@ -65,7 +68,6 @@ void Map::draw(GLWidget &widget) {
             tpToClosestDrivablePixel(i, xScaled, yScaled);
         }
     }
-
 }
 
 std::pair<float, float> Map::mayhapsElasticCollision(float m1, float v1, float m2, float v2) {
