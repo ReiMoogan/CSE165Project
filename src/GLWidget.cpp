@@ -20,6 +20,8 @@ std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidge
 GLWidget::~GLWidget()
 {
     makeCurrent();
+    // Teardown GL objects, passively invoke destructors
+    commands.clear();
     doneCurrent();
 }
 
