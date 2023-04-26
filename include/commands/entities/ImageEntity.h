@@ -1,6 +1,7 @@
 #ifndef CSE165PROJECT_IMAGEENTITY_H
 #define CSE165PROJECT_IMAGEENTITY_H
 
+#include <QVector3D>
 #include <QOpenGLVertexArrayObject>
 #include "Entity.h"
 
@@ -28,8 +29,9 @@ public:
     [[nodiscard]] float getWidth() const;
     [[nodiscard]] float getHeight() const;
     bool followPerspective = false;
+    // on-the-fly color filter
     bool enableColorShift = false;
-    float colorShift = 0;
+    QVector3D hslShift = {0, 0, 0};
 };
 
 

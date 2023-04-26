@@ -18,6 +18,7 @@ private:
     bool mousePreviouslyPressed = false;
     bool mouseOver(GLWidget &widget);
     static bool soundInitialized;
+    static QSoundEffect hoverSound;
     static QSoundEffect clickSound;
 };
 

@@ -23,5 +23,6 @@
     <!-- Sounds -->
     <file>sfx/engine.wav</file>
     <file>sfx/plst00.wav</file>
+    <file>sfx/click.wav</file>
 </qresource>
 </RCC>
