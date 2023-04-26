@@ -92,7 +92,7 @@ void Map::draw(GLWidget &widget) {
         float xScaled = vehicles[i]->getX() / scale;
         float yScaled = vehicles[i]->getY() / scale;
         if (!isDrivable(QPoint((int) xScaled, (int) yScaled))) {
-            // tpToClosestDrivablePixel(i, xScaled, yScaled);
+            tpToClosestDrivablePixel(i, xScaled, yScaled);
         }
     }
 

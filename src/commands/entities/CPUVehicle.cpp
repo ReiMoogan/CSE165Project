@@ -8,20 +8,23 @@ void CPUVehicle::init(GLWidget &widget) {
 
 void CPUVehicle::draw(GLWidget &widget) {
     int nextCheckpointIdx = checkpointsHit.size();
+    float targetX, targetY;
     if (nextCheckpointIdx < Checkpoint::totalCheckpoints) {
-        float targetX = Checkpoint::checkpointCoords[nextCheckpointIdx][0];
-        float targetY = Checkpoint::checkpointCoords[nextCheckpointIdx][1];
-        
-        float dX = targetX-x;
-        float dY = targetY-y;
+        targetX = Checkpoint::checkpointCoords[nextCheckpointIdx][0];
+        targetY = Checkpoint::checkpointCoords[nextCheckpointIdx][1];
+    } else {
+        // targetX = 
+    }
 
-        zRot = 90+(atan2(dY, dX) * 180/M_PI) + (uniformRNG()-0.5) * 10;
+    float dX = targetX-x;
+    float dY = targetY-y;
 
-        if (uniformRNG() < 0.4) {
-            setAccelerator(ACCELERATE);
-        } else {
-            setAccelerator(NONE);
-        }
+    zRot = 90+(atan2(dY, dX) * 180/M_PI) + (uniformRNG()-0.5) * 10;
+
+    if (uniformRNG() < 0.4) {
+        setAccelerator(ACCELERATE);
+    } else {
+        setAccelerator(NONE);
     }
 
     Vehicle::draw(widget);

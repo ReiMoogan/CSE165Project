@@ -27,6 +27,7 @@ public:
 
     // checkpoints
     std::unordered_set<int> checkpointsHit;
+    int laps;
     friend class Map;
 protected:
     // "tuples" of min and max values for velocity and acceleration
