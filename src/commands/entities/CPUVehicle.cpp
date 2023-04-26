@@ -1,6 +1,7 @@
 #include <QMatrix4x4>
 #include "commands/entities/CPUVehicle.h"
 #include "commands/entities/Checkpoint.h"
+#include "commands/entities/Map.h"
 
 void CPUVehicle::init(GLWidget &widget) {
     Vehicle::init(widget);
@@ -13,7 +14,8 @@ void CPUVehicle::draw(GLWidget &widget) {
         targetX = Checkpoint::checkpointCoords[nextCheckpointIdx][0];
         targetY = Checkpoint::checkpointCoords[nextCheckpointIdx][1];
     } else {
-        // targetX = 
+        targetX = Map::goalX;
+        targetY = Map::goalY;
     }
 
     float dX = targetX-x;
