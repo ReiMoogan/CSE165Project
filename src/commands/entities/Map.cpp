@@ -24,7 +24,6 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
 
     startLine = std::make_shared<StartLine>();
     startLine->followPerspective = true;
-    startLine->setDrawMode(CENTER);
     startLine->zRot = 90;
     startLine->setTranslation(687, 180.62, 0);
 
