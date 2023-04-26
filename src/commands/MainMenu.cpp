@@ -4,23 +4,25 @@
 #include <QApplication>
 
 void MainMenu::init(GLWidget &widget) {
-    title = std::make_shared<ImageEntity>(":/textures/title.png", widget.width() / 2, widget.height() / 2 - 69, 0.0f);
-    startButton = std::make_shared<ImageButton>(":/textures/derp_standing.png", widget.width() / 2 - 200, widget.height() / 2 + 69, 0.0f);
-    exitButton = std::make_shared<ImageButton>(":/textures/derp_standing.png", widget.width() / 2 + 200, widget.height() / 2 + 69, 0.0f);
-    startButton->setScale(0.05f, 0.05f);
-    exitButton->setScale(0.05f, 0.05f);
-    startText = std::make_shared<TextEntity>(":/fonts/Inconsolata.ttf", "Start", 48, widget.width() / 2 - 200, widget.height() / 2 + 69, 10.0f);
-    exitText = std::make_shared<TextEntity>(":/fonts/Inconsolata.ttf", "Exit", 48, widget.width() / 2 + 200, widget.height() / 2 + 69, 10.0f);
-    title->setScale(0.001f, 0.001f);
+    background = std::make_shared<ImageEntity>(":/textures/menu.png", widget.width() / 2 + 150, widget.height() / 2, -1.0f);
+    title = std::make_shared<ImageEntity>(":/textures/title.png", 100, widget.height() / 2 - 300, 0.0f);
+    startButton = std::make_shared<ImageButton>(":/textures/start_button.png", 100, widget.height() / 2 + 50, 0.0f);
+    exitButton = std::make_shared<ImageButton>(":/textures/exit_button.png", 500, widget.height() / 2 + 50, 0.0f);
+    background->setScale(1.6f, 1.6f);
+    title->setScale(0.5f, 0.5f);
+    title->setDrawMode(CORNER);
+    startButton->setScale(0.5f, 0.5f);
+    startButton->setDrawMode(CORNER);
+    exitButton->setScale(0.5f, 0.5f);
+    exitButton->setDrawMode(CORNER);
 
     startButton->onClick = [this]() {
         this->startGame = true;
 
+        background->forceFinish = true;
         title->forceFinish = true;
         startButton->forceFinish = true;
         exitButton->forceFinish = true;
-        startText->forceFinish = true;
-        exitText->forceFinish = true;
     };
 
     exitButton->onClick = []() {
@@ -39,11 +41,12 @@ void MainMenu::draw(GLWidget &widget) {
     }
 
     if (endGame && !realizedEndGame) {
+        widget.setClearColor(QColor(255, 255, 255));
+
+        widget.addCommand(background);
         widget.addCommand(title);
         widget.addCommand(startButton);
         widget.addCommand(exitButton);
-        widget.addCommand(startText);
-        widget.addCommand(exitText);
 
         startGame = false;
         realizedStartGame = false;

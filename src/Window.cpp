@@ -35,10 +35,7 @@ void Window::createMenuBar() {
 }
 
 void Window::createGlWidget() {
-    QColor clearColor;
-    clearColor.setRgb(82, 156, 82);
     glWidget = new GLWidget;
-    glWidget->setClearColor(clearColor);
     glWidget->setFocusPolicy(Qt::StrongFocus);
     setCentralWidget(glWidget);
 
