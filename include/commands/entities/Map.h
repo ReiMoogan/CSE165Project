@@ -17,6 +17,7 @@ public:
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;
 
+    static const float goalX, goalY;
     friend class HUD;
 private:
     QImage mapRoute;

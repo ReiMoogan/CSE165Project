@@ -1,6 +1,9 @@
 #include "commands/entities/Map.h"
 #include "Fonts.h"
 
+const float Map::goalX = 687;
+const float Map::goalY = 200.62;
+
 // Use the actual name like "map1" not ":/textures/map1.png"
 // We will load both the png and bmp
 Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures/%1.png").arg(name.c_str())) {
@@ -27,7 +30,7 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     startLine = std::make_shared<StartLine>();
     startLine->followPerspective = true;
     startLine->zRot = 83;
-    startLine->setTranslation(687, 200.62, 0);
+    startLine->setTranslation(goalX, goalY, 0);
 
     for (int i = 0; i < 14; i++) {
         auto checkpoint = std::make_shared<Checkpoint>(i);
@@ -104,6 +107,14 @@ void Map::draw(GLWidget &widget) {
             if (entityCollided(vehicle, checkpoint) && vehicle->checkpointsHit.count(checkpoint->index) == 0) {
                 vehicle->checkpointsHit.insert(checkpoint->index);
             }
+        }
+    }
+
+    // check for vehicles who have made a lap
+    for (auto& vehicle : vehicles) {
+        if (entityCollided(vehicle, startLine) && vehicle->checkpointsHit.size() == Checkpoint::totalCheckpoints) {
+            vehicle->checkpointsHit.clear();
+            vehicle->laps++;
         }
     }
 }
