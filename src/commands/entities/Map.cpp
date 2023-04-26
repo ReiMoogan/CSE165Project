@@ -9,11 +9,11 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     z = -420; // Make sure the map is always behind the vehicles
     followPerspective = true;
 
-    for (int i = 0; i < 1; ++i) {
-        auto vehicle = std::make_shared<Vehicle>();
-        vehicle->setTranslation(687, 207.62, 0);
-        vehicles.push_back(vehicle);
-    }
+    // for (int i = 0; i < 1; ++i) {
+    //     auto vehicle = std::make_shared<Vehicle>();
+    //     vehicle->setTranslation(687, 207.62, 0);
+    //     vehicles.push_back(vehicle);
+    // }
 
     this->player = std::make_shared<UserVehicle>();
     vehicles.push_back(this->player);

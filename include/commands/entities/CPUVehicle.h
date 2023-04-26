@@ -6,6 +6,8 @@
 
 class CPUVehicle : public Vehicle {
 public:
+    static float uniformRNG();
+    
     void init(GLWidget &widget) override;
     void draw(GLWidget &widget) override;
     bool isFinished(GLWidget &widget) override;
