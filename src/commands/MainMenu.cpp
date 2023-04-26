@@ -6,9 +6,9 @@
 void MainMenu::init(GLWidget &widget) {
     fps = std::make_shared<TextEntity>(":/fonts/Inconsolata.ttf", "FPS: unknown", 24, widget.width() - 170, 10, 100.0f);
     background = std::make_shared<ImageEntity>(":/textures/menu.png", widget.width() / 2 + 150, widget.height() / 2, -1.0f);
-    title = std::make_shared<ImageEntity>(":/textures/title.png", 100, widget.height() / 2 - 300, 0.0f);
-    startButton = std::make_shared<ImageButton>(":/textures/start_button.png", 100, widget.height() / 2 + 50, 0.0f);
-    exitButton = std::make_shared<ImageButton>(":/textures/exit_button.png", 500, widget.height() / 2 + 50, 0.0f);
+    title = std::make_shared<ImageEntity>(":/textures/title.png", 50, widget.height() / 2 - 300, 0.0f);
+    startButton = std::make_shared<ImageButton>(":/textures/start_button.png", 50, widget.height() / 2 + 50, 0.0f);
+    exitButton = std::make_shared<ImageButton>(":/textures/exit_button.png", 50, widget.height() / 2 + 200, 0.0f);
     background->setScale(1.6f, 1.6f);
     title->setScale(0.5f, 0.5f);
     title->setDrawMode(CORNER);

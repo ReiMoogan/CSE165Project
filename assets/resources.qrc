@@ -12,6 +12,7 @@
     <file>textures/start_button.png</file>
     <file>textures/exit_button.png</file>
     <file>textures/menu.png</file>
+    <file>textures/logo.png</file>
     <!-- Shaders -->
     <file>shaders/image.vert</file>
     <file>shaders/image.frag</file>

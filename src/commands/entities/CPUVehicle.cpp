@@ -28,7 +28,7 @@ void CPUVehicle::draw(GLWidget &widget) {
 }
 
 float CPUVehicle::uniformRNG() {
-    return rand()/(float)INT_MAX;
+    return rand()/(float)RAND_MAX;
 }
 
 bool CPUVehicle::isFinished(GLWidget &widget) {
