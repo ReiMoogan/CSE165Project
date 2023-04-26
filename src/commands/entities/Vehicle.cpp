@@ -1,6 +1,6 @@
 #include "commands/entities/Vehicle.h"
 
-Vehicle::Vehicle() : ImageEntity(":/textures/derp_convertible.png") {
+Vehicle::Vehicle() : ImageEntity(":/textures/derp_convertible.png"), laps(0) {
 
 }
 
