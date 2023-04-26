@@ -5,7 +5,6 @@
 #include <QVector2D>
 #include <unordered_set>
 #include "ImageEntity.h"
-#include "Checkpoint.h"
 
 enum Acceleration {
     DECELERATE,

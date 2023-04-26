@@ -27,12 +27,10 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     startLine->zRot = 90;
     startLine->setTranslation(687, 180.62, 0);
 
-    const int checkpointCoords[][2] = {{1078, 106}, {1650, 184}, {2099, 219}, {1915, 744}, {2250, 798}, {2531, 381}, {2770, 505}, {2508, 994}, 
-        {1891, 1160}, {840, 1442}, {340, 1314}, {133, 850}, {290, 418}, {713, 197}};
     for (int i = 0; i < 14; i++) {
         auto checkpoint = std::make_shared<Checkpoint>(i);
         checkpoint->setScale(0.15, 0.15);
-        checkpoint->setTranslation(checkpointCoords[i][0], checkpointCoords[i][1], 0);
+        checkpoint->setTranslation(Checkpoint::checkpointCoords[i][0], Checkpoint::checkpointCoords[i][1], 0);
         checkpoints.push_back(checkpoint);
     }
 }
