@@ -9,11 +9,11 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     z = -420; // Make sure the map is always behind the vehicles
     followPerspective = true;
 
-    for (int i = 0; i < 1; ++i) {
-        auto vehicle = std::make_shared<Vehicle>();
-        vehicle->setTranslation(687, 207.62, 0);
-        vehicles.push_back(vehicle);
-    }
+    // for (int i = 0; i < 1; ++i) {
+    //     auto vehicle = std::make_shared<Vehicle>();
+    //     vehicle->setTranslation(687, 207.62, 0);
+    //     vehicles.push_back(vehicle);
+    // }
 
     this->player = std::make_shared<UserVehicle>();
     vehicles.push_back(this->player);
@@ -26,6 +26,13 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     startLine->followPerspective = true;
     startLine->zRot = 90;
     startLine->setTranslation(687, 180.62, 0);
+
+    for (int i = 0; i < 14; i++) {
+        auto checkpoint = std::make_shared<Checkpoint>(i);
+        checkpoint->setScale(0.15, 0.15);
+        checkpoint->setTranslation(Checkpoint::checkpointCoords[i][0], Checkpoint::checkpointCoords[i][1], 0);
+        checkpoints.push_back(checkpoint);
+    }
 }
 
 void Map::init(GLWidget &widget) {
@@ -36,6 +43,11 @@ void Map::init(GLWidget &widget) {
     for (const auto& vehicle : vehicles) {
         vehicle->followPerspective = true;
         widget.addCommand(vehicle);
+    }
+
+    for (const auto& checkpoint : checkpoints) {
+        checkpoint->followPerspective = true;
+        widget.addCommand(checkpoint);
     }
 
     widget.addCommand(this->startLine);
@@ -65,6 +77,15 @@ void Map::draw(GLWidget &widget) {
         float yScaled = vehicles[i]->getY() / scale;
         if (!isDrivable(QPoint((int) xScaled, (int) yScaled))) {
             tpToClosestDrivablePixel(i, xScaled, yScaled);
+        }
+    }
+
+    // check if vehicles made it to checkpoints
+    for (const auto& checkpoint: checkpoints) {
+        for (auto& vehicle : vehicles) {
+            if (entityCollided(vehicle, checkpoint) && vehicle->checkpointsHit.count(checkpoint->index) == 0) {
+                vehicle->checkpointsHit.insert(checkpoint->index);
+            }
         }
     }
 }

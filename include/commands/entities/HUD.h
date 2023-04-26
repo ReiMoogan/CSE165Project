@@ -16,6 +16,7 @@ private:
     bool isDebug = false;
 
     std::shared_ptr<TextEntity> positionText;
+    std::shared_ptr<TextEntity> checkpointsText;
 
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;

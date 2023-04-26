@@ -1,8 +1,6 @@
 #ifndef CSE165PROJECT_STARTLINE_H
 #define CSE165PROJECT_STARTLINE_H
 
-#include <QSoundEffect>
-#include <QVector2D>
 #include "ImageEntity.h"
 
 class StartLine : public ImageEntity {

@@ -3,6 +3,7 @@
 
 #include <QSoundEffect>
 #include <QVector2D>
+#include <unordered_set>
 #include "ImageEntity.h"
 
 enum Acceleration {
@@ -23,6 +24,9 @@ public:
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;
+
+    // checkpoints
+    std::unordered_set<int> checkpointsHit;
     friend class Map;
 protected:
     // "tuples" of min and max values for velocity and acceleration
