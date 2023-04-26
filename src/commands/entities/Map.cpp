@@ -41,6 +41,8 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
 }
 
 void Map::init(GLWidget &widget) {
+    widget.setClearColor(QColor(82, 156, 82));
+    
     setScale(scale, scale);
     setDrawMode(CORNER);
     ImageEntity::init(widget);

@@ -22,10 +22,6 @@ protected:
     // no z scale
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wshadow"
-    virtual void setDrawMode(DrawMode mode) {
-        // lol basically a setter method
-        this->mode = mode;
-    }
 
 public:
     [[nodiscard]] float getX() const {
@@ -62,6 +58,10 @@ public:
     }
 #pragma clang diagnostic pop
 
+    virtual void setDrawMode(DrawMode mode) {
+        // lol basically a setter method
+        this->mode = mode;
+    }
 };
 
 #endif //CSE165PROJECT_ENTITY_H

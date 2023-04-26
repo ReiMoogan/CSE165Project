@@ -15,7 +15,6 @@ public:
 private:
     GLWidget *glWidget;
     QTimer* gameTimer;
-    QMenu* fpsDisplay;
 
     void createMenuBar();
     void createGlWidget();

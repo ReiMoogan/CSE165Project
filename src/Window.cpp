@@ -8,6 +8,9 @@ Window::Window()
     // File Menu
     createMenuBar();
 
+    // Icon
+    setWindowIcon(QIcon(":/textures/logo.png"));
+
     // GL Setup
     createGlWidget();
 
@@ -30,22 +33,28 @@ void Window::createMenuBar() {
         connect(action, &QAction::triggered, this, [this, fps] { setFps(fps); });
     }
 
-    fpsDisplay = menuBar()->addMenu("Current FPS: 0");
-    fpsDisplay->setDisabled(true);
+    QMenu *help = menuBar()->addMenu("&Help");
+    auto *aboutGame = new QAction("About &Initial Drip", this);
+    help->addAction(aboutGame);
+    connect(aboutGame, &QAction::triggered, this, [this] {
+        QMessageBox::about(this, tr("About Initial Drip"),
+                           tr("<span style=\"font-weight:800;\">Initial Drip</span><br/>Developed by Andrew Lin and William Le for CSE-165, Spring 2023."));
+    });
+    auto *aboutQt = new QAction("About &Qt6", this);
+    help->addAction(aboutQt);
+    connect(aboutQt, &QAction::triggered, this, [this] {
+        QMessageBox::aboutQt(this, tr("pain in a library"));
+    });
 }
 
 void Window::createGlWidget() {
-    QColor clearColor;
-    clearColor.setRgb(82, 156, 82);
     glWidget = new GLWidget;
-    glWidget->setClearColor(clearColor);
     glWidget->setFocusPolicy(Qt::StrongFocus);
     setCentralWidget(glWidget);
 
     gameTimer = new QTimer(this);
     connect(gameTimer, &QTimer::timeout, this, [this] {
         glWidget->update();
-        fpsDisplay->setTitle("Current FPS: " + QString::number(glWidget->getFps()));
     });
     gameTimer->start(1000 / 60);
 }
