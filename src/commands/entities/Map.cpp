@@ -16,20 +16,22 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     // }
 
     this->player = std::make_shared<UserVehicle>();
+    this->player->setTranslation(703, 201, 0);
+    this->player->zRot = 83;
     vehicles.push_back(this->player);
 
     auto cpu = std::make_shared<CPUVehicle>();
-    cpu->setTranslation(687, 180.62, 0);
+    cpu->setTranslation(555, 251, 0);
     vehicles.push_back(cpu);
 
     startLine = std::make_shared<StartLine>();
     startLine->followPerspective = true;
-    startLine->zRot = 90;
-    startLine->setTranslation(687, 180.62, 0);
+    startLine->zRot = 83;
+    startLine->setTranslation(687, 200.62, 0);
 
     for (int i = 0; i < 14; i++) {
         auto checkpoint = std::make_shared<Checkpoint>(i);
-        checkpoint->setScale(0.15, 0.15);
+        checkpoint->setScale(0.6, 0.6);
         checkpoint->setTranslation(Checkpoint::checkpointCoords[i][0], Checkpoint::checkpointCoords[i][1], 0);
         checkpoints.push_back(checkpoint);
     }
@@ -61,14 +63,28 @@ void Map::draw(GLWidget &widget) {
         for (int j = i + 1; j < vehicles.size(); ++j) {
             if (entityCollided(vehicles[i], vehicles[j])) {
                 // mmmm physics (coefficient of restitution)
-                auto xDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.x(), vehicles[j]->mass,
-                                                    vehicles[j]->velocity.x());
-                auto yDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.y(), vehicles[j]->mass,
-                                                    vehicles[j]->velocity.y());
-                vehicles[i]->velocity.setX(xDir.first);
-                vehicles[i]->velocity.setY(yDir.first);
-                vehicles[j]->velocity.setX(xDir.second);
-                vehicles[j]->velocity.setY(yDir.second);
+                // auto xDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.x(), vehicles[j]->mass,
+                                                    // vehicles[j]->velocity.x());
+                // auto yDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.y(), vehicles[j]->mass,
+                                                    // vehicles[j]->velocity.y());
+                
+                float firstXDir = vehicles[i]->velocity.x();
+                float firstYDir = vehicles[i]->velocity.y();
+                float firstNormalizer = 1/sqrt(firstXDir*firstXDir + firstYDir*firstYDir + 0.001);
+                
+                float secondXDir = vehicles[j]->velocity.x();
+                float secondYDir = vehicles[j]->velocity.y();
+                float secondNormalizer = 1/sqrt(secondXDir*secondXDir + secondYDir*secondYDir + 0.001);
+
+                vehicles[i]->x -= firstNormalizer*10.*firstXDir;
+                vehicles[i]->y -= firstNormalizer*10.*firstYDir;
+                vehicles[j]->x -= secondNormalizer*10.*secondXDir;
+                vehicles[j]->y -= secondNormalizer*10.*secondYDir;
+
+                // vehicles[i]->velocity.setX(xDir.first);
+                // vehicles[i]->velocity.setY(yDir.first);
+                // vehicles[j]->velocity.setX(xDir.second);
+                // vehicles[j]->velocity.setY(yDir.second);
             }
         }
 
@@ -76,7 +92,7 @@ void Map::draw(GLWidget &widget) {
         float xScaled = vehicles[i]->getX() / scale;
         float yScaled = vehicles[i]->getY() / scale;
         if (!isDrivable(QPoint((int) xScaled, (int) yScaled))) {
-            tpToClosestDrivablePixel(i, xScaled, yScaled);
+            // tpToClosestDrivablePixel(i, xScaled, yScaled);
         }
     }
 
