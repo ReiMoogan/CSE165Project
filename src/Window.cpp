@@ -29,9 +29,6 @@ void Window::createMenuBar() {
         fpsMenu->addAction(action);
         connect(action, &QAction::triggered, this, [this, fps] { setFps(fps); });
     }
-
-    fpsDisplay = menuBar()->addMenu("Current FPS: 0");
-    fpsDisplay->setDisabled(true);
 }
 
 void Window::createGlWidget() {
@@ -42,7 +39,6 @@ void Window::createGlWidget() {
     gameTimer = new QTimer(this);
     connect(gameTimer, &QTimer::timeout, this, [this] {
         glWidget->update();
-        fpsDisplay->setTitle("Current FPS: " + QString::number(glWidget->getFps()));
     });
     gameTimer->start(1000 / 60);
 }

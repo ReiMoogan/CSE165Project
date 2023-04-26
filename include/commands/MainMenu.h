@@ -18,6 +18,7 @@ private:
     bool realizedStartGame = false;
     bool endGame = true;
     bool realizedEndGame = false;
+    std::shared_ptr<TextEntity> fps;
     std::shared_ptr<ImageEntity> background;
     std::shared_ptr<ImageEntity> title;
     std::shared_ptr<ImageButton> startButton;

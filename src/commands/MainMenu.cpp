@@ -4,6 +4,7 @@
 #include <QApplication>
 
 void MainMenu::init(GLWidget &widget) {
+    fps = std::make_shared<TextEntity>(":/fonts/Inconsolata.ttf", "FPS: unknown", 24, widget.width() - 170, 10, 100.0f);
     background = std::make_shared<ImageEntity>(":/textures/menu.png", widget.width() / 2 + 150, widget.height() / 2, -1.0f);
     title = std::make_shared<ImageEntity>(":/textures/title.png", 100, widget.height() / 2 - 300, 0.0f);
     startButton = std::make_shared<ImageButton>(":/textures/start_button.png", 100, widget.height() / 2 + 50, 0.0f);
@@ -28,6 +29,8 @@ void MainMenu::init(GLWidget &widget) {
     exitButton->onClick = []() {
         QApplication::quit();
     };
+
+    widget.addCommand(fps);
 }
 
 void MainMenu::draw(GLWidget &widget) {
@@ -52,6 +55,8 @@ void MainMenu::draw(GLWidget &widget) {
         realizedStartGame = false;
         realizedEndGame = true;
     }
+
+    fps->setText("FPS: " + std::to_string(widget.getFps()));
 }
 
 bool MainMenu::isFinished(GLWidget &widget) {
