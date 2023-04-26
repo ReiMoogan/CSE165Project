@@ -22,5 +22,6 @@
     <file>fonts/Inconsolata.ttf</file>
     <!-- Sounds -->
     <file>sfx/engine.wav</file>
+    <file>sfx/plst00.wav</file>
 </qresource>
 </RCC>

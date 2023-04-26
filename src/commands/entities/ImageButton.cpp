@@ -1,5 +1,8 @@
 #include "commands/entities/ImageButton.h"
 
+bool ImageButton::soundInitialized = false;
+QSoundEffect ImageButton::clickSound;
+
 ImageButton::ImageButton(const QString &imagePath) : ImageEntity(imagePath) {
 
 }
@@ -9,15 +12,29 @@ ImageButton::ImageButton(const QString &imagePath, float x, float y, float z) : 
 }
 
 void ImageButton::init(GLWidget &widget) {
+    if (!soundInitialized) {
+        clickSound.setSource(QUrl("qrc:/sfx/plst00.wav"));
+        clickSound.setVolume(0.1f);
+        soundInitialized = true;
+    }
+
     ImageEntity::init(widget);
 }
 
 void ImageButton::draw(GLWidget &widget) {
+    bool isMouseOver = mouseOver(widget);
+
+    if (isMouseOver) {
+        select();
+    } else {
+        deselect();
+    }
+
     if (widget.isMousePressed() && !mousePreviouslyPressed) {
         mousePreviouslyPressed = true;
     } else if (!widget.isMousePressed() && mousePreviouslyPressed) {
         mousePreviouslyPressed = false;
-        if (mouseOver(widget)) {
+        if (isMouseOver) {
             if (onClick) {
                 onClick();
             }
@@ -25,10 +42,6 @@ void ImageButton::draw(GLWidget &widget) {
     }
 
     ImageEntity::draw(widget);
-}
-
-bool ImageButton::isFinished(GLWidget &widget) {
-    return isFinishedFlag;
 }
 
 bool ImageButton::mouseOver(GLWidget &widget) {
@@ -39,4 +52,25 @@ bool ImageButton::mouseOver(GLWidget &widget) {
         return widget.getMousePos().x() >= x - getWidth() / 2.0f && widget.getMousePos().x() <= x + getWidth() / 2.0f &&
                widget.getMousePos().y() >= y - getHeight() / 2.0f && widget.getMousePos().y() <= y + getHeight() / 2.0f;
     }
+}
+
+void ImageButton::select() {
+    if (lastSelectionState)
+        return;
+
+    clickSound.play();
+    enableColorShift = true;
+    colorShift = 0.35f;
+
+    lastSelectionState = true;
+}
+
+void ImageButton::deselect() {
+    if (!lastSelectionState)
+        return;
+
+    enableColorShift = false;
+    colorShift = 0;
+
+    lastSelectionState = false;
 }

@@ -1,6 +1,7 @@
 #ifndef CSE165PROJECT_IMAGEBUTTON_H
 #define CSE165PROJECT_IMAGEBUTTON_H
 
+#include <QSoundEffect>
 #include "ImageEntity.h"
 
 class ImageButton : public ImageEntity {
@@ -9,12 +10,15 @@ public:
     ImageButton(const QString& imagePath, float x, float y, float z);
     void init(GLWidget &widget) override;
     void draw(GLWidget &widget) override;
-    bool isFinished(GLWidget &widget) override;
+    void select();
+    void deselect();
     std::function<void()> onClick;
 private:
+    bool lastSelectionState = false;
     bool mousePreviouslyPressed = false;
-    bool isFinishedFlag = false;
     bool mouseOver(GLWidget &widget);
+    static bool soundInitialized;
+    static QSoundEffect clickSound;
 };
 
 

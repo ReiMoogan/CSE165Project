@@ -6,6 +6,7 @@
 #include <QOpenGLDebugLogger>
 
 #include "commands/MainMenu.h"
+#include "commands/GameStats.h"
 
 std::function<void(QMatrix4x4& matrix, GLWidget& widget, Entity& other)> GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {
     // do nothing

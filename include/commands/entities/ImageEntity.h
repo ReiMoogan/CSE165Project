@@ -28,6 +28,8 @@ public:
     [[nodiscard]] float getWidth() const;
     [[nodiscard]] float getHeight() const;
     bool followPerspective = false;
+    bool enableColorShift = false;
+    float colorShift = 0;
 };
 
 

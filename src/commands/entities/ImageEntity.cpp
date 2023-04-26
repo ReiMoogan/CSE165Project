@@ -152,6 +152,8 @@ void ImageEntity::draw(GLWidget &widget) {
     texture->bind();
 
     program->setUniformValue("matrix", m);
+    program->setUniformValue("recolor", enableColorShift);
+    program->setUniformValue("hueShift", colorShift);
     program->enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
     program->enableAttributeArray(PROGRAM_TEXCOORD_ATTRIBUTE);
     program->setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 3, 5 * sizeof(GLfloat));
