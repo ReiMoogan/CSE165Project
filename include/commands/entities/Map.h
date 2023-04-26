@@ -8,6 +8,7 @@
 #include "CPUVehicle.h"
 #include "UserVehicle.h"
 #include "StartLine.h"
+#include "Checkpoint.h"
 
 class Map : public ImageEntity {
 public:
@@ -23,6 +24,9 @@ private:
     std::vector<std::shared_ptr<Vehicle>> vehicles;
     std::shared_ptr<StartLine> startLine;
     std::shared_ptr<UserVehicle> player;
+    
+    // checkpoint locations
+    std::vector<std::shared_ptr<Checkpoint>> checkpoints;
 
     static bool entityCollided(const std::shared_ptr<ImageEntity>& a, const std::shared_ptr<ImageEntity>& b);
     bool isDrivable(const QPoint& point);

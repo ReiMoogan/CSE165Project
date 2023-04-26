@@ -16,9 +16,6 @@ private:
     float timeSinceLastAnimatedFrame = 0;
     int frame = 0;
 
-protected:
-    bool followPerspective = false;
-
 public:
     explicit ImageEntity(const QString& imagePath);
     ImageEntity(const QString& imagePath, float x, float y, float z, bool followPerspective = false);
@@ -30,6 +27,7 @@ public:
     // width and height of the image, after scaling
     [[nodiscard]] float getWidth() const;
     [[nodiscard]] float getHeight() const;
+    bool followPerspective = false;
 };
 
 

@@ -27,6 +27,15 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     startLine->setDrawMode(CENTER);
     startLine->zRot = 90;
     startLine->setTranslation(687, 180.62, 0);
+
+    const int checkpointCoords[][2] = {{1078, 106}, {1650, 184}, {2099, 219}, {1915, 744}, {2250, 798}, {2531, 381}, {2770, 505}, {2508, 994}, 
+        {1891, 1160}, {840, 1442}, {340, 1314}, {133, 850}, {290, 418}, {713, 197}};
+    for (int i = 0; i < 14; i++) {
+        auto checkpoint = std::make_shared<Checkpoint>(i);
+        checkpoint->setScale(0.15, 0.15);
+        checkpoint->setTranslation(checkpointCoords[i][0], checkpointCoords[i][1], 0);
+        checkpoints.push_back(checkpoint);
+    }
 }
 
 void Map::init(GLWidget &widget) {
@@ -37,6 +46,11 @@ void Map::init(GLWidget &widget) {
     for (const auto& vehicle : vehicles) {
         vehicle->followPerspective = true;
         widget.addCommand(vehicle);
+    }
+
+    for (const auto& checkpoint : checkpoints) {
+        checkpoint->followPerspective = true;
+        widget.addCommand(checkpoint);
     }
 
     widget.addCommand(this->startLine);
@@ -66,6 +80,15 @@ void Map::draw(GLWidget &widget) {
         float yScaled = vehicles[i]->getY() / scale;
         if (!isDrivable(QPoint((int) xScaled, (int) yScaled))) {
             tpToClosestDrivablePixel(i, xScaled, yScaled);
+        }
+    }
+
+    // check if vehicles made it to checkpoints
+    for (const auto& checkpoint: checkpoints) {
+        for (auto& vehicle : vehicles) {
+            if (entityCollided(vehicle, checkpoint) && vehicle->checkpointsHit.count(checkpoint->index) == 0) {
+                vehicle->checkpointsHit.insert(checkpoint->index);
+            }
         }
     }
 }
