@@ -31,10 +31,17 @@ void MainMenu::init(GLWidget &widget) {
     };
 
     widget.addCommand(fps);
+
+    music.setSource(QUrl("qrc:/bgm/menu.mp3"));
+    output.setVolume(0.3f);
+    music.setAudioOutput(&output);
+    music.setLoops(QMediaPlayer::Infinite);
+    music.play();
 }
 
 void MainMenu::draw(GLWidget &widget) {
     if (startGame && !realizedStartGame) {
+        music.stop();
         auto map = std::make_shared<Map>("map1", 1.5f);
         widget.addCommand(map);
         widget.addCommand(std::make_shared<HUD>(map));
@@ -54,6 +61,8 @@ void MainMenu::draw(GLWidget &widget) {
         startGame = false;
         realizedStartGame = false;
         realizedEndGame = true;
+
+        music.play();
     }
 
     fps->setText("FPS: " + std::to_string(widget.getFps()));

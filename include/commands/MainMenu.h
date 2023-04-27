@@ -6,6 +6,9 @@
 #include "commands/entities/ImageButton.h"
 #include "commands/entities/TextEntity.h"
 
+#include <QMediaPlayer>
+#include <QAudioOutput>
+
 class MainMenu : public Command {
 public:
     void init(GLWidget &widget) override;
@@ -14,6 +17,8 @@ public:
     float getPriority() override;
     void showMenuScreen();
 private:
+    QMediaPlayer music;
+    QAudioOutput output;
     bool startGame = false;
     bool realizedStartGame = false;
     bool endGame = true;

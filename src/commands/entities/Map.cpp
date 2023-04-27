@@ -7,6 +7,11 @@ const float Map::goalY = 200.62;
 // Use the actual name like "map1" not ":/textures/map1.png"
 // We will load both the png and bmp
 Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures/%1.png").arg(name.c_str())) {
+    music.setSource(QUrl("qrc:/bgm/map1.mp3"));
+    output.setVolume(0.5f);
+    music.setAudioOutput(&output);
+    music.setLoops(QMediaPlayer::Infinite);
+
     mapRoute = QImage(QString(":/textures/%1.bmp").arg(name.c_str()));
     this->scale = scale;
     z = -420; // Make sure the map is always behind the vehicles
@@ -58,6 +63,7 @@ void Map::init(GLWidget &widget) {
     }
 
     widget.addCommand(this->startLine);
+    music.play();
 }
 
 void Map::draw(GLWidget &widget) {
@@ -136,6 +142,7 @@ void Map::tpToClosestDrivablePixel(int i, float xScaled, float yScaled) {
 }
 
 bool Map::isFinished(GLWidget &widget) {
+    // remember to stop the music
     return false;
 }
 
