@@ -16,25 +16,24 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     z = -420; // Make sure the map is always behind the vehicles
     followPerspective = true;
 
-    // for (int i = 0; i < 1; ++i) {
-    //     auto vehicle = std::make_shared<Vehicle>();
-    //     vehicle->setTranslation(687, 207.62, 0);
-    //     vehicles.push_back(vehicle);
-    // }
-
     this->player = std::make_shared<UserVehicle>();
     this->player->setTranslation(703, 201, 0);
     this->player->zRot = 83;
     vehicles.push_back(this->player);
 
-    auto cpu = std::make_shared<CPUVehicle>();
-    cpu->setTranslation(555, 251, 0);
-    vehicles.push_back(cpu);
+    for (int i = 0; i < 1; i++) {
+        auto cpu = std::make_shared<CPUVehicle>();
+        float smallCalc(float a) {
+            return -1038.39 * a * a + 7.31337 * a;
+        }
+        cpu->setTranslation(555 - 20 * i, 251, 0);
+        vehicles.push_back(cpu);
+    }
 
     startLine = std::make_shared<StartLine>();
     startLine->followPerspective = true;
     startLine->zRot = 83;
-    startLine->setTranslation(goalX, goalY, 0);
+    startLine->setTranslation(goalX, goalY, -10);
 
     for (int i = 0; i < 14; i++) {
         auto checkpoint = std::make_shared<Checkpoint>(i);
@@ -109,16 +108,20 @@ void Map::draw(GLWidget &widget) {
     // check if vehicles made it to checkpoints
     for (const auto& checkpoint: checkpoints) {
         for (auto& vehicle : vehicles) {
-            if (entityCollided(vehicle, checkpoint) && vehicle->checkpointsHit.count(checkpoint->index) == 0) {
-                vehicle->checkpointsHit.insert(checkpoint->index);
+            if (entityCollided(vehicle, checkpoint)/* && vehicle->checkpointsHit.count(checkpoint->index) == 0*/) {
+//                vehicle->checkpointsHit.insert(checkpoint->index);
+                if (vehicle->lastCheckpoint == checkpoint->index - 1) {
+                    vehicle->lastCheckpoint = checkpoint->index;
+                }
             }
         }
     }
 
     // check for vehicles who have made a lap
     for (auto& vehicle : vehicles) {
-        if (entityCollided(vehicle, startLine) && vehicle->checkpointsHit.size() == Checkpoint::totalCheckpoints) {
-            vehicle->checkpointsHit.clear();
+        if (entityCollided(vehicle, startLine)/* && vehicle->checkpointsHit.size() == Checkpoint::totalCheckpoints*/ && vehicle->lastCheckpoint == Checkpoint::totalCheckpoints - 1) {
+//            vehicle->checkpointsHit.clear();
+            vehicle->lastCheckpoint = -1;
             vehicle->laps++;
         }
     }

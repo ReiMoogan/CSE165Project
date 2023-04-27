@@ -8,7 +8,8 @@ void CPUVehicle::init(GLWidget &widget) {
 }
 
 void CPUVehicle::draw(GLWidget &widget) {
-    int nextCheckpointIdx = checkpointsHit.size();
+    //auto nextCheckpointIdx = checkpointsHit.size();
+    auto nextCheckpointIdx = lastCheckpoint + 1;
     float targetX, targetY;
     if (nextCheckpointIdx < Checkpoint::totalCheckpoints) {
         targetX = Checkpoint::checkpointCoords[nextCheckpointIdx][0];
@@ -18,10 +19,19 @@ void CPUVehicle::draw(GLWidget &widget) {
         targetY = Map::goalY;
     }
 
+    // Add some randomness to the target
+    targetX += uniformRNG() * 5 - 2.5f;
+    targetY += uniformRNG() * 5 - 2.5f;
+
     float dX = targetX-x;
     float dY = targetY-y;
 
-    zRot = 90+(atan2(dY, dX) * 180/M_PI) + (uniformRNG()-0.5) * 10;
+    float targetZRot = 90.0f + (atan2(dY, dX) * 180.0f / (float) M_PI);
+    float dZRot = targetZRot - zRot;
+
+    if (dZRot < -1.0f || dZRot > 1.0f) {
+        zRot += 0.1f * dZRot;
+    }
 
     if (uniformRNG() < 0.4) {
         setAccelerator(ACCELERATE);
@@ -33,7 +43,7 @@ void CPUVehicle::draw(GLWidget &widget) {
 }
 
 float CPUVehicle::uniformRNG() {
-    return rand()/(float)RAND_MAX;
+    return (float) rand() / (float)RAND_MAX;
 }
 
 bool CPUVehicle::isFinished(GLWidget &widget) {

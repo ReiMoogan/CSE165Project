@@ -26,7 +26,8 @@ public:
     bool isFinished(GLWidget& widget) override;
 
     // checkpoints
-    std::unordered_set<int> checkpointsHit;
+//    std::unordered_set<int> checkpointsHit;
+    int lastCheckpoint = -1;
     int laps;
     friend class Map;
 protected:

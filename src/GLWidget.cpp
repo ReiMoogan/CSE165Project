@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <iostream>
 #include <QOpenGLDebugLogger>
+#include <ranges>
 
 #include "commands/MainMenu.h"
 #include "commands/GameStats.h"
@@ -72,8 +73,9 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // draw from back to front
-    for (auto mukyu = commands.rbegin(); mukyu != commands.rend(); ++mukyu) {
-        auto& zEntities = mukyu->second;
+    //for (auto & command : std::ranges::reverse_view(commands)) {
+    for (auto & command : commands) {
+        auto& zEntities = command.second;
         for (auto iter = zEntities.begin(); iter != zEntities.end(); /* no increment*/) {
             (*iter)->draw(*this);
 

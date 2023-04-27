@@ -8,7 +8,7 @@ uniform vec4 textColor;
 
 void main() {
     vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, texc).r);
-    if (sampled.a < 0.5)
+    if (sampled.a < 0.001)
         discard;
     color = textColor * sampled;
 }

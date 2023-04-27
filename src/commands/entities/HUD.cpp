@@ -14,7 +14,8 @@ void HUD::draw(GLWidget& widget) {
     this->positionText->setText(
         "Position: " + to_string(this->map->player->getX()) + ", " + to_string(this->map->player->getY()));
     this->checkpointsText->setText(
-        "checkpoints: " + to_string(this->map->player->checkpointsHit.size()));
+//        "checkpoints: " + to_string(this->map->player->checkpointsHit.size()));
+        "checkpoints: " + to_string(this->map->player->lastCheckpoint + 1));
     this->lapsText->setText(
         "laps: " + to_string(this->map->player->laps));
 
