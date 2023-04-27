@@ -24,6 +24,7 @@ public:
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;
+    float getSpeed();
 
     // checkpoints
 //    std::unordered_set<int> checkpointsHit;

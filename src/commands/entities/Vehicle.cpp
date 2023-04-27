@@ -71,4 +71,8 @@ void Vehicle::setTurn(Turn turn) {
     this->turn = turn;
 }
 
+float Vehicle::getSpeed() {
+    return velocity.length();
+}
+
 #pragma clang diagnostic pop

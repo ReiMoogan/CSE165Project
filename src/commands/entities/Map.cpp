@@ -21,12 +21,14 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     this->player->zRot = 83;
     vehicles.push_back(this->player);
 
+    const auto smallCalc = [](float a) {
+        return -1038.39f * a * a + 7.31337f * a;
+    };
+
     for (int i = 0; i < 1; i++) {
         auto cpu = std::make_shared<CPUVehicle>();
-        float smallCalc(float a) {
-            return -1038.39 * a * a + 7.31337 * a;
-        }
-        cpu->setTranslation(555 - 20 * i, 251, 0);
+        auto x = (float) (555 - 20 * i);
+        cpu->setTranslation(x, smallCalc(x), 0);
         vehicles.push_back(cpu);
     }
 
@@ -72,12 +74,12 @@ void Map::draw(GLWidget &widget) {
         for (int j = i + 1; j < vehicles.size(); ++j) {
             if (entityCollided(vehicles[i], vehicles[j])) {
                 // mmmm physics (coefficient of restitution)
-                // auto xDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.x(), vehicles[j]->mass,
-                                                    // vehicles[j]->velocity.x());
-                // auto yDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.y(), vehicles[j]->mass,
-                                                    // vehicles[j]->velocity.y());
+                auto xDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.x(), vehicles[j]->mass,
+                                                     vehicles[j]->velocity.x());
+                auto yDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.y(), vehicles[j]->mass,
+                                                     vehicles[j]->velocity.y());
                 
-                float firstXDir = vehicles[i]->velocity.x();
+                /*float firstXDir = vehicles[i]->velocity.x();
                 float firstYDir = vehicles[i]->velocity.y();
                 float firstNormalizer = 1/sqrt(firstXDir*firstXDir + firstYDir*firstYDir + 0.001);
                 
@@ -88,12 +90,20 @@ void Map::draw(GLWidget &widget) {
                 vehicles[i]->x -= firstNormalizer*10.*firstXDir;
                 vehicles[i]->y -= firstNormalizer*10.*firstYDir;
                 vehicles[j]->x -= secondNormalizer*10.*secondXDir;
-                vehicles[j]->y -= secondNormalizer*10.*secondYDir;
+                vehicles[j]->y -= secondNormalizer*10.*secondYDir;*/
 
-                // vehicles[i]->velocity.setX(xDir.first);
-                // vehicles[i]->velocity.setY(yDir.first);
-                // vehicles[j]->velocity.setX(xDir.second);
-                // vehicles[j]->velocity.setY(yDir.second);
+                vehicles[i]->velocity.setX(xDir.first);
+                vehicles[i]->velocity.setY(yDir.first);
+                vehicles[j]->velocity.setX(xDir.second);
+                vehicles[j]->velocity.setY(yDir.second);
+
+#define STEP_FACTOR 0.01f;
+                while (entityCollided(vehicles[i], vehicles[j])) {
+                    vehicles[i]->x += vehicles[i]->velocity.x() * STEP_FACTOR;
+                    vehicles[i]->y += vehicles[i]->velocity.y() * STEP_FACTOR;
+                    vehicles[j]->x += vehicles[j]->velocity.x() * STEP_FACTOR;
+                    vehicles[j]->y += vehicles[j]->velocity.y() * STEP_FACTOR;
+                }
             }
         }
 
@@ -175,6 +185,11 @@ QPoint Map::getClosestDrivablePixel(const QPoint& point) {
         }
 
         ++distance;
+
+#define GIVE_UP_DISTANCE 1000
+        if (distance > GIVE_UP_DISTANCE) {
+            return {point.x(), point.y()};
+        }
     }
 }
 
