@@ -5,9 +5,8 @@
 
 QT_FORWARD_DECLARE_CLASS(GLWidget)
 
-class Command {
+class Command : public QObject {
 public:
-    virtual ~Command() = default;
     virtual void init(GLWidget& widget) = 0;
     virtual void draw(GLWidget& widget) = 0;
     virtual bool isFinished(GLWidget& widget) = 0;
