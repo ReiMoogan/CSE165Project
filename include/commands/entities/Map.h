@@ -3,8 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <QMediaPlayer>
-#include <QAudioOutput>
+#include <QSoundEffect>
 #include "ImageEntity.h"
 #include "Vehicle.h"
 #include "CPUVehicle.h"
@@ -22,8 +21,7 @@ public:
     static const float goalX, goalY;
     friend class HUD;
 private:
-    QMediaPlayer music;
-    QAudioOutput output;
+    QSoundEffect music;
     QImage mapRoute;
     float scale;
     std::vector<std::shared_ptr<Vehicle>> vehicles;

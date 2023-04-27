@@ -7,10 +7,9 @@ const float Map::goalY = 200.62;
 // Use the actual name like "map1" not ":/textures/map1.png"
 // We will load both the png and bmp
 Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures/%1.png").arg(name.c_str())) {
-    music.setSource(QUrl("qrc:/bgm/map1.mp3"));
-    output.setVolume(0.5f);
-    music.setAudioOutput(&output);
-    music.setLoops(QMediaPlayer::Infinite);
+    music.setSource(QUrl("qrc:/bgm/map1.wav"));
+    music.setVolume(0.5f);
+    music.setLoopCount(QSoundEffect::Infinite);
 
     mapRoute = QImage(QString(":/textures/%1.bmp").arg(name.c_str()));
     this->scale = scale;
