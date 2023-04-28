@@ -4,6 +4,7 @@
 
 const float Map::goalX = 687;
 const float Map::goalY = 200.62;
+const int Map::maxLaps = 1;
 
 // Use the actual name like "map1" not ":/textures/map1.png"
 // We will load both the png and bmp
@@ -152,6 +153,10 @@ void Map::draw(GLWidget &widget) {
 //            vehicle->checkpointsHit.clear();
             vehicle->lastCheckpoint = -1;
             vehicle->laps++;
+
+            if (vehicle->laps >= maxLaps) {
+                vehicle->setFinished(widget, true);
+            }
         }
     }
 }

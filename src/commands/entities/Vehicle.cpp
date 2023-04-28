@@ -22,7 +22,8 @@ void Vehicle::draw(GLWidget &widget) {
 }
 
 void Vehicle::calculateVehicle(const GLWidget &widget) {
-    if (!this->started) return;
+    if (!started) return;
+    
     float angle = zRot - 90; // image is upright, so subtract 90 degrees (since system origin is top left)
     // oh yeah did you know QMatrix4x4 USES DEGREES INSTEAD OF RADIANS AHHHHHHHHHHHHHHHHHHHHHHHHH
 
@@ -63,7 +64,12 @@ void Vehicle::calculateVehicle(const GLWidget &widget) {
 }
 
 bool Vehicle::isFinished(GLWidget &widget) {
-    return false;
+    return finished;
+}
+
+void Vehicle::setFinished(GLWidget &widget, bool finished) {
+    this->finished = finished;
+    this->started = false;
 }
 
 #pragma clang diagnostic push

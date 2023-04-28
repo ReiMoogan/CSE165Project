@@ -8,7 +8,6 @@ class UserVehicle : public Vehicle {
 public:
     void init(GLWidget &widget) override;
     void draw(GLWidget &widget) override;
-    bool isFinished(GLWidget &widget) override;
 };
 
 

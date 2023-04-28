@@ -26,6 +26,10 @@ void HUD::draw(GLWidget& widget) {
         "speed: " + to_string(this->map->player->getSpeed()));
     this->placeText->setText(
         "place: " + to_string(this->map->player->place));
+
+    if (this->map->player->isFinished(widget)) {
+        this->countdownText->setText("FINISH");
+    }
 }
 
 void HUD::toggleDebug() {

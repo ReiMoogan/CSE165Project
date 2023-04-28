@@ -19,6 +19,7 @@ public:
     bool isFinished(GLWidget& widget) override;
 
     static const float goalX, goalY;
+    static const int maxLaps;
     friend class HUD;
 private:
     QSoundEffect music;
