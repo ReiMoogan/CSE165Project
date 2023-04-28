@@ -68,8 +68,18 @@ void Map::init(GLWidget &widget) {
 void Map::draw(GLWidget &widget) {
     ImageEntity::draw(widget);
 
+    std::stable_sort(vehicles.begin(), vehicles.end(), [](const std::shared_ptr<Vehicle>& a, const std::shared_ptr<Vehicle>& b) {
+        if (a->laps == b->laps) {
+            return a->lastCheckpoint > b->lastCheckpoint;
+        } else {
+            return a->laps > b->laps;
+        }
+    });
+
     // do collision calculation
     for (int i = 0; i < vehicles.size(); ++i) {
+        vehicles[i]->place = i + 1;
+
         for (int j = i + 1; j < vehicles.size(); ++j) {
             if (entityCollided(vehicles[i], vehicles[j])) {
                 // mmmm physics (coefficient of restitution)

@@ -16,10 +16,16 @@ void Vehicle::init(GLWidget &widget) {
 }
 
 void Vehicle::draw(GLWidget &widget) {
+    calculateVehicle(widget);
+
+    ImageEntity::draw(widget);
+}
+
+void Vehicle::calculateVehicle(const GLWidget &widget) {
     float angle = zRot - 90; // image is upright, so subtract 90 degrees (since system origin is top left)
     // oh yeah did you know QMatrix4x4 USES DEGREES INSTEAD OF RADIANS AHHHHHHHHHHHHHHHHHHHHHHHHH
 
-    auto direction = QVector2D(std::cos(angle * (float) M_PI / 180.0f), std::sin(angle * (float) M_PI / 180.0f));
+    auto direction = QVector2D(cos(angle * (float) M_PI / 180.0f), sin(angle * (float) M_PI / 180.0f));
 
     switch (mode) {
         case DECELERATE:
@@ -53,8 +59,6 @@ void Vehicle::draw(GLWidget &widget) {
 
     x += velocity.x() * widget.getTimeDelta();
     y += velocity.y() * widget.getTimeDelta();
-
-    ImageEntity::draw(widget);
 }
 
 bool Vehicle::isFinished(GLWidget &widget) {
@@ -73,6 +77,15 @@ void Vehicle::setTurn(Turn turn) {
 
 float Vehicle::getSpeed() {
     return velocity.length();
+}
+
+void Vehicle::setPaused(bool paused) {
+    this->paused = paused;
+    if (paused) {
+        effect.stop();
+    } else {
+        effect.play();
+    }
 }
 
 #pragma clang diagnostic pop

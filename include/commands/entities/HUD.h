@@ -19,6 +19,7 @@ private:
     std::shared_ptr<TextEntity> checkpointsText;
     std::shared_ptr<TextEntity> lapsText;
     std::shared_ptr<TextEntity> speedText;
+    std::shared_ptr<TextEntity> placeText;
 
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;

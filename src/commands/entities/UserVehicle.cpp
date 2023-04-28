@@ -35,18 +35,12 @@ void UserVehicle::draw(GLWidget &widget) {
     else
         setTurn(STRAIGHT);
 
-    if (widget.isKeyPressed(Qt::Key_Equal)) { // + key
-        xScale += 0.01;
-        yScale += 0.01;
-    }
-    if (widget.isKeyPressed(Qt::Key_Minus)) {
-        xScale -= 0.01;
-        yScale -= 0.01;
-    }
-
     Vehicle::draw(widget);
 }
 
 bool UserVehicle::isFinished(GLWidget &widget) {
+//    GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
+//    GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
+
     return false;
 }

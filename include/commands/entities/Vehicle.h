@@ -25,9 +25,11 @@ public:
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;
     float getSpeed();
+    void setPaused(bool paused);
 
     // checkpoints
 //    std::unordered_set<int> checkpointsHit;
+    int place;
     int lastCheckpoint = -1;
     int laps;
     friend class Map;
@@ -53,6 +55,8 @@ protected:
     // sfx
 private:
     QSoundEffect effect;
+    bool paused;
+    void calculateVehicle(const GLWidget &widget);
 };
 
 
