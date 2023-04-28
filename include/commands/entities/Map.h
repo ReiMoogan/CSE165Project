@@ -22,6 +22,7 @@ public:
     friend class HUD;
 private:
     QSoundEffect music;
+    QSoundEffect thudSfx;
     QImage mapRoute;
     float scale;
     std::vector<std::shared_ptr<Vehicle>> vehicles;

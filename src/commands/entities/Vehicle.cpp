@@ -22,6 +22,7 @@ void Vehicle::draw(GLWidget &widget) {
 }
 
 void Vehicle::calculateVehicle(const GLWidget &widget) {
+    if (!this->started) return;
     float angle = zRot - 90; // image is upright, so subtract 90 degrees (since system origin is top left)
     // oh yeah did you know QMatrix4x4 USES DEGREES INSTEAD OF RADIANS AHHHHHHHHHHHHHHHHHHHHHHHHH
 

@@ -32,6 +32,7 @@ public:
     int place;
     int lastCheckpoint = -1;
     int laps;
+    bool started = false;
     friend class Map;
 protected:
     // "tuples" of min and max values for velocity and acceleration

@@ -20,6 +20,7 @@ private:
     std::shared_ptr<TextEntity> lapsText;
     std::shared_ptr<TextEntity> speedText;
     std::shared_ptr<TextEntity> placeText;
+    std::shared_ptr<TextEntity> countdownText;
 
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;

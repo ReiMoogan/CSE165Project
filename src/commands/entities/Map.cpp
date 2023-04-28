@@ -1,5 +1,6 @@
 #include "commands/entities/Map.h"
 #include "Fonts.h"
+#include <QTimer>
 
 const float Map::goalX = 687;
 const float Map::goalY = 200.62;
@@ -8,8 +9,11 @@ const float Map::goalY = 200.62;
 // We will load both the png and bmp
 Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures/%1.png").arg(name.c_str())) {
     music.setSource(QUrl("qrc:/bgm/map1.wav"));
-    music.setVolume(0.5f);
+    music.setVolume(0.1f);
     music.setLoopCount(QSoundEffect::Infinite);
+
+    thudSfx.setSource(QUrl("qrc:/sfx/thud.wav"));
+    thudSfx.setVolume(2.5f);
 
     mapRoute = QImage(QString(":/textures/%1.bmp").arg(name.c_str()));
     this->scale = scale;
