@@ -21,14 +21,13 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     this->player->zRot = 83;
     vehicles.push_back(this->player);
 
-    const auto smallCalc = [](float a) {
-        return -1038.39f * a * a + 7.31337f * a;
-    };
+//    const auto smallCalc = [](float a) {
+//        return -1038.39f * a * a + 7.31337f * a;
+//    };
 
     for (int i = 0; i < 1; i++) {
         auto cpu = std::make_shared<CPUVehicle>();
-        auto x = (float) (555 - 20 * i);
-        cpu->setTranslation(x, smallCalc(x), 0);
+        cpu->setTranslation(555, 251, 0);
         vehicles.push_back(cpu);
     }
 
@@ -78,32 +77,38 @@ void Map::draw(GLWidget &widget) {
                                                      vehicles[j]->velocity.x());
                 auto yDir = mayhapsElasticCollision(vehicles[i]->mass, vehicles[i]->velocity.y(), vehicles[j]->mass,
                                                      vehicles[j]->velocity.y());
-                
-                /*float firstXDir = vehicles[i]->velocity.x();
-                float firstYDir = vehicles[i]->velocity.y();
-                float firstNormalizer = 1/sqrt(firstXDir*firstXDir + firstYDir*firstYDir + 0.001);
-                
-                float secondXDir = vehicles[j]->velocity.x();
-                float secondYDir = vehicles[j]->velocity.y();
-                float secondNormalizer = 1/sqrt(secondXDir*secondXDir + secondYDir*secondYDir + 0.001);
 
-                vehicles[i]->x -= firstNormalizer*10.*firstXDir;
-                vehicles[i]->y -= firstNormalizer*10.*firstYDir;
-                vehicles[j]->x -= secondNormalizer*10.*secondXDir;
-                vehicles[j]->y -= secondNormalizer*10.*secondYDir;*/
+#define STEP_FACTOR 0.01f
+                std::shared_ptr<Vehicle> vehicleBehind = vehicles[i];
+                std::shared_ptr<Vehicle> vehicleAhead = vehicles[j];
+
+                // find the vehicle that is behind - this is relative
+                float firstZRot = (vehicles[i]->zRot - 90) * (float) M_PI / 180.0f;
+                float secondZRot = (vehicles[j]->zRot - 90) * (float) M_PI / 180.0f;
+#define DISTANCE_SCAN 500.0f
+                QVector2D firstPos(vehicles[i]->x, vehicles[i]->y);
+                QVector2D firstPosDist(firstPos.x() + cos(firstZRot) * DISTANCE_SCAN, firstPos.y() + sin(firstZRot) * DISTANCE_SCAN);
+                QVector2D secondPos(vehicles[j]->x, vehicles[j]->y);
+                QVector2D secondPosDist(secondPos.x() + cos(secondZRot) * DISTANCE_SCAN, secondPos.y() + sin(secondZRot) * DISTANCE_SCAN);
+                float firstScanToSecond = (secondPos - firstPosDist).length(); // if smaller, then first is behind
+                float secondScanToSecond = (firstPos - secondPosDist).length(); // if smaller, then second is behind
+
+                if (secondScanToSecond < firstScanToSecond) {
+                    vehicleBehind = vehicles[j];
+                    vehicleAhead = vehicles[i];
+                }
+
+                while (entityCollided(vehicles[i], vehicles[j])) {
+                    vehicleBehind->x -= vehicleBehind->velocity.x() * STEP_FACTOR;
+                    vehicleBehind->y -= vehicleBehind->velocity.y() * STEP_FACTOR;
+                    vehicleAhead->x += vehicleAhead->velocity.x() * STEP_FACTOR;
+                    vehicleAhead->y += vehicleAhead->velocity.y() * STEP_FACTOR;
+                }
 
                 vehicles[i]->velocity.setX(xDir.first);
                 vehicles[i]->velocity.setY(yDir.first);
                 vehicles[j]->velocity.setX(xDir.second);
                 vehicles[j]->velocity.setY(yDir.second);
-
-#define STEP_FACTOR 0.01f;
-                while (entityCollided(vehicles[i], vehicles[j])) {
-                    vehicles[i]->x += vehicles[i]->velocity.x() * STEP_FACTOR;
-                    vehicles[i]->y += vehicles[i]->velocity.y() * STEP_FACTOR;
-                    vehicles[j]->x += vehicles[j]->velocity.x() * STEP_FACTOR;
-                    vehicles[j]->y += vehicles[j]->velocity.y() * STEP_FACTOR;
-                }
             }
         }
 
