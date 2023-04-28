@@ -2,6 +2,7 @@
 #include <QTimer>
 
 #include "commands/entities/HUD.h"
+#include "commands/entities/ImageButton.h"
 
 using std::to_string;
 
@@ -29,6 +30,7 @@ void HUD::draw(GLWidget& widget) {
 
     if (this->map->player->isFinished(widget)) {
         this->countdownText->setText("FINISH");
+        this->exitButton->setScale(0.25, 0.25);
     }
 }
 
@@ -48,12 +50,21 @@ void HUD::init(GLWidget& widget) {
     this->placeText->setTranslation(50, (float) widget.height() - 260, 422);
     this->countdownText->setTranslation((float) widget.width()/2, (float) widget.height()/2, 422);
     this->countdownText->setDrawMode(DrawMode::CENTER); 
+    this->exitButton = std::make_shared<ImageButton>(":/textures/exit_button.png", widget.width() / 2 , widget.height() / 2 - 128, 0.0f);
+
+    this->exitButton->onClick = [this]() {
+        qInfo() << "exit";
+    };
+
     widget.addCommand(this->positionText);
     widget.addCommand(this->checkpointsText);
     widget.addCommand(this->lapsText);
     widget.addCommand(this->speedText);
     widget.addCommand(this->placeText);
     widget.addCommand(this->countdownText);
+    widget.addCommand(this->exitButton);
+
+    this->exitButton->setScale(0, 0);
 
     QTimer::singleShot(250, this, [this]() {
         this->map->thudSfx.play();
