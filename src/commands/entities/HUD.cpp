@@ -43,7 +43,7 @@ void HUD::init(GLWidget& widget) {
     this->speedText->setTranslation(50, (float) widget.height() - 220, 422);
     this->placeText->setTranslation(50, (float) widget.height() - 260, 422);
     this->countdownText->setTranslation((float) widget.width()/2, (float) widget.height()/2, 422);
-    // this->countdownText->setDrawMode(DrawMode::CENTER); 
+    this->countdownText->setDrawMode(DrawMode::CENTER); 
     widget.addCommand(this->positionText);
     widget.addCommand(this->checkpointsText);
     widget.addCommand(this->lapsText);
@@ -71,9 +71,8 @@ void HUD::init(GLWidget& widget) {
         for (const auto& vehicle : this->map->vehicles) {
             vehicle->started = true;
         }
-        this->countdownText->setTranslation((float) widget.width()/2-250, (float) widget.height()/2, 422);
         this->countdownText->setText("GOOOOOOOO!");
-        this->countdownText->setColor(QColor::fromRgb(192, 255, 192, 255));
+        this->countdownText->setColor(QColor::fromRgb(156, 255, 156, 255));
     });
     QTimer::singleShot(4000+250, this, [this]() {
         this->countdownText->setText("");

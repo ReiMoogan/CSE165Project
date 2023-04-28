@@ -11,9 +11,10 @@ TextEntity::TextEntity(const std::string& font, const std::string& text, int siz
     vao = new QOpenGLVertexArrayObject();
     vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     this->font = font;
-    this->text = text;
+    setText(text);
     this->size = size;
     this->color = Qt::red;
+    this->mode = CORNER;
 }
 
 TextEntity::TextEntity(const std::string& font, const std::string &text, int size, float x, float y, float z) : TextEntity(font, text, size) {
@@ -79,7 +80,7 @@ void TextEntity::draw(GLWidget &widget) {
 //    if (mode == CORNER) {
 //        m.translate(x, y, z);
 //    } else { // CENTER
-//        m.translate(x - (float) texture->width() / 2.0f, y - (float) texture->height() / 2.0f, z);
+//        m.translate(x - (float) size*this->text.length() / 2.0f, y - (float) size / 2.0f, z);
 //    }
 //    if (mode == CENTER) { m.translate((float) texture->width() / 2.0f, (float) texture->height() / 2.0f, 0); }
     m.scale(xScale, yScale, 1.0f);
@@ -132,7 +133,11 @@ bool TextEntity::isFinished(GLWidget &widget) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wshadow"
 void TextEntity::setText(const std::string &text) {
+    float prevLen = this->text.size();
     this->text = text;
+    if (mode == CENTER) 
+        this->x = this->x + (prevLen - text.size())*size/2.*0.5;
+    
 }
 
 void TextEntity::setColor(const QColor &color) {
