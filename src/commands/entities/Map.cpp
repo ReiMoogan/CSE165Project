@@ -193,7 +193,8 @@ QPoint Map::getClosestDrivablePixel(const QPoint& point) {
 
 #define GIVE_UP_DISTANCE 1000
         if (distance > GIVE_UP_DISTANCE) {
-            return {point.x(), point.y()};
+            qDebug() << "Gave up on finding a drivable pixel for" << point;
+            return point;
         }
     }
 }

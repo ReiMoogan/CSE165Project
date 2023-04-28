@@ -39,4 +39,5 @@ void HUD::init(GLWidget& widget) {
     widget.addCommand(this->positionText);
     widget.addCommand(this->checkpointsText);
     widget.addCommand(this->lapsText);
+    widget.addCommand(this->speedText);
 }
