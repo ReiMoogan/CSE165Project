@@ -24,6 +24,7 @@ public:
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;
+    void setFinished(GLWidget& widget, bool finished);
     float getSpeed();
     void setPaused(bool paused);
 
@@ -32,8 +33,11 @@ public:
     int place = 1;
     int lastCheckpoint = -1;
     int laps;
+    bool started = false;
     friend class Map;
 protected:
+    bool finished = false;
+
     // "tuples" of min and max values for velocity and acceleration
     float maxVelocity[2] = { -100, 500 };
     // set acceleration directly (assignment), velocity computed wrt timeDelta

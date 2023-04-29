@@ -1,15 +1,20 @@
 #include "commands/entities/Map.h"
 #include "Fonts.h"
+#include <QTimer>
 
 const float Map::goalX = 687;
 const float Map::goalY = 200.62;
+const int Map::maxLaps = 1;
 
 // Use the actual name like "map1" not ":/textures/map1.png"
 // We will load both the png and bmp
 Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures/%1.png").arg(name.c_str())) {
     music.setSource(QUrl("qrc:/bgm/map1.wav"));
-    music.setVolume(0.5f);
+    music.setVolume(0.1f);
     music.setLoopCount(QSoundEffect::Infinite);
+
+    thudSfx.setSource(QUrl("qrc:/sfx/thud.wav"));
+    thudSfx.setVolume(2.5f);
 
     mapRoute = QImage(QString(":/textures/%1.bmp").arg(name.c_str()));
     this->scale = scale;
@@ -148,6 +153,10 @@ void Map::draw(GLWidget &widget) {
 //            vehicle->checkpointsHit.clear();
             vehicle->lastCheckpoint = -1;
             vehicle->laps++;
+
+            if (vehicle->laps >= maxLaps) {
+                vehicle->setFinished(widget, true);
+            }
         }
     }
 }

@@ -8,6 +8,10 @@ void CPUVehicle::init(GLWidget &widget) {
 }
 
 void CPUVehicle::draw(GLWidget &widget) {
+    if (finished) {
+        Vehicle::draw(widget);
+        return;
+    }   
     //auto nextCheckpointIdx = checkpointsHit.size();
     auto nextCheckpointIdx = lastCheckpoint + 1;
     float targetX, targetY;

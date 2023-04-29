@@ -17,6 +17,11 @@ void UserVehicle::init(GLWidget &widget) {
 }
 
 void UserVehicle::draw(GLWidget &widget) {
+    if (finished) {
+        Vehicle::draw(widget);
+        return;
+    }    
+
     if (widget.isKeyPressed(Qt::Key_W) && widget.isKeyPressed(Qt::Key_S))
         setAccelerator(NONE); // NOLINT(bugprone-branch-clone)
     else if (widget.isKeyPressed(Qt::Key_W))
@@ -38,9 +43,9 @@ void UserVehicle::draw(GLWidget &widget) {
     Vehicle::draw(widget);
 }
 
-bool UserVehicle::isFinished(GLWidget &widget) {
-//    GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
-//    GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
+// bool UserVehicle::isFinished(GLWidget &widget) {
+// //    GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
+// //    GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
 
-    return false;
-}
+//     return false;
+// }

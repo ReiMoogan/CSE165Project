@@ -19,9 +19,11 @@ public:
     bool isFinished(GLWidget& widget) override;
 
     static const float goalX, goalY;
+    static const int maxLaps;
     friend class HUD;
 private:
     QSoundEffect music;
+    QSoundEffect thudSfx;
     QImage mapRoute;
     float scale;
     std::vector<std::shared_ptr<Vehicle>> vehicles;

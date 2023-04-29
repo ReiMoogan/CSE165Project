@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "Map.h"
 #include "TextEntity.h"
+#include "commands/entities/ImageButton.h"
 
 class HUD : public Entity {
 public:
@@ -20,6 +21,9 @@ private:
     std::shared_ptr<TextEntity> lapsText;
     std::shared_ptr<TextEntity> speedText;
     std::shared_ptr<TextEntity> placeText;
+    std::shared_ptr<TextEntity> countdownText;
+
+    std::shared_ptr<ImageButton> exitButton;
 
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
