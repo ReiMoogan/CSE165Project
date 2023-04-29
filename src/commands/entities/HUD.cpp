@@ -6,7 +6,7 @@
 
 using std::to_string;
 
-HUD::HUD(std::shared_ptr<Map> _map) : map(std::move(_map)) {
+HUD::HUD(std::shared_ptr<Map> _map, MainMenu& _menu) : map(std::move(_map)), menu(_menu) {
     this->positionText = std::make_shared<TextEntity>(":/fonts/Inconsolata.ttf", "", 48, 100, 100, 422);
     this->checkpointsText = std::make_shared<TextEntity>(":/fonts/Inconsolata.ttf", "", 48, 100, 100, 422);
     this->lapsText = std::make_shared<TextEntity>(":/fonts/Inconsolata.ttf", "", 48, 100, 100, 422);
@@ -42,6 +42,16 @@ bool HUD::isFinished(GLWidget& widget) {
     return false;
 }
 
+void HUD::cleanup() {
+    this->positionText->forceFinish = true;
+    this->checkpointsText->forceFinish = true;
+    this->lapsText->forceFinish = true;
+    this->speedText->forceFinish = true;
+    this->placeText->forceFinish = true;
+    this->countdownText->forceFinish = true;
+    this->exitButton->forceFinish = true;
+}
+
 void HUD::init(GLWidget& widget) {
     this->positionText->setTranslation(50, (float) widget.height() - 100, 422);
     this->checkpointsText->setTranslation(50, (float) widget.height() - 140, 422);
@@ -53,7 +63,7 @@ void HUD::init(GLWidget& widget) {
     this->exitButton = std::make_shared<ImageButton>(":/textures/exit_button.png", widget.width() / 2 , widget.height() / 2 - 128, 0.0f);
 
     this->exitButton->onClick = [this]() {
-        qInfo() << "exit";
+        this->menu.showMenuScreen();
     };
 
     widget.addCommand(this->positionText);

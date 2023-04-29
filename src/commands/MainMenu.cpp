@@ -42,9 +42,10 @@ void MainMenu::init(GLWidget &widget) {
 void MainMenu::draw(GLWidget &widget) {
     if (startGame && !realizedStartGame) {
         music.stop();
-        auto map = std::make_shared<Map>("map1", 1.5f);
+        this->map = std::make_shared<Map>("map1", 1.5f);
         widget.addCommand(map);
-        widget.addCommand(std::make_shared<HUD>(map));
+        this->hud = std::make_shared<HUD>(map, *this);
+        widget.addCommand(hud);
         realizedStartGame = true;
         endGame = false;
         realizedEndGame = false;
@@ -52,6 +53,29 @@ void MainMenu::draw(GLWidget &widget) {
 
     if (endGame && !realizedEndGame) {
         widget.setClearColor(QColor(255, 255, 255));
+
+        if (this->hud.use_count()) {
+            this->hud->cleanup();
+            this->hud->forceFinish = true;
+            
+            for (const auto& vehicle : this->map->vehicles) {
+                vehicle->effect.stop();
+                vehicle->forceFinish = true;
+            }
+
+            this->map->startLine->forceFinish = true;
+            for (const auto& checkpoint : this->map->checkpoints) {
+                checkpoint->forceFinish = true;
+            }
+
+            this->map->music.stop();
+            this->map->forceFinish = true;
+        }
+
+        background->forceFinish = false;
+        title->forceFinish = false;
+        startButton->forceFinish = false;
+        exitButton->forceFinish = false;
 
         widget.addCommand(background);
         widget.addCommand(title);

@@ -27,6 +27,7 @@ public:
     void setFinished(GLWidget& widget, bool finished);
     float getSpeed();
     void setPaused(bool paused);
+    QSoundEffect effect;
 
     // checkpoints
 //    std::unordered_set<int> checkpointsHit;
@@ -58,7 +59,6 @@ protected:
 
     // sfx
 private:
-    QSoundEffect effect;
     bool paused;
     void calculateVehicle(const GLWidget &widget);
 };

@@ -10,6 +10,7 @@
 #include "UserVehicle.h"
 #include "StartLine.h"
 #include "Checkpoint.h"
+#include "commands/MainMenu.h"
 
 class Map : public ImageEntity {
 public:
@@ -21,6 +22,7 @@ public:
     static const float goalX, goalY;
     static const int maxLaps;
     friend class HUD;
+    friend class MainMenu;
 private:
     QSoundEffect music;
     QSoundEffect thudSfx;

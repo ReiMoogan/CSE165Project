@@ -6,12 +6,17 @@
 #include "Map.h"
 #include "TextEntity.h"
 #include "commands/entities/ImageButton.h"
+#include "commands/MainMenu.h"
+
+class MainMenu;
+class Map;
 
 class HUD : public Entity {
 public:
-    explicit HUD(std::shared_ptr<Map> map);
+    explicit HUD(std::shared_ptr<Map> map, MainMenu& menu);
 
     void toggleDebug();
+    void cleanup();
 private:
     std::shared_ptr<Map> map;
     bool isDebug = false;
@@ -24,6 +29,7 @@ private:
     std::shared_ptr<TextEntity> countdownText;
 
     std::shared_ptr<ImageButton> exitButton;
+    MainMenu &menu;
 
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
