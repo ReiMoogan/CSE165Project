@@ -29,7 +29,7 @@ public:
 
     // checkpoints
 //    std::unordered_set<int> checkpointsHit;
-    int place;
+    int place = 1;
     int lastCheckpoint = -1;
     int laps;
     friend class Map;
@@ -55,7 +55,7 @@ protected:
     // sfx
 private:
     QSoundEffect effect;
-    bool paused;
+    bool paused = false;
     void calculateVehicle(const GLWidget &widget);
 };
 

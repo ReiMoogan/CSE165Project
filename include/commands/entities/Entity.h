@@ -56,12 +56,13 @@ public:
         this->xScale = xScale;
         this->yScale = yScale;
     }
-#pragma clang diagnostic pop
 
     virtual void setDrawMode(DrawMode mode) {
         // lol basically a setter method
         this->mode = mode;
     }
+#pragma clang diagnostic pop
+
 };
 
 #endif //CSE165PROJECT_ENTITY_H
