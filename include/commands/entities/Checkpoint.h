@@ -8,7 +8,7 @@ public:
     int index;
     static const float checkpointCoords[][2];
     static const int totalCheckpoints;
-    Checkpoint(int);
+    explicit Checkpoint(int);
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
 };

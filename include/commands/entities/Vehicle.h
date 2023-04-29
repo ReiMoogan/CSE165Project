@@ -31,7 +31,7 @@ public:
 
     // checkpoints
 //    std::unordered_set<int> checkpointsHit;
-    int place;
+    int place = 1;
     int lastCheckpoint = -1;
     int laps;
     bool started = false;

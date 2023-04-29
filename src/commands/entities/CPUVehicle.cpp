@@ -47,5 +47,13 @@ void CPUVehicle::draw(GLWidget &widget) {
 }
 
 float CPUVehicle::uniformRNG() {
-    return (float) rand() / (float)RAND_MAX;
+    static std::random_device rd;
+    static std::mt19937 mt(rd());
+    static std::uniform_real_distribution<float> dist(0.0, 1.0);
+
+    return dist(mt);
+}
+
+bool CPUVehicle::isFinished(GLWidget &widget) {
+    return false;
 }
