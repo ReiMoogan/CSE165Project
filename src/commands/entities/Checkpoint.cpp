@@ -15,7 +15,5 @@ void Checkpoint::init(GLWidget &widget) {
 
 void Checkpoint::draw(GLWidget &widget) {
     ImageEntity::program->bind();
-    ImageEntity::program->setUniformValue("visible", 0);
-    ImageEntity::draw(widget);
-    ImageEntity::program->setUniformValue("visible", 1);
+    // ImageEntity::draw(widget);
 }

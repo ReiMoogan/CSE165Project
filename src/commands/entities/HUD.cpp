@@ -1,8 +1,10 @@
 #include <utility>
 #include <QTimer>
+#include <QOpenGLShaderProgram>
 
 #include "commands/entities/HUD.h"
 #include "commands/entities/ImageButton.h"
+#include "commands/entities/ImageEntity.h"
 
 using std::to_string;
 
