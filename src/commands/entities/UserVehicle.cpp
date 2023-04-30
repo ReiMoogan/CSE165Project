@@ -46,9 +46,9 @@ void UserVehicle::draw(GLWidget &widget) {
     Vehicle::draw(widget);
 }
 
-// bool UserVehicle::isFinished(GLWidget &widget) {
-// //    GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
-// //    GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
-
-//     return false;
-// }
+//bool UserVehicle::isFinished(GLWidget &widget) {
+//    GLWidget::postPerspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
+//    GLWidget::perspective = [](QMatrix4x4& matrix, GLWidget& widget, Entity& other) {};
+//
+//    return false;
+//}

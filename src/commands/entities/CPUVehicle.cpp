@@ -37,7 +37,7 @@ void CPUVehicle::draw(GLWidget &widget) {
         zRot += 0.1f * dZRot;
     }
 
-    if (uniformRNG() < 0.4) {
+    if (uniformRNG() < 0.8) {
         setAccelerator(ACCELERATE);
     } else {
         setAccelerator(NONE);

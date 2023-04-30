@@ -26,6 +26,7 @@ public:
 private:
     QSoundEffect music;
     QSoundEffect thudSfx;
+    QSoundEffect airhorn;
     QImage mapRoute;
     float scale;
     std::vector<std::shared_ptr<Vehicle>> vehicles;

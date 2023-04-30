@@ -25,6 +25,7 @@
     <file>sfx/plst00.wav</file>
     <file>sfx/click.wav</file>
     <file>sfx/thud.wav</file>
+    <file>sfx/airhorn.wav</file>
     <file>bgm/menu.mp3</file>
     <file>bgm/map1.wav</file>
 </qresource>

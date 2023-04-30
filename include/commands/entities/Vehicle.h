@@ -24,7 +24,6 @@ public:
     void init(GLWidget& widget) override;
     void draw(GLWidget& widget) override;
     bool isFinished(GLWidget& widget) override;
-    void setFinished(GLWidget& widget, bool finished);
     float getSpeed();
     void setPaused(bool paused);
     QSoundEffect effect;
@@ -60,7 +59,7 @@ protected:
 
     // sfx
 private:
-    bool paused;
+    bool paused = false;
     void calculateVehicle(const GLWidget &widget);
 };
 

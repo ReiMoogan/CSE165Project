@@ -64,16 +64,12 @@ void Vehicle::calculateVehicle(const GLWidget &widget) {
 }
 
 bool Vehicle::isFinished(GLWidget &widget) {
-    return finished;
-}
-
-void Vehicle::setFinished(GLWidget &widget, bool finished) {
-    this->finished = finished;
-    this->started = false;
+    return forceFinish;
 }
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wshadow"
+
 void Vehicle::setAccelerator(Acceleration mode) {
     this->mode = mode;
 }

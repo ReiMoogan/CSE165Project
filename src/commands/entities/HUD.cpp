@@ -92,8 +92,8 @@ void HUD::init(GLWidget& widget) {
     });
 
     QTimer::singleShot(3000+250, this, [this, &widget]() {
-        this->map->thudSfx.setVolume(3.0f);
-        this->map->thudSfx.play();
+        this->map->airhorn.setVolume(9.0f);
+        this->map->airhorn.play();
         this->map->music.setVolume(0.5f);
         for (const auto& vehicle : this->map->vehicles) {
             vehicle->started = true;

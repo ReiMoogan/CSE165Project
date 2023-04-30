@@ -11,10 +11,6 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 
-class HUD;
-class MainMneu;
-class Map;
-
 class MainMenu : public Command {
 public:
     void init(GLWidget &widget) override;

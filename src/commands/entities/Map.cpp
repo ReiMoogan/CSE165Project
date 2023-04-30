@@ -16,6 +16,9 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     thudSfx.setSource(QUrl("qrc:/sfx/thud.wav"));
     thudSfx.setVolume(2.5f);
 
+    airhorn.setSource(QUrl("qrc:/sfx/airhorn.wav"));
+    airhorn.setVolume(1.0f);
+
     mapRoute = QImage(QString(":/textures/%1.bmp").arg(name.c_str()));
     this->scale = scale;
     z = -420; // Make sure the map is always behind the vehicles
@@ -172,7 +175,7 @@ void Map::draw(GLWidget &widget) {
                 }
 
                 vehicle->effect.stop();
-                vehicle->setFinished(widget, true);
+                vehicle->forceFinish = true;
             }
         }
     }
