@@ -136,6 +136,7 @@ void HUD::init(GLWidget& widget) {
         for (const auto& vehicle : this->map->vehicles) {
             vehicle->started = true;
         }
+        this->map->player->lapStart = QTime::currentTime();
         this->countdownText->setText("GOOOOOOOO!");
         this->countdownText->setColor(QColor::fromRgb(156, 255, 156, 255));
     });

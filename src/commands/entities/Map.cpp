@@ -179,7 +179,7 @@ void Map::draw(GLWidget &widget) {
 
             if (vehicle->laps >= maxLaps) {
                 if (vehicle.get() == this->player.get()) {
-                    this->player->data.avgSpeed /= this->player->avgSpeedCounter;
+                    this->player->data.avgSpeed /= (float) this->player->avgSpeedCounter;
                     widget.addCommand(std::make_shared<GameStats>(this->player->data));
                 }
 
