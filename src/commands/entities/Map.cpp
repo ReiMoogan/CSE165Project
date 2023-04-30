@@ -4,7 +4,7 @@
 
 const float Map::goalX = 687;
 const float Map::goalY = 200.62;
-const int Map::maxLaps = 2;
+const int Map::maxLaps = 3;
 
 // Use the actual name like "map1" not ":/textures/map1.png"
 // We will load both the png and bmp
@@ -24,19 +24,27 @@ Map::Map(const std::string &name, float scale) : ImageEntity(QString(":/textures
     z = -420; // Make sure the map is always behind the vehicles
     followPerspective = true;
 
-    this->player = std::make_shared<UserVehicle>();
-    this->player->setTranslation(703, 201, 0);
-    this->player->zRot = 83;
-    vehicles.push_back(this->player);
+    const auto smallCalc = [](float a) {
+        return 1369.45f - 4.2607f * a + 0.0040459f * a * a;
+    };
 
-//    const auto smallCalc = [](float a) {
-//        return -1038.39f * a * a + 7.31337f * a;
-//    };
+#define MAX_CARS 4
+    float x = 703;
+    for (int i = 0; i < MAX_CARS; ++i) {
+        std::shared_ptr<Vehicle> vehicle;
 
-    for (int i = 0; i < 1; i++) {
-        auto cpu = std::make_shared<CPUVehicle>();
-        cpu->setTranslation(555, 251, 0);
-        vehicles.push_back(cpu);
+        if (i == MAX_CARS - 1) {
+            this->player = std::make_shared<UserVehicle>();
+            vehicle = this->player;
+            this->player->zRot = 40;
+        } else {
+            vehicle = std::make_shared<CPUVehicle>();
+        }
+
+        vehicle->setTranslation(x, smallCalc(x), 0);
+
+        x -= 150.0f;
+        vehicles.push_back(vehicle);
     }
 
     startLine = std::make_shared<StartLine>();
@@ -146,6 +154,7 @@ void Map::draw(GLWidget &widget) {
                 if (vehicle->lastCheckpoint == checkpoint->index - 1) {
                     vehicle->lastCheckpoint = checkpoint->index;
                     this->player->data.avgSpeed += this->player->getSpeed();
+                    this->player->avgSpeedCounter++;
                 }
             }
         }
@@ -170,7 +179,7 @@ void Map::draw(GLWidget &widget) {
 
             if (vehicle->laps >= maxLaps) {
                 if (vehicle.get() == this->player.get()) {
-                    this->player->data.avgSpeed /= (((float)checkpoints.size()+2)*(maxLaps+1));
+                    this->player->data.avgSpeed /= this->player->avgSpeedCounter;
                     widget.addCommand(std::make_shared<GameStats>(this->player->data));
                 }
 

@@ -26,7 +26,10 @@ private:
     std::shared_ptr<TextEntity> lapsText;
     std::shared_ptr<TextEntity> speedText;
     std::shared_ptr<TextEntity> placeText;
+    std::shared_ptr<TextEntity> actualPlaceText;
     std::shared_ptr<TextEntity> countdownText;
+    std::shared_ptr<ImageEntity> speedometer;
+    std::shared_ptr<ImageEntity> dial;
 
     std::shared_ptr<ImageButton> exitButton;
     MainMenu &menu;

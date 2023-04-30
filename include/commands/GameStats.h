@@ -6,6 +6,7 @@
 #include "GLWidget.h"
 
 struct StatData {
+    std::string place;
     std::vector<QTime> lapTimes;
     float maxSpeed;
     float avgSpeed;

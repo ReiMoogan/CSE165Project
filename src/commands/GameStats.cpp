@@ -14,7 +14,8 @@ addCommand(std::make_shared<GameStats>(testStatsData));
  */
 
 GameStats::GameStats(const StatData& data) {
-    message = "Lap Times:\n";
+    message = "You've finished in " + data.place + " place!\n\n";
+    message += "Lap Times:\n";
     for (int i = 0; i < data.lapTimes.size(); ++i) {
         message += "- Lap " + std::to_string(i + 1) + ": " + data.lapTimes[i].toString("mm:ss.zzz").toStdString() + "\n";
     }

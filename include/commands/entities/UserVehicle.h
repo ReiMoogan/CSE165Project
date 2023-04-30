@@ -12,6 +12,7 @@ public:
     void draw(GLWidget &widget) override;
 
     QTime lapStart;
+    int avgSpeedCounter = 0;
     StatData data;
 };
 

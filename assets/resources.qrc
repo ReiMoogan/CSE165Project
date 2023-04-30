@@ -13,6 +13,8 @@
     <file>textures/exit_button.png</file>
     <file>textures/menu.png</file>
     <file>textures/logo.png</file>
+    <file>textures/speedometer.png</file>
+    <file>textures/dial.png</file>
     <!-- Shaders -->
     <file>shaders/image.vert</file>
     <file>shaders/image.frag</file>
@@ -20,6 +22,7 @@
     <file>shaders/text.frag</file>
     <!-- Fonts -->
     <file>fonts/Inconsolata.ttf</file>
+    <file>fonts/CCWildWords.ttf</file>
     <!-- Sounds -->
     <file>sfx/engine.wav</file>
     <file>sfx/plst00.wav</file>
