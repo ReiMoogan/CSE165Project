@@ -11,6 +11,9 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 
+QT_FORWARD_DECLARE_CLASS(Map)
+QT_FORWARD_DECLARE_CLASS(HUD)
+
 class MainMenu : public Command {
 public:
     void init(GLWidget &widget) override;
