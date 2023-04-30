@@ -13,6 +13,8 @@ void UserVehicle::init(GLWidget &widget) {
     };
 
     this->followPerspective = true;
+    this->lapStart = QTime::currentTime();
+    this->data.avgSpeed = 0.f;
     Vehicle::init(widget);
 }
 
@@ -40,6 +42,7 @@ void UserVehicle::draw(GLWidget &widget) {
     else
         setTurn(STRAIGHT);
 
+    this->data.maxSpeed = std::max(this->data.maxSpeed, this->getSpeed());
     Vehicle::draw(widget);
 }
 

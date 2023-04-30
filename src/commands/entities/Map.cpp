@@ -4,7 +4,7 @@
 
 const float Map::goalX = 687;
 const float Map::goalY = 200.62;
-const int Map::maxLaps = 1;
+const int Map::maxLaps = 2;
 
 // Use the actual name like "map1" not ":/textures/map1.png"
 // We will load both the png and bmp
@@ -142,6 +142,7 @@ void Map::draw(GLWidget &widget) {
 //                vehicle->checkpointsHit.insert(checkpoint->index);
                 if (vehicle->lastCheckpoint == checkpoint->index - 1) {
                     vehicle->lastCheckpoint = checkpoint->index;
+                    this->player->data.avgSpeed += this->player->getSpeed();
                 }
             }
         }
@@ -154,7 +155,23 @@ void Map::draw(GLWidget &widget) {
             vehicle->lastCheckpoint = -1;
             vehicle->laps++;
 
+            if (vehicle.get() == this->player.get()) {
+                QTime now = QTime::currentTime();
+                int msecDiff = now.msec()-this->player->lapStart.msec();
+                int diff = now.second()*1000+msecDiff;
+                QTime timediff = QTime(diff / 1000/60/60, diff / 1000/60, diff /1000);
+                this->player->data.lapTimes.push_back(timediff);
+                this->player->lapStart = now;
+                
+            }
+
             if (vehicle->laps >= maxLaps) {
+                if (vehicle.get() == this->player.get()) {
+                    this->player->data.avgSpeed /= (((float)checkpoints.size()+2)*(maxLaps+1));
+                    widget.addCommand(std::make_shared<GameStats>(this->player->data));
+                }
+
+                vehicle->effect.stop();
                 vehicle->setFinished(widget, true);
             }
         }

@@ -8,7 +8,6 @@
 class ImageEntity : public Entity {
 private:
     static bool programInitialized;
-    static QOpenGLShaderProgram *program;
     QOpenGLTexture** textures;
     QOpenGLBuffer* vbo;
     QOpenGLVertexArrayObject* vao;
@@ -16,6 +15,9 @@ private:
     float delay = 1000;
     float timeSinceLastAnimatedFrame = 0;
     int frame = 0;
+
+protected:
+    static QOpenGLShaderProgram *program;
 
 public:
     explicit ImageEntity(const QString& imagePath);

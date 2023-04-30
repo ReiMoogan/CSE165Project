@@ -35,6 +35,7 @@ public:
     int lastCheckpoint = -1;
     int laps;
     bool started = false;
+
     friend class Map;
 protected:
     bool finished = false;
